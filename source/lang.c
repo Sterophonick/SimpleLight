@@ -149,80 +149,79 @@ const char *zh_nor_op[3]={
 
 
 //с╒нд
-const char en_init_error[]="Micro SD card initial error";
+const char en_init_error[]="Failed to initialize Micro SD card.";
 const char en_power_off[]="Power off";
 const char en_init_ok[]="Micro SD card initial OK";
 const char en_Loading[]="Loading...";
-const char en_file_overflow[]="The file overflow";
+const char en_file_overflow[]="The file is too big.";
 
-const char en_menu_btn[]="[B]CANCEL    [A]OK";
-const char en_writing[]="WRITING...";
-const char en_lastest_game[]="SELECT THE LASTEST";
+const char en_menu_btn[]="(B) No      (A) OK";
+const char en_writing[]="Writing...";
+const char en_lastest_game[]="Select the lastest";
 
-const char en_time[]="     TIME";
-const char en_Mon[]="MON";
-const char en_Tues[]="TUE";
-const char en_Wed[]="WED";
-const char en_Thur[]="THU";
-const char en_Fri[]="FRI";
-const char en_Sat[]="SAT";
-const char en_Sun[]="SUN";
+const char en_time[]="     Time";
+const char en_Mon[]="Mon";
+const char en_Tues[]="Tue";
+const char en_Wed[]="Wed";
+const char en_Thur[]="Thu";
+const char en_Fri[]="Fri";
+const char en_Sat[]="Sat";
+const char en_Sun[]="Sun";
 
-const char en_addon[]="    ADDON";
-const char en_reset[]="RESET";
-const char en_rts[]="SAVESTATE";
-const char en_sleep[]="SLEEP";
-const char en_cheat[]="CHEAT";
+const char en_addon[]="    Addon";
+const char en_reset[]="Reset";
+const char en_rts[]="Savestate";
+const char en_sleep[]="Sleep";
+const char en_cheat[]="Cheat";
 
-const char en_hot_key[] ="SLEEP KEY";
-const char en_hot_key2[]=" MENU KEY";
+const char en_hot_key[] ="Sleep key";
+const char en_hot_key2[]=" Menu key";
 
-const char en_language[]=" LANGUAGE";
-const char en_lang[]="ENGLISH";
-const char en_set_btn[]="SET";
+const char en_language[]=" Language";
+const char en_lang[]="English";
+const char en_set_btn[]="Set";
 const char en_ok_btn[]=" OK";
+const char en_formatnor_info[]="Sure?about 4 mins";
 
-const char en_formatnor_info[]="SURE?about 4 mins";
+const char en_check_sav[]="Checking SAV file";
+const char en_make_sav[] ="Creating SAV file";
 
-const char en_check_sav[]="CHECKING SAV FILE";
-const char en_make_sav[] ="CREATING SAV FILE";
+const char en_check_RTS[]="Checking RTS file";
+const char en_make_RTS[] ="Creating RTS file";
 
-const char en_check_RTS[]="CHECKING RTS FILE";
-const char en_make_RTS[] ="CREATING RTS FILE";
+const char en_check_pat[]="Checking PAT file";
+const char en_make_pat[] ="Creating PAT file";
 
-const char en_check_pat[]="CHECKING PAT FILE";
-const char en_make_pat[] ="CREATING PAT FILE";
+const char en_loading_game[]="Loading Game";
 
-const char en_loading_game[]="LOADING GAME";
+const char en_engine[]="   Engine";
+const char en_use_engine[]="Fast Patch Engine";
 
-const char en_engine[]="   ENGINE";
-const char en_use_engine[]="FAST PATCH ENGINE";
-
-const char en_recently_play[]="RECENT PLAYED";
+const char en_recently_play[]="Recent Played";
 
 const char en_START_help[]="Open recently played list";
-const char en_SELECT_help[]="Thumbnail toggle";
+const char en_SELECT_help[]="Toggle thumbnail";
 const char en_L_A_help[]="Multiboot";
 const char en_LSTART_help[]="Delete file";
 const char en_online_manual[]="Online manual";
 
 const char en_no_game_played[]="No game played yet";
 
-const char en_ingameRTC[]=" GAME RTC";
-const char en_offRTC_powersave[]="TURNOFF TO POWER SAVE";
+const char en_ingameRTC[]=" Game RTC";
+const char en_offRTC_powersave[]="Turn off to Powersave";
 
 const char *en_rom_menu[] = {
-	"CLEAN BOOT",
-	"BOOT WITH ADDON",
-	"WRITE TO NOR CLEAN",
-	"WRITE TO NOR ADDON",
-	"SAVE TYPE",
-	"CHEAT",
+	"Clean boot",
+	"Boot with addon",
+	"Write to NOR clean",
+	"Write to NOR addon",
+	"Save type",
+	"Cheat",
 };
 const char *en_nor_op[3]={
-	"DIRECT BOOT",
-	"DELETE",
-	"FORMAT ALL",
+	"Direct boot",
+	"Delete",
+	"Format all",
 };	
 
 //---------------------------------------------------------------------------------

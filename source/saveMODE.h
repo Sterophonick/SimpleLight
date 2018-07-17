@@ -2805,6 +2805,7 @@ const SAVE_MODE_  __attribute__((aligned(4))) saveMODE_table[] = {
 {"AX4J",0x31},//2817 - Super Mario Advance 4(JP).zip
 {"B3DJ",0x11},//2818 - Densetsu no Stafy 3(JP).zip
 {"BRIJ",0x11},//2819 - Rhythm Tengoku(JP).zip
+{"SBJA",0x11},//???? - Super Block Jump - Game Boy Advance Edition(U).zip
 
 {"FFFF",0x00}
 };

@@ -761,7 +761,7 @@ u8 Check_mde_file(TCHAR* gamefilename)
 	TCHAR mdenamebuf[100];	
 	make_mde_name(mdenamebuf,gamefilename);
 	
-	res=f_chdir("/SAVER");
+	res=f_chdir("/SAVES");
 	if(res == FR_OK)
 	{
 		res = f_open(&gfile,mdenamebuf, FA_OPEN_EXISTING);
@@ -805,8 +805,8 @@ void Make_mde_file(TCHAR* gamefilename,u8 Save_num)
 	memset(currentpath,00,256);
 	res = f_getcwd(currentpath, sizeof currentpath / sizeof *currentpath);
 	
-	res = f_mkdir("/SAVER");
-	res=f_chdir("/SAVER");
+	res = f_mkdir("/SAVES");
+	res=f_chdir("/SAVES");
 	
 	memset(w_buffer, 0x00, sizeof(w_buffer));
 

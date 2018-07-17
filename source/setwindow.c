@@ -32,12 +32,12 @@ u16 SET_info_buffer [0x200]EWRAM_BSS;
 
 u8* str_A      = (u8*)"   A  ";
 u8*	str_B		   = (u8*)"   B  ";
-u8* str_SELECT = (u8*)"SELECT";
-u8*	str_START	 = (u8*)"START ";
-u8*	str_RIGHT	 = (u8*)"RIGHT ";
-u8*	str_LEFT	 = (u8*)" LEFT ";
-u8* str_UP		 = (u8*)"  UP  ";
-u8*	str_DOWN	 = (u8*)" DOWN ";
+u8* str_SELECT = (u8*)"Select";
+u8*	str_START	 = (u8*)"Start ";
+u8*	str_RIGHT	 = (u8*)"Right ";
+u8*	str_LEFT	 = (u8*)" Left ";
+u8* str_UP		 = (u8*)"  Up  ";
+u8*	str_DOWN	 = (u8*)" Down ";
 u8* str_R		   = (u8*)"   R  ";
 u8* str_L		   = (u8*)"   L  ";
 
@@ -54,9 +54,9 @@ u8 edit_rtshotkey[3]={0};
 void Show_ver(void)
 {
 	char msg[20];
-	char *ver="K:1.03";
+	char *ver="";
 	u16 FPGAver = Read_FPGA_ver();
-	sprintf(msg,"FW:%d %s",FPGAver&0xFF,ver);
+	sprintf(msg,"",FPGAver&0xFF,ver);
 	DrawHZText12(msg,0,160,3, gl_color_text,1);	
 }
 //---------------------------------------------------------------------------------
@@ -193,7 +193,7 @@ u32 Setting_window(void)
 				DrawHZText12(msg,0,x_offset+15,y_offset+line_x*4,(engine_pos==0)?gl_color_selected:gl_color_text,1);	
 			//							
 			sprintf(msg,"%s",gl_hot_key);
-			DrawHZText12(msg,0,set_offset,y_offset+line_x*5,gl_color_selected,1);	
+			DrawHZText12(msg,0,set_offset+3,y_offset+line_x*5,gl_color_selected,1);	
 
 				
 			sprintf(msg,"%s",gl_hot_key2);

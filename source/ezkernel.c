@@ -41,7 +41,7 @@
 #include "goomba.h"
 #include "pocketnes.h"
 
-
+char *mod_ee;
 
 FM_FILE_FS pFilename_buffer[MAX_files]EWRAM_BSS;
 FM_NOR_FS pNorFS[MAX_NOR]EWRAM_BSS;
@@ -123,21 +123,21 @@ void Show_help_window()
 {
 	if(gl_select_lang == 0xE1E1)//english
 	{
-		DrawPic((u16*)gImage_English_manual, 240-70, 160-70, 70, 70, 0, 0, 1);//
+		DrawPic((u16*)gImage_English_manual, 240-73, 160-73, 70, 70, 0, 0, 1);//
 	}
 	else{
-		DrawPic((u16*)gImage_Chinese_manual, 240-70, 160-70, 70, 70, 0, 0, 1);//
+		DrawPic((u16*)gImage_Chinese_manual, 240-73, 160-73, 70, 70, 0, 0, 1);//
 	}
-	DrawHZText12("START  :",0,3,20, gl_color_selected,1);
+	DrawHZText12("Start  :",0,3,20, gl_color_selected,1);
 		DrawHZText12(gl_START_help,0,52,20, gl_color_text,1);
 		
-	DrawHZText12("SELECT :",0,3,35, gl_color_selected,1);
+	DrawHZText12("Select :",0,3,35, gl_color_selected,1);
 		DrawHZText12(gl_SELECT_help,0,52,35, gl_color_text,1);
 		
 	DrawHZText12("L + A  :",0,3,50, gl_color_selected,1);
 		DrawHZText12(gl_L_A_help,0,52,50, gl_color_text,1);
 		
-	DrawHZText12("L+START:",0,3,65, gl_color_selected,1);
+	DrawHZText12("L+Start:",0,3,65, gl_color_selected,1);
 		DrawHZText12(gl_LSTART_help,0,52,65, gl_color_text,1);	
 		
 	DrawHZText12(gl_online_manual,0,240-70-7,77, gl_color_text,1);
@@ -231,7 +231,7 @@ void Show_ICON_filename(u32 show_offset,u32 file_select,u32 haveThumbnail)
 		else
 		{
 			char msg[20];
-			sprintf(msg,"%s","DIR");
+			sprintf(msg,"%s","");
 			DrawHZText12(msg,0,221,y_offset + line*14, name_color,1);
 		}
 	}
@@ -442,7 +442,7 @@ void IWRAM_CODE Refresh_filename(u32 show_offset,u32 file_select,u32 updown,u32 
 		DrawHZText12(pFilename_buffer[0].filename, char_num2, 1+16, showy2, name_color1,1);
 		
 		if(char_num1==32){
-			sprintf(msg,"%s","DIR");
+			sprintf(msg,"%s","");
 			DrawHZText12(msg,0,221,showy1, name_color1,1);
 		}
 		if(char_num2==32){
@@ -455,7 +455,7 @@ void IWRAM_CODE Refresh_filename(u32 show_offset,u32 file_select,u32 updown,u32 
 		DrawHZText12(pFolder[show_offset+xx1].filename, char_num1, 1+16, showy1, name_color1,1);
 		DrawHZText12(pFolder[show_offset+xx2].filename, char_num2, 1+16, showy2, name_color1,1);
 
-		sprintf(msg,"%s","DIR");
+		sprintf(msg,"%s","");
 		if(char_num1==32){
 			DrawHZText12(msg,0,221,showy1, name_color1,1);			
 		}
@@ -469,7 +469,7 @@ void IWRAM_CODE Refresh_filename(u32 show_offset,u32 file_select,u32 updown,u32 
 		DrawHZText12(pFilename_buffer[0].filename, char_num2, 1+16, showy2, name_color1,1);
 		
 		if(char_num1==32){
-			sprintf(msg,"%s","DIR");			
+			sprintf(msg,"%s","");			
 			DrawHZText12(msg,0,221,showy1, name_color1,1);			
 		}
 		if(char_num2==32){
@@ -581,12 +581,12 @@ void Show_game_num(u32 count,u32 list)
 	if(list==0){
 		if(game_total_SD+folder_total==0)
 			count = 0;
-		sprintf(msg,"[%03lu/%03lu]",count,game_total_SD+folder_total);
+		sprintf(msg,"",count,game_total_SD+folder_total);
 	}
 	else{
 		if(game_total_NOR==0)
 			count = 0;
-		sprintf(msg,"[%03lu/%03lu]",count,game_total_NOR);
+		sprintf(msg,"",count,game_total_NOR);
 	}
 	DrawHZText12(msg,0,185,3, gl_color_text,1);
 }
@@ -793,7 +793,7 @@ u32  get_count(void)
 	u32 res;
 	u32 count=0;
 	u8 buf[512];	
-	res = f_open(&gfile,"/SAVER/Recently play.txt", FA_READ);	
+	res = f_open(&gfile,"/SAVES/Recently play.txt", FA_READ);	
 	if(res == FR_OK)//have a play file
 	{
 		f_lseek(&gfile, 0x0);
@@ -892,7 +892,7 @@ void Make_recently_play_file(TCHAR* path,TCHAR* gamefilename)
 	int get=1;
 	u8 buf[512];	
 	
-	//res=f_chdir("/SAVER");
+	//res=f_chdir("/SAVES");
 	//is in SAVER
 	count = get_count();
 		
@@ -1293,7 +1293,7 @@ void ShowTime(u32 page_num ,u32 page_mode)
 	if(MM >59)MM=0;
 	if(SS >59)SS=0;
 	
-	sprintf(msgtime,"%02u:%02u:%02u",HH,MM,SS);
+	sprintf(msgtime,"",HH,MM,SS);
 	DrawHZText12(msgtime,0,100,3,gl_color_text,1);
 }
 //---------------------------------------------------------------
@@ -1532,7 +1532,6 @@ u32 Check_file_type(TCHAR *pfilename)
 // Program entry point
 //---------------------------------------------------------------------------------
 int main(void) {
-
 	irqInit();
 	irqEnable(IRQ_VBLANK);
 
@@ -1571,7 +1570,7 @@ int main(void) {
 	CheckLanguage();	
 	CheckSwitch();
 
-	res = f_mount(&EZcardFs, "", 1);
+	//res = f_mount(&EZcardFs, "", 1);
 	if( res != FR_OK)
 	{
 		DrawHZText12(gl_init_error,0,2,20, gl_color_text,1);
@@ -2249,8 +2248,8 @@ re_showfile:
 			}
 		}	
 				
-		res = f_mkdir("/SAVER");
-		res=f_chdir("/SAVER");
+		res = f_mkdir("/SAVES");
+		res=f_chdir("/SAVES");
 		if(res != FR_OK){
 			error_num = 2;
 			goto Error;

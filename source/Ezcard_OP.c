@@ -438,7 +438,7 @@ void IWRAM_CODE Check_FW_update(u16 Current_FW_ver,u16 Built_in_ver)
 	{
 			sprintf(msg,"check crc32 error!");		
 			DrawHZText12(msg,0,2,offset_Y+0*line_x, RGB(31,00,00),1);
-			sprintf(msg,"press [B] to return");
+			sprintf(msg,"Press (B) to return.");
 			DrawHZText12(msg,0,2,offset_Y+2*line_x, 0x7FFF,1);	
 			while(1)
 			{
@@ -453,15 +453,15 @@ void IWRAM_CODE Check_FW_update(u16 Current_FW_ver,u16 Built_in_ver)
 			}		
 	}
 
-	sprintf(msg,"current firmware version: V%02d",Current_FW_ver);
+	sprintf(msg,"The current firmware version is V%02d",Current_FW_ver);
 	DrawHZText12(msg,0,2,offset_Y+1*line_x, 0x7FFF,1);	
 	
-	sprintf(msg,"will be updated to version: V%02d",Built_in_ver);
+	sprintf(msg,"The firmware will be updated to V%02d",Built_in_ver);
 	DrawHZText12(msg,0,2,offset_Y+2*line_x, 0x7FFF,1);	
 
-	sprintf(msg,"press [A] to update");
+	sprintf(msg,"Press (A) to update firmware.");
 	DrawHZText12(msg,0,2,offset_Y+4*line_x, 0x7FFF,1);	
-	sprintf(msg,"press [B] to cancel");
+	sprintf(msg,"Press (B) to cancel.");
 	DrawHZText12(msg,0,2,offset_Y+5*line_x, 0x7FFF,1);	
 	
 	while(1)
@@ -476,7 +476,7 @@ void IWRAM_CODE Check_FW_update(u16 Current_FW_ver,u16 Built_in_ver)
 			Clear(2, offset_Y+4*line_x,220,15,RGB(0,18,24),1);	
 			Clear(2, offset_Y+5*line_x,220,15,RGB(0,18,24),1);	
 		
-			sprintf(msg,"progress:");		
+			sprintf(msg,"Updating...");		
 			DrawHZText12(msg,0,2,offset_Y+6*line_x, 0x7FFF,1);
 									
 			for(offset = 0x0000;offset<newomega_top_bin_size;offset+=256)
