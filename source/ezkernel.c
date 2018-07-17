@@ -88,8 +88,8 @@ u16 gl_cheat_on;
 
 //----------------------------------------
 u16 gl_color_selected 		= RGB(00,20,26);
-u16 gl_color_text 				= RGB(31,31,31);
-u16 gl_color_selectBG_sd 	= RGB(00,00,31);
+u16 gl_color_text 				= RGB(00,00,00);
+u16 gl_color_selectBG_sd 	= RGB(5,5,31);
 u16 gl_color_selectBG_nor = RGB(10,10,10);
 u16 gl_color_MENU_btn			= RGB(20,20,20);
 u16 gl_color_cheat_count  = RGB(00,31,00);
@@ -140,7 +140,7 @@ void Show_help_window()
 	DrawHZText12("L+Start:",0,3,65, gl_color_selected,1);
 		DrawHZText12(gl_LSTART_help,0,52,65, gl_color_text,1);	
 		
-	DrawHZText12(gl_online_manual,0,240-70-7,77, gl_color_text,1);
+	DrawHZText12(gl_online_manual,0,240-70-10,74, gl_color_text,1);
 	DrawHZText12(gl_theme_credit,0,3,105, gl_color_selected,1);
 	DrawHZText12(gl_theme_credit2,0,3,120, gl_color_selected,1);
 	while(1)
@@ -590,7 +590,6 @@ void Show_game_num(u32 count,u32 list)
 			count = 0;
 		sprintf(msg,"",count,game_total_NOR);
 	}
-	DrawHZText12(msg,0,185,3, gl_color_text,1);
 }
 //---------------------------------------------------------------------------------
 void Filename_loop(u32 shift,u32 show_offset,u32 file_select,u32 haveThumbnail)
@@ -826,7 +825,7 @@ u32 show_recently_play(void)
 	u32 firsttime = 1;
 	
 	DrawPic((u16*)gImage_RECENTLY, 0, 0, 240, 160, 0, 0, 1);
-	DrawHZText12(gl_recently_play,0,(240-strlen(gl_recently_play)*6)/2,4, gl_color_text,1);//TITLE
+	DrawHZText12(gl_recently_play,0,(240-strlen(gl_recently_play)*6)/2,4, 0x7F00,1);//TITLE
 	
 	all_count = get_count();	
 	if(all_count)
@@ -869,7 +868,7 @@ u32 show_recently_play(void)
 	}
 	else{
 		
-		DrawHZText12(gl_no_game_played,0,1,20, gl_color_text,1);		
+		DrawHZText12(gl_no_game_played,0,3,22, gl_color_text,1);		
 		while(1)
 		{
 			VBlankIntrWait();
@@ -1296,7 +1295,7 @@ void ShowTime(u32 page_num ,u32 page_mode)
 	if(SS >59)SS=0;
 	
 	sprintf(msgtime,"",HH,MM,SS);
-	DrawHZText12(msgtime,0,100,3,gl_color_text,1);
+
 }
 //---------------------------------------------------------------
 u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR *filename,u32 is_EMU)
@@ -1538,7 +1537,7 @@ int main(void) {
 	irqEnable(IRQ_VBLANK);
 
 	REG_IME = 1;
-
+ 
 	u32 res;
 	u32 game_folder_total;
 	u32 file_select;
@@ -1567,12 +1566,27 @@ int main(void) {
 	{
 		Check_FW_update(Current_FW_ver,Built_in_ver);
 	}
-	
+	REG_BLDCNT = 0x0084;
+	REG_BLDY = 0x0010;
 	DrawPic((u16*)gImage_splash, 0, 0, 240, 160, 0, 0, 1);	
 	CheckLanguage();	
 	CheckSwitch();
+	u8 i;
+	for(i = 16; i > 0; i--)
+	{
+		VBlankIntrWait();
+		VBlankIntrWait();
+		VBlankIntrWait();
+		VBlankIntrWait();
+		VBlankIntrWait();
+		VBlankIntrWait();
+		VBlankIntrWait();
+		VBlankIntrWait();
+		REG_BLDY = i;
+	}
 
-	res = f_mount(&EZcardFs, "", 1);
+	REG_BLDCNT = 0x00C4;
+	//res = f_mount(&EZcardFs, "", 1);
 	if( res != FR_OK)
 	{
 		DrawHZText12(gl_init_error,0,2,20, gl_color_text,1);
@@ -1587,7 +1601,28 @@ int main(void) {
 		DrawHZText12(gl_init_ok,0,2,20, gl_color_text,1);
 		DrawHZText12(gl_Loading,0,2,33, gl_color_text,1);
 	}
-	VBlankIntrWait();	
+	for(i = 0; i < 30; i++)
+	{
+		VBlankIntrWait();
+	}
+	for(i = 0; i < 16; i++)
+	{
+		VBlankIntrWait();
+		VBlankIntrWait();
+		VBlankIntrWait();
+		REG_BLDY = i;
+	}
+	if(page_num==SD_list)
+	{
+		DrawPic((u16*)gImage_SD, 0, 0, 240, 160, 0, 0, 1);	
+	}
+	for(i = 16; i > 0; i--)
+	{
+		VBlankIntrWait();
+		VBlankIntrWait();
+		VBlankIntrWait();
+		REG_BLDY = i;
+	}
 
 	f_chdir("/");
 	TCHAR currentpath[MAX_path_len];
@@ -1682,11 +1717,6 @@ re_showfile:
   updata=1;
   u32 key_L=0;
 	setRepeat(5,1);
-	
-	if(page_num==SD_list)
-	{
-		DrawPic((u16*)gImage_SD, 0, 0, 240, 160, 0, 0, 1);	
-	}
 	while(1)
 	{
 		while(1)//2
@@ -2378,7 +2408,10 @@ re_showfile:
 								
   		res=LoadEMU2PSRAM(pfilename,is_EMU);
   		SetRompageWithHardReset(0x200,key_L);
-  		while(1);
+  		while(1)
+		{
+			VBlankIntrWait();
+		}
 		}
 			
 		if(page_num==NOR_list){//boot nor game
@@ -2398,7 +2431,10 @@ re_showfile:
 			Send_FATbuffer(FAT_table_buffer,1); //only save FAT
 			//wait_btn();
 			SetRompageWithHardReset(pNorFS[show_offset+file_select].rompage,key_L);
-			while(1);
+			while(1)
+			{
+				VBlankIntrWait();
+			}
 		}
 		else {			
 	  	switch(MENU_line){
