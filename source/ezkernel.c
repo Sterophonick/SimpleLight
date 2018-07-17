@@ -141,6 +141,8 @@ void Show_help_window()
 		DrawHZText12(gl_LSTART_help,0,52,65, gl_color_text,1);	
 		
 	DrawHZText12(gl_online_manual,0,240-70-7,77, gl_color_text,1);
+	DrawHZText12(gl_theme_credit,0,3,105, gl_color_selected,1);
+	DrawHZText12(gl_theme_credit2,0,3,120, gl_color_selected,1);
 	while(1)
 	{
 		VBlankIntrWait(); 	
@@ -1570,12 +1572,15 @@ int main(void) {
 	CheckLanguage();	
 	CheckSwitch();
 
-	//res = f_mount(&EZcardFs, "", 1);
+	res = f_mount(&EZcardFs, "", 1);
 	if( res != FR_OK)
 	{
 		DrawHZText12(gl_init_error,0,2,20, gl_color_text,1);
 		DrawHZText12(gl_power_off,0,2,33, gl_color_text,1);
-		while(1);
+		while(1)
+		{
+			VBlankIntrWait();
+		}
 	}
 	else
 	{
@@ -2478,7 +2483,7 @@ re_showfile:
 					}
 					else if(res==2)
 					{
-						DrawHZText12("NOR FULL!",0,0,160-15, gl_color_NORFULL,1);
+						DrawHZText12("NOR Full!",0,0,160-15, gl_color_NORFULL,1);
 						wait_btn();	
 						goto refind_file;
 					}
@@ -2515,7 +2520,7 @@ re_showfile:
 					else if(res==2)
 					{
 				    //ClearWithBG((u16*)gImage_SD,0, 160-15, 60, 13, 1);
-						DrawHZText12("NOR FULL!",0,0,160-15, gl_color_NORFULL,1);
+						DrawHZText12("NOR Full!",0,0,160-15, gl_color_NORFULL,1);
 						wait_btn();	
 						goto refind_file;
 					}		

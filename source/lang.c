@@ -5,6 +5,8 @@ char* gl_power_off;
 char* gl_init_ok;
 char* gl_Loading;
 char* gl_file_overflow;
+char* gl_theme_credit;
+char* gl_theme_credit2;
 
 char* gl_menu_btn;
 char* gl_lastest_game;
@@ -131,6 +133,8 @@ const char zh_no_game_played[]="还没玩过游戏";
 const char zh_ingameRTC[]=" 游戏时钟";
 const char zh_offRTC_powersave[]="关闭可以节能";
 
+const char zh_theme_credit[]="Sterophight的SimpleLight主題1.0";
+
 
 const char *zh_rom_menu[]={
 	"直接启动",
@@ -183,6 +187,9 @@ const char en_set_btn[]="Set";
 const char en_ok_btn[]=" OK";
 const char en_formatnor_info[]="Sure?about 4 mins";
 
+const char en_theme_credit[]="SimpleLight theme 1.0 by";
+const char en_theme_credit2[]="Sterophonick.";
+
 const char en_check_sav[]="Checking SAV file";
 const char en_make_sav[] ="Creating SAV file";
 
@@ -232,6 +239,7 @@ void LoadChinese(void)
 	gl_init_ok = (char*)zh_init_ok;
 	gl_Loading = (char*)zh_Loading;
 	gl_file_overflow = (char*)zh_file_overflow;
+	gl_theme_credit = (char*)zh_theme_credit;
 
 	gl_menu_btn = (char*)zh_menu_btn;
 	gl_writing = (char*)zh_writing;
@@ -296,6 +304,8 @@ void LoadChinese(void)
 //---------------------------------------------------------------------------------
 void LoadEnglish(void)
 {
+	gl_theme_credit = (char*)en_theme_credit;
+	gl_theme_credit2 = (char*)en_theme_credit2;
 	gl_init_error = (char*)en_init_error;
 	gl_power_off = (char*)en_power_off;
 	gl_init_ok = (char*)en_init_ok;

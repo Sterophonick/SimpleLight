@@ -436,7 +436,7 @@ void IWRAM_CODE Check_FW_update(u16 Current_FW_ver,u16 Built_in_ver)
 	//if(	get_crc32 != 0xEE2DACE7) //fw4
 	if(	get_crc32 != 0x5B6B5129) //fw5
 	{
-			sprintf(msg,"check crc32 error!");		
+			sprintf(msg,"CRC32 check error!");		
 			DrawHZText12(msg,0,2,offset_Y+0*line_x, RGB(31,00,00),1);
 			sprintf(msg,"Press (B) to return.");
 			DrawHZText12(msg,0,2,offset_Y+2*line_x, 0x7FFF,1);	
@@ -453,10 +453,10 @@ void IWRAM_CODE Check_FW_update(u16 Current_FW_ver,u16 Built_in_ver)
 			}		
 	}
 
-	sprintf(msg,"The current firmware version is V%02d",Current_FW_ver);
+	sprintf(msg,"The current firmware version is V%02d.",Current_FW_ver);
 	DrawHZText12(msg,0,2,offset_Y+1*line_x, 0x7FFF,1);	
 	
-	sprintf(msg,"The firmware will be updated to V%02d",Built_in_ver);
+	sprintf(msg,"The firmware will be updated to V%02d.",Built_in_ver);
 	DrawHZText12(msg,0,2,offset_Y+2*line_x, 0x7FFF,1);	
 
 	sprintf(msg,"Press (A) to update firmware.");
@@ -501,10 +501,13 @@ void IWRAM_CODE Check_FW_update(u16 Current_FW_ver,u16 Built_in_ver)
 				//DEBUG_printf("count %x ",count);
 				//break;								
 			}		
-			sprintf(msg,"update finished,power off");
+			sprintf(msg,"Update finished. Power off the console.");
 			DrawHZText12(msg,0,2,offset_Y+8*line_x, 0x7FFF,1);	
 			
-			while(1);
+			while(1)
+			{
+				VBlankIntrWait();
+			}
 			break;
 		}	
 		else if (keys & KEY_B) {

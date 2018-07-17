@@ -8,6 +8,9 @@ extern char* gl_init_ok;
 extern char* gl_Loading;
 extern char* gl_file_overflow;
 
+extern char* gl_theme_credit;
+extern char* gl_theme_credit2;
+
 extern char* gl_menu_btn;
 extern char* gl_lastest_game;
 
