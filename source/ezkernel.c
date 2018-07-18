@@ -1586,7 +1586,7 @@ int main(void) {
 	}
 
 	REG_BLDCNT = 0x00C4;
-	//res = f_mount(&EZcardFs, "", 1);
+	res = f_mount(&EZcardFs, "", 1);
 	if( res != FR_OK)
 	{
 		DrawHZText12(gl_init_error,0,2,20, gl_color_text,1);
