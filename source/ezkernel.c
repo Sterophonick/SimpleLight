@@ -41,6 +41,11 @@
 #include "goomba.h"
 #include "pocketnes.h"
 
+//Planned features:
+	//Image Viewing
+	//Text Document Reading
+	//Support for SMS, GG, SG-1000, NGPC, PC-Engine dand WonderSwan,
+
 char *mod_ee;
 
 FM_FILE_FS pFilename_buffer[MAX_files]EWRAM_BSS;
@@ -141,8 +146,9 @@ void Show_help_window()
 		DrawHZText12(gl_LSTART_help,0,52,65, gl_color_text,1);	
 		
 	DrawHZText12(gl_online_manual,0,240-70-10,74, gl_color_text,1);
-	DrawHZText12(gl_theme_credit,0,3,105, gl_color_selected,1);
-	DrawHZText12(gl_theme_credit2,0,3,120, gl_color_selected,1);
+	DrawHZText12(gl_theme_credit,0,4,105, gl_color_selected,1);
+	DrawHZText12(gl_theme_credit2,0,4,120, gl_color_selected,1);
+	DrawHZText12("K:1.04 F:6",0,4,134,gl_color_text,1);
 	while(1)
 	{
 		VBlankIntrWait(); 	
@@ -262,7 +268,7 @@ void Show_ICON_filename(u32 show_offset,u32 file_select,u32 haveThumbnail)
 		
 		if(line== file_select)
 		{
-			Clear(17,20 + file_select*14,(char_num == 17)?(17*6+1):(240-17),13,gl_color_selectBG_sd,1);
+			Clear(14,20 + (file_select*14),(char_num == 17)?(17*6+1):(240-17),13,gl_color_selectBG_sd,1);
 		}
 
 		u32 showy = y_offset +(line)*14;
@@ -426,7 +432,7 @@ void IWRAM_CODE Refresh_filename(u32 show_offset,u32 file_select,u32 updown,u32 
 		showy1 = y_offset +(file_select-1)*14;
 		showy2 = y_offset +(file_select)*14;
 		ClearWithBG((u16*)gImage_SD,17, 20 + xx1*14, clean_len1, 13, 1);
-		Clear(17,20 + xx2*14,clean_len2,13,gl_color_selectBG_sd,1);
+		Clear(14,20 + xx2*14,clean_len2,13,gl_color_selectBG_sd,1);
 	}
 	else// if(updown ==3)//up
 	{
@@ -434,7 +440,7 @@ void IWRAM_CODE Refresh_filename(u32 show_offset,u32 file_select,u32 updown,u32 
 		xx2 = file_select+1;
 		showy1 = y_offset +(file_select)*14;
 		showy2 = y_offset +(file_select+1)*14;	
-		Clear(17,20 + xx1*14,clean_len1,13,gl_color_selectBG_sd,1);	
+		Clear(14,20 + xx1*14,clean_len1,13,gl_color_selectBG_sd,1);	
 		ClearWithBG((u16*)gImage_SD,17, 20 + xx2*14,clean_len2, 13, 1);	
 	}
 
@@ -512,7 +518,7 @@ void Show_ICON_filename_NOR(u32 show_offset,u32 file_select)
 	for(line=0;line<need_show;line++)
 	{
 		if(line== file_select){
-			Clear(17,20 + file_select*14,240-17,13,gl_color_selectBG_nor,1);
+			Clear(14,20 + file_select*14,240-17,13,gl_color_selectBG_nor,1);
 		}		
 
 		DrawPic((u16*)gImage_nor_icon/*(gImage_icons+2*16*14*2)*/,
@@ -555,7 +561,7 @@ void Refresh_filename_NOR(u32 show_offset,u32 file_select,u32 updown)
 		showy1 = y_offset +(file_select-1)*14;
 		showy2 = y_offset +(file_select)*14;
 		ClearWithBG((u16*)gImage_NOR,17, 20 + xx1*14, clean_len, 13, 1);
-		Clear(17,20 + xx2*14,clean_len,13,gl_color_selectBG_nor,1);
+		Clear(14,20 + xx2*14,clean_len,13,gl_color_selectBG_nor,1);
 	}
 	else //if(updown ==3)//up
 	{
@@ -563,7 +569,7 @@ void Refresh_filename_NOR(u32 show_offset,u32 file_select,u32 updown)
 		xx2 = file_select+1;
 		showy1 = y_offset +(file_select)*14;
 		showy2 = y_offset +(file_select+1)*14;
-		Clear(17,20 + xx1*14,clean_len,13,gl_color_selectBG_nor,1);
+		Clear(14,20 + xx1*14,clean_len,13,gl_color_selectBG_nor,1);
 		ClearWithBG((u16*)gImage_NOR,17, 20 + xx2*14,clean_len, 13, 1);
 	}
 
@@ -794,7 +800,7 @@ u32  get_count(void)
 	u32 res;
 	u32 count=0;
 	u8 buf[512];	
-	res = f_open(&gfile,"/SAVES/Recently play.txt", FA_READ);	
+	res = f_open(&gfile,"/SAVER/Recently play.txt", FA_READ);	
 	if(res == FR_OK)//have a play file
 	{
 		f_lseek(&gfile, 0x0);
@@ -893,7 +899,7 @@ void Make_recently_play_file(TCHAR* path,TCHAR* gamefilename)
 	int get=1;
 	u8 buf[512];	
 	
-	//res=f_chdir("/SAVES");
+	//res=f_chdir("/SAVER");
 	//is in SAVER
 	count = get_count();
 		
@@ -1480,7 +1486,7 @@ void SD_list_L_START(show_offset,file_select,folder_total)
 {
 	u32 res;
 	
-	DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 0, 0, 1);//show menu pic		
+	DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 1, 0, 1);//show menu pic		
 	Show_MENU_btn();
 
 	DrawHZText12(gl_LSTART_help,0,60,60,gl_color_text,1);//use sure?gl_LSTART_help
@@ -1559,7 +1565,7 @@ int main(void) {
 	Set_RTC_status(1);
 		
 	//check FW
-	u16 Built_in_ver = 5;   //Newest_FW_ver
+	u16 Built_in_ver = 6;   //Newest_FW_ver
 	u16 Current_FW_ver = Read_FPGA_ver();
 
 	if((Current_FW_ver < Built_in_ver) || (Current_FW_ver == 99))//99 is test ver
@@ -1586,7 +1592,7 @@ int main(void) {
 	}
 
 	REG_BLDCNT = 0x00C4;
-	res = f_mount(&EZcardFs, "", 1);
+	//res = f_mount(&EZcardFs, "", 1);
 	if( res != FR_OK)
 	{
 		DrawHZText12(gl_init_error,0,2,20, gl_color_text,1);
@@ -1624,7 +1630,7 @@ int main(void) {
 		REG_BLDY = i;
 	}
 
-	f_chdir("/");
+	//f_chdir("/");
 	TCHAR currentpath[MAX_path_len];
 	memset(currentpath,00,MAX_path_len);
 	memset(currentpath_temp,0x00,MAX_path_len);
@@ -2283,8 +2289,8 @@ re_showfile:
 			}
 		}	
 				
-		res = f_mkdir("/SAVES");
-		res=f_chdir("/SAVES");
+		res = f_mkdir("/SAVER");
+		res=f_chdir("/SAVER");
 		if(res != FR_OK){
 			error_num = 2;
 			goto Error;

@@ -133,7 +133,7 @@ const char zh_no_game_played[]="还没玩过游戏";
 const char zh_ingameRTC[]=" 游戏时钟";
 const char zh_offRTC_powersave[]="关闭可以节能";
 
-const char zh_theme_credit[]="Sterophight的SimpleLight主題1.0";
+const char zh_theme_credit[]="Sterophonick的SimpleLight主題1.1";
 
 
 const char *zh_rom_menu[]={
@@ -185,9 +185,9 @@ const char en_language[]=" Language";
 const char en_lang[]="English";
 const char en_set_btn[]="Set";
 const char en_ok_btn[]=" OK";
-const char en_formatnor_info[]="Sure?about 4 mins";
+const char en_formatnor_info[]="Sure? about 4 mins";
 
-const char en_theme_credit[]="SimpleLight theme 1.0 by";
+const char en_theme_credit[]="SimpleLight theme 1.1 by";
 const char en_theme_credit2[]="Sterophonick.";
 
 const char en_check_sav[]="Checking SAV file";
@@ -212,7 +212,7 @@ const char en_L_A_help[]="Multiboot";
 const char en_LSTART_help[]="Delete file";
 const char en_online_manual[]="Online manual";
 
-const char en_no_game_played[]="No game played yet";
+const char en_no_game_played[]="No recently played games yet...";
 
 const char en_ingameRTC[]=" Game RTC";
 const char en_offRTC_powersave[]="Turn off to Powersave";

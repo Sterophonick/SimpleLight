@@ -32,6 +32,22 @@ extern void Cheat_count(void);
 extern void CHEAT(void);
 extern void no_CHEAT_end(void);
 
+extern void RTS_only_ReplaceIRQ_start(void);
+extern void RTS_only_ReplaceIRQ_end(void);
+extern void RTS_only_Return_address_L(void);
+extern void RTS_only_SAVE_key(void);
+extern void RTS_only_LOAD_key(void);
+extern void Fire_Emblem_0378_patch_start(void);
+extern void Fire_Emblem_0378_patch_end(void);
+extern void Fire_Emblem_1692_patch_start(void);
+extern void Fire_Emblem_1692_patch_end(void);
+extern void Fire_Emblem_A_patch_start(void);
+extern void Fire_Emblem_A_patch_end(void);
+extern void Modify_address_A(void);
+extern void Fire_Emblem_B_patch_start(void);
+extern void Fire_Emblem_B_patch_end(void);
+extern void Modify_address_B(void);
+
 
 extern u32 gl_cheat_count;
 

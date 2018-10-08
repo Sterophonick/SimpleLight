@@ -417,6 +417,15 @@ void IWRAM_CODE Set_RTC_status(u16  status)
 	*(u16 *)0x9fc0000 = 0x1500;
 }
 // --------------------------------------------------------------------
+void IWRAM_CODE Set_AUTO_save(u16  mode)
+{
+	*(u16 *)0x9fe0000 = 0xd200;
+	*(u16 *)0x8000000 = 0x1500;
+	*(u16 *)0x8020000 = 0xd200;
+	*(u16 *)0x8040000 = 0x1500;
+	*(u16 *)0x96C0000 = mode;
+	*(u16 *)0x9fc0000 = 0x1500;
+}
 
 void IWRAM_CODE Check_FW_update(u16 Current_FW_ver,u16 Built_in_ver)
 {
@@ -434,7 +443,7 @@ void IWRAM_CODE Check_FW_update(u16 Current_FW_ver,u16 Built_in_ver)
 	
 	//if(	get_crc32 != 0x22475DDC) //fw3
 	//if(	get_crc32 != 0xEE2DACE7) //fw4
-	if(	get_crc32 != 0x5B6B5129) //fw5
+	if(	get_crc32 != 0x7E6212AB) //fw6
 	{
 			sprintf(msg,"CRC32 check error!");		
 			DrawHZText12(msg,0,2,offset_Y+0*line_x, RGB(31,00,00),1);

@@ -492,6 +492,48 @@ void Patch_RTS_Cheat(u32 *Data)
 	Write(iTrimSize, patchbuffer,copysize);
 }
 //------------------------------------------------------------------
+
+void Patch_RTS_only(u32 *Data)
+{
+	Patch_B_address();
+	u32 Return_address = 0x8000000+ EA_offset*4 + 8;
+	
+  u8 * p_patch_start  = (u8*)RTS_only_ReplaceIRQ_start;
+  u8 * p_patch_end  	= (u8*)RTS_only_ReplaceIRQ_end;
+  u8 * p_patch_Return_address_L  = (u8*)RTS_only_Return_address_L;
+   u8* patchbuffer = (u8*)_UnusedVram ;
+  u32 Return_address_offset = p_patch_Return_address_L-p_patch_start;
+   dmaCopy((void*)p_patch_start,patchbuffer, p_patch_end-p_patch_start);
+  *(vu32*)(patchbuffer+Return_address_offset) = Return_address;//modify gba_sleep_patch_bin return address
+  
+  if(spend_address != 0x0){
+  	*(vu32*)(patchbuffer+Return_address_offset+4) = spend_address;
+	}	
+	
+	u16 read5 = Read_SET_info(5); 
+	u16 read6 = Read_SET_info(6); 
+	u16 read7 = Read_SET_info(7); 
+	u16 read8 = Read_SET_info(8); 
+	u16 read9 = Read_SET_info(9); 
+	u16 read10 = Read_SET_info(10); 
+	u16 RTS_only_SAVE_key_val = ~((1<< read5) | (1<< read6) | (1<< read7));
+  u16 RTS_only_LOAD_key_val = ~((1<< read8) | (1<< read9) | (1<< read10));	
+	 
+  u32 RTS_only_SAVE_key_offset = (u8*)RTS_only_SAVE_key - p_patch_start;
+ 	u32 RTS_only_LOAD_key_offset = (u8*)RTS_only_LOAD_key - p_patch_start;
+  
+  *(vu32*)(patchbuffer+RTS_only_SAVE_key_offset) = RTS_only_SAVE_key_val&0x3FF;
+  *(vu32*)(patchbuffer+RTS_only_LOAD_key_offset) = RTS_only_LOAD_key_val&0x3FF;	
+ 	u32 copysize = p_patch_end - p_patch_start ;
+	
+	if(	iTrimSize+copysize > 0x2000000){
+		copysize = 0x2000000 - iTrimSize; //????
+	}
+	//DEBUG_printf("iTrimSize =%x %x", iTrimSize,copysize);
+		
+	Write(iTrimSize, patchbuffer,copysize);
+}
+
 void GBApatch_Cleanrom(u32* address,int filesize)//Only once
 {
 	windows_offset = 0;
@@ -499,6 +541,7 @@ void GBApatch_Cleanrom(u32* address,int filesize)//Only once
 	CheckNes(address);
 	PatchNes(address);
 	PatchDragonBallZ(address);
+		Check_Fire_Emblem();
 }
 //------------------------------------------------------------------
 u32 Get_spend_address(u32* Data)
@@ -550,13 +593,17 @@ void GBApatch_PSRAM(u32* address,int filesize)//Only once
 	CheckNes(address);
 	PatchNes(address);
 	PatchDragonBallZ(address);
-
-	if((gl_rts_on==1) ||  ((gl_cheat_on==1)&& (gl_cheat_count>0) ) )		
-	{
+	Check_Fire_Emblem();
+	
+	if( (gl_rts_on==1) && (gl_cheat_on == 0)  && (gl_reset_on == 0)  && (gl_sleep_on == 0)  ) {
+		spend_address = Get_spend_address(address);
+		Patch_RTS_only(address);		
+	}
+	else if((gl_rts_on==1) ||  ((gl_cheat_on==1)&& (gl_cheat_count>0) ) )	{
 		spend_address = Get_spend_address(address);
 		//DEBUG_printf("spend_address =%x",spend_address);
 		Patch_RTS_Cheat(address);
-	}  
+	} 
 	else
 	{  
 		Patch_Reset_Sleep(address);
@@ -573,6 +620,7 @@ void GBApatch_Cleanrom_NOR(u32* address,u32 offset)
 	}
 	PatchNes(address);
 	PatchDragonBallZ(address);
+	Check_Fire_Emblem();
 }
 //------------------------------------------------------------------
 void GBApatch_NOR(u32* address,int filesize,u32 offset)
@@ -591,11 +639,15 @@ void GBApatch_NOR(u32* address,int filesize,u32 offset)
   }
 	PatchNes(address);
 	PatchDragonBallZ(address);
-	
+	Check_Fire_Emblem();
 	if((gl_rts_on==1) ||  ((gl_cheat_on==1)&& (gl_cheat_count>0) ) )		
 	{
-		Patch_RTS_Cheat(address);
+		Patch_RTS_only(address);
 	}  
+	else if((gl_rts_on==1) ||  ((gl_cheat_on==1)&& (gl_cheat_count>0) ) )		
+	{
+		Patch_RTS_Cheat(address);
+	}
 	else
 	{  
 		Patch_Reset_Sleep(address);
@@ -761,7 +813,7 @@ u8 Check_mde_file(TCHAR* gamefilename)
 	TCHAR mdenamebuf[100];	
 	make_mde_name(mdenamebuf,gamefilename);
 	
-	res=f_chdir("/SAVES");
+	res=f_chdir("/SAVER");
 	if(res == FR_OK)
 	{
 		res = f_open(&gfile,mdenamebuf, FA_OPEN_EXISTING);
@@ -805,8 +857,8 @@ void Make_mde_file(TCHAR* gamefilename,u8 Save_num)
 	memset(currentpath,00,256);
 	res = f_getcwd(currentpath, sizeof currentpath / sizeof *currentpath);
 	
-	res = f_mkdir("/SAVES");
-	res=f_chdir("/SAVES");
+	res = f_mkdir("/SAVER");
+	res=f_chdir("/SAVER");
 	
 	memset(w_buffer, 0x00, sizeof(w_buffer));
 
@@ -1131,3 +1183,195 @@ void Patch_SpecialROM_TrimSize(void)
 		break;
 	}
 }	
+
+//------------------------------------------------------------------
+void Check_Fire_Emblem(void)
+{
+	u32 code1 = 0x47004800;
+	u32 address1[5];
+	u32 code2[5];
+	u32 patchaddress;
+	u32 Baseaddress=0x08000000;
+	u8* patchbuffer = (u8*)_UnusedVram ;
+	u8 * p_patch_start;
+	u8 * p_patch_end;
+	u8 * p_modify_address;
+	u32 modify_val=0;
+	 
+	u8 have=0;
+	
+	memset(address1,0x00,sizeof(address1));
+	switch(*(u32*)GAMECODE)
+	{
+		case 0x4A454641://0378 - Fire Emblem - Fuuin no Tsurugi(JP)
+		{
+			address1[0]=0x858B0;
+			address1[1]=0x85048;
+			address1[2]=0x84FF0;
+			address1[3]=0x85194;
+			address1[4]=0x850F8;
+			patchaddress=0x7FF100;
+			code2[0]=Baseaddress+patchaddress+0x1;
+			code2[1]=Baseaddress+patchaddress+0x17;
+			code2[2]=Baseaddress+patchaddress+0x27;
+			code2[3]=Baseaddress+patchaddress+0x35;
+			code2[4]=Baseaddress+patchaddress+0x47;
+		  p_patch_start = (u8*)Fire_Emblem_0378_patch_start;
+		  p_patch_end  	= (u8*)Fire_Emblem_0378_patch_end;
+		  have = 1;
+		}break;
+		case 0x4A384542://1692 - Fire Emblem - Seima no Kouseki(JP)
+		{
+			address1[0]=0xA9844;
+			address1[1]=0xA989C;
+			address1[2]=0xA99F8;
+			address1[3]=0xA9B14;
+			address1[4]=0xAA5D0;
+			patchaddress=0xF00000;
+			code2[0]=Baseaddress+patchaddress+0x1;
+			code2[1]=Baseaddress+patchaddress+0xF;
+			code2[2]=Baseaddress+patchaddress+0x1D;
+			code2[3]=Baseaddress+patchaddress+0x2D;
+			code2[4]=Baseaddress+patchaddress+0x3D;
+		  p_patch_start = (u8*)Fire_Emblem_1692_patch_start;
+		  p_patch_end  	= (u8*)Fire_Emblem_1692_patch_end;
+		  have = 1;				
+		}break;
+		case 0x4A374541://0979 - Fire Emblem - Rekka no Ken(JP)
+		{
+			address1[0]=0xA0FE0;
+			address1[1]=0xA1038;
+			address1[2]=0xA1178;
+			address1[3]=0xA1264;
+			address1[4]=0xA1BA8;
+			patchaddress=0xFFF900;
+			code2[0]=Baseaddress+patchaddress+0x1;
+			code2[1]=Baseaddress+patchaddress+0xF;
+			code2[2]=Baseaddress+patchaddress+0x1D;
+			code2[3]=Baseaddress+patchaddress+0x1D;
+			code2[4]=Baseaddress+patchaddress+0x2D;
+		  p_patch_start = (u8*)Fire_Emblem_A_patch_start;
+		  p_patch_end  	= (u8*)Fire_Emblem_A_patch_end;
+		  p_modify_address = (u8*)Modify_address_A;
+		  modify_val = 0x80B3DAF;
+		  have = 1;
+		}break;
+		case 0x45374541://1235 - Fire Emblem(US)
+		{
+			address1[0]=0xA0654;
+			address1[1]=0xA06AC;
+			address1[2]=0xA07EC;
+			address1[3]=0xA08D8;
+			address1[4]=0xA1214;
+			patchaddress=0xFFF900;
+			code2[0]=Baseaddress+patchaddress+0x1;
+			code2[1]=Baseaddress+patchaddress+0xF;
+			code2[2]=Baseaddress+patchaddress+0x1D;
+			code2[3]=Baseaddress+patchaddress+0x1D;
+			code2[4]=Baseaddress+patchaddress+0x2D;
+		  p_patch_start = (u8*)Fire_Emblem_A_patch_start;
+		  p_patch_end  	= (u8*)Fire_Emblem_A_patch_end;
+		  p_modify_address = (u8*)Modify_address_A;
+		  modify_val = 0x80B2F8B;
+		  have = 1;
+		}break;
+		case 0x58374541://1574 - Fire Emblem(EU)
+		{
+			address1[0]=0xA09C8;
+			address1[1]=0xA0A20;
+			address1[2]=0xA0B60;
+			address1[3]=0xA0C4C;
+			address1[4]=0xA1560;
+			patchaddress=0xFFF900;
+			code2[0]=Baseaddress+patchaddress+0x1;
+			code2[1]=Baseaddress+patchaddress+0xF;
+			code2[2]=Baseaddress+patchaddress+0x1D;
+			code2[3]=Baseaddress+patchaddress+0x1D;
+			code2[4]=Baseaddress+patchaddress+0x2D;
+		  p_patch_start = (u8*)Fire_Emblem_A_patch_start;
+		  p_patch_end  	= (u8*)Fire_Emblem_A_patch_end;
+		  p_modify_address = (u8*)Modify_address_A;
+		  modify_val = 0x80B3A57;
+		  have = 1;
+		}break;
+		case 0x59374541://1575 - Fire Emblem(EU)
+		{
+			address1[0]=0xA09CC;
+			address1[1]=0xA0A24;
+			address1[2]=0xA0B64;
+			address1[3]=0xA0C50;
+			address1[4]=0xA1564;
+			patchaddress=0xFFF900;
+			code2[0]=Baseaddress+patchaddress+0x1;
+			code2[1]=Baseaddress+patchaddress+0xF;
+			code2[2]=Baseaddress+patchaddress+0x1D;
+			code2[3]=Baseaddress+patchaddress+0x1D;
+			code2[4]=Baseaddress+patchaddress+0x2D;
+		  p_patch_start = (u8*)Fire_Emblem_A_patch_start;
+		  p_patch_end  	= (u8*)Fire_Emblem_A_patch_end;
+		  p_modify_address = (u8*)Modify_address_A;
+		  modify_val = 0x80B3A3B;
+		  have = 1;
+		}break;
+		case 0x45384542://1997 - Fire Emblem - The Sacred Stones(US)
+		{
+			address1[0]=0xA4E00;
+			address1[1]=0xA4E58;
+			address1[2]=0xA4FDC;
+			address1[3]=0xA50FC;
+			address1[4]=0xA5BB8;
+			patchaddress=0xFFF900;
+			code2[0]=Baseaddress+patchaddress+0x1;
+			code2[1]=Baseaddress+patchaddress+0xF;
+			code2[2]=Baseaddress+patchaddress+0x1D;
+			code2[3]=Baseaddress+patchaddress+0x1D;
+			code2[4]=Baseaddress+patchaddress+0x2D;
+		  p_patch_start = (u8*)Fire_Emblem_B_patch_start;
+		  p_patch_end  	= (u8*)Fire_Emblem_B_patch_end;
+		  p_modify_address = (u8*)Modify_address_B;
+		  modify_val = 0x80B5D6B;
+		  have = 1;
+		}break;
+		case 0x50384542://2215 - Fire Emblem - The Sacred Stones(EU)
+		{
+			address1[0]=0xA5738;
+			address1[1]=0xA5790;
+			address1[2]=0xA5914;
+			address1[3]=0xA5A34;
+			address1[4]=0xA64F0;
+			patchaddress=0x1FFDD00;
+			code2[0]=Baseaddress+patchaddress+0x1;
+			code2[1]=Baseaddress+patchaddress+0xF;
+			code2[2]=Baseaddress+patchaddress+0x1D;
+			code2[3]=Baseaddress+patchaddress+0x1D;
+			code2[4]=Baseaddress+patchaddress+0x2D;
+		  p_patch_start = (u8*)Fire_Emblem_B_patch_start;
+		  p_patch_end  	= (u8*)Fire_Emblem_B_patch_end;
+		  p_modify_address = (u8*)Modify_address_B;
+		  modify_val = 0x80B670F;
+		  have = 1;
+		}break;
+	}
+	
+	if(have){
+    for(u32 i=0;i<5;i++)
+    {
+    	if(address1[i] != 0){
+    		Write(address1[i],(u8*)&code1 , 4); 
+      	Write(address1[i]+4,(u8*)&code2[i],4);
+      }
+    }			
+ 	  u32 copysize = p_patch_end - p_patch_start ;
+	  dmaCopy((void*)p_patch_start,patchbuffer, copysize);	
+	  if( modify_val)
+	  {
+	  	u32 p_modify_address_offset = p_modify_address-p_patch_start;
+	  	*(vu32*)(patchbuffer+p_modify_address_offset) = modify_val;
+	  } 		  
+	  Write(patchaddress, patchbuffer,copysize);
+	  Set_AUTO_save(0x00);
+	}
+	else{
+		Set_AUTO_save(0x01);
+	}	
+} 
