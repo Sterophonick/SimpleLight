@@ -2805,7 +2805,12 @@ const SAVE_MODE_  __attribute__((aligned(4))) saveMODE_table[] = {
 {"AX4J",0x31},//2817 - Super Mario Advance 4(JP).zip
 {"B3DJ",0x11},//2818 - Densetsu no Stafy 3(JP).zip
 {"BRIJ",0x11},//2819 - Rhythm Tengoku(JP).zip
-{"SBJA",0x11},//???? - Super Block Jump - Game Boy Advance Edition (U) (PD) (Sterophonick).zip
+{"SBJA",0x11},//???? - Super Block Jump - Game Boy Advance Edition (U) (PD).zip
+{"Home",0x11},//???? - Coin Adventure (U) (PD).zip
+{"EBCC",0x11},//???? - EarthBound - The Giygas Chronicles (U) (Hack).zip
+{"ABHE",0x11},//???? - Blowhole (U) (PD).zip
+{"ZGN0",0x11},//???? - Uranus (U) (PD).zip
+{"TCHK",0x11},//???? - AGB_CHECKER
 
 {"FFFF",0x00}
 };

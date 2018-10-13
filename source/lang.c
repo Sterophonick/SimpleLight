@@ -187,7 +187,7 @@ const char en_set_btn[]="Set";
 const char en_ok_btn[]=" OK";
 const char en_formatnor_info[]="Sure? about 4 mins";
 
-const char en_theme_credit[]="SimpleLight theme 1.1 by";
+const char en_theme_credit[]="SimpleLight theme 1.3 by";
 const char en_theme_credit2[]="Sterophonick.";
 
 const char en_check_sav[]="Checking SAV file";

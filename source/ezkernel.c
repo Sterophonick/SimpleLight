@@ -94,7 +94,7 @@ u16 gl_cheat_on;
 //----------------------------------------
 u16 gl_color_selected 		= RGB(00,20,26);
 u16 gl_color_text 				= RGB(00,00,00);
-u16 gl_color_selectBG_sd 	= RGB(5,5,31);
+u16 gl_color_selectBG_sd 	= RGB(8,8,31);
 u16 gl_color_selectBG_nor = RGB(10,10,10);
 u16 gl_color_MENU_btn			= RGB(20,20,20);
 u16 gl_color_cheat_count  = RGB(00,31,00);
@@ -220,7 +220,7 @@ void Show_ICON_filename(u32 show_offset,u32 file_select,u32 haveThumbnail)
 		
 		if(line== file_select)
 		{			
-			Clear(17,20 + file_select*14,(char_num == 17)?(17*6+1):(240-17),13,gl_color_selectBG_sd,1);
+			Clear(17,20 + (file_select*14),(char_num == 17)?(17*6+1):(240-17),13,gl_color_selectBG_sd,1);
 		}
 
 		DrawPic((u16*)(gImage_icons+0*16*14*2),
@@ -268,7 +268,7 @@ void Show_ICON_filename(u32 show_offset,u32 file_select,u32 haveThumbnail)
 		
 		if(line== file_select)
 		{
-			Clear(14,20 + (file_select*14),(char_num == 17)?(17*6+1):(240-17),13,gl_color_selectBG_sd,1);
+			Clear(17,20 + (file_select*14),(char_num == 17)?(17*6+1):(240-17),13,gl_color_selectBG_sd,1);
 		}
 
 		u32 showy = y_offset +(line)*14;
@@ -432,7 +432,7 @@ void IWRAM_CODE Refresh_filename(u32 show_offset,u32 file_select,u32 updown,u32 
 		showy1 = y_offset +(file_select-1)*14;
 		showy2 = y_offset +(file_select)*14;
 		ClearWithBG((u16*)gImage_SD,17, 20 + xx1*14, clean_len1, 13, 1);
-		Clear(14,20 + xx2*14,clean_len2,13,gl_color_selectBG_sd,1);
+		Clear(15,20 + xx2*14,clean_len2-1,13,gl_color_selectBG_sd,1);
 	}
 	else// if(updown ==3)//up
 	{
@@ -440,7 +440,7 @@ void IWRAM_CODE Refresh_filename(u32 show_offset,u32 file_select,u32 updown,u32 
 		xx2 = file_select+1;
 		showy1 = y_offset +(file_select)*14;
 		showy2 = y_offset +(file_select+1)*14;	
-		Clear(14,20 + xx1*14,clean_len1,13,gl_color_selectBG_sd,1);	
+		Clear(15,20 + xx1*14,clean_len1-1,13,gl_color_selectBG_sd,1);	
 		ClearWithBG((u16*)gImage_SD,17, 20 + xx2*14,clean_len2, 13, 1);	
 	}
 
@@ -674,7 +674,7 @@ void Filename_loop(u32 shift,u32 show_offset,u32 file_select,u32 haveThumbnail)
 				else
 					dwName = 0;
 					
-				Clear(17,20 + file_select*14,(char_num)*6,13,gl_color_selectBG_sd,1);	
+				Clear(18,20 + file_select*14,((char_num)*6)-1,13,gl_color_selectBG_sd,1);	
 				DrawHZText12(msg, char_num-1, 1+16, y_offset + file_select*14, gl_color_text,1);
 			}	
 		}
@@ -1592,7 +1592,7 @@ int main(void) {
 	}
 
 	REG_BLDCNT = 0x00C4;
-	//res = f_mount(&EZcardFs, "", 1);
+	res = f_mount(&EZcardFs, "", 1);
 	if( res != FR_OK)
 	{
 		DrawHZText12(gl_init_error,0,2,20, gl_color_text,1);
@@ -1630,7 +1630,7 @@ int main(void) {
 		REG_BLDY = i;
 	}
 
-	//f_chdir("/");
+	f_chdir("/");
 	TCHAR currentpath[MAX_path_len];
 	memset(currentpath,00,MAX_path_len);
 	memset(currentpath_temp,0x00,MAX_path_len);
