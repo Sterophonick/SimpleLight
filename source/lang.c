@@ -37,7 +37,10 @@ char* gl_zh_lang;
 char* gl_set_btn;
 char* gl_ok_btn;
 
-char* gl_formatnor_info;
+char* gl_formatnor_info1;
+char* gl_formatnor_info2;
+
+char* temp;
 
 char* gl_check_sav;
 char* gl_make_sav;
@@ -68,6 +71,8 @@ char* gl_offRTC_powersave;
 //--
 char**  gl_rom_menu;
 char**  gl_nor_op;
+
+char* gl_copying_data;
 
 
 //中文
@@ -135,6 +140,7 @@ const char zh_offRTC_powersave[]="关闭可以节能";
 
 const char zh_theme_credit[]="Sterophonick的SimpleLight主題1.1";
 
+const char zh_copying_data[]="复制ROM ...";
 
 const char *zh_rom_menu[]={
 	"直接启动",
@@ -153,9 +159,9 @@ const char *zh_nor_op[3]={
 
 
 //英文
-const char en_init_error[]="Failed to initialize Micro SD card.";
-const char en_power_off[]="Power off";
-const char en_init_ok[]="Micro SD card initial OK";
+const char en_init_error[]="Failed to initialize microSD card.";
+const char en_power_off[]="Power off the console.";
+const char en_init_ok[]="microSD card initialization successful.";
 const char en_Loading[]="Loading...";
 const char en_file_overflow[]="The file is too big.";
 
@@ -185,26 +191,27 @@ const char en_language[]=" Language";
 const char en_lang[]="English";
 const char en_set_btn[]="Set";
 const char en_ok_btn[]=" OK";
-const char en_formatnor_info[]="Sure? about 4 mins";
+const char en_formatnor_info1[]="Sure? This will be";
+const char en_formatnor_info2[]=" about 4 minutes.";
 
-const char en_theme_credit[]="SimpleLight theme 1.3 by";
+const char en_theme_credit[]="SimpleLight theme 1.5 by";
 const char en_theme_credit2[]="Sterophonick.";
 
-const char en_check_sav[]="Checking SAV file";
-const char en_make_sav[] ="Creating SAV file";
+const char en_check_sav[]="Checking Save Data...";
+const char en_make_sav[] ="Creating Save Data...";
 
-const char en_check_RTS[]="Checking RTS file";
-const char en_make_RTS[] ="Creating RTS file";
+const char en_check_RTS[]="Checking RTS file...";
+const char en_make_RTS[] ="Creating RTS file...";
 
-const char en_check_pat[]="Checking PAT file";
-const char en_make_pat[] ="Creating PAT file";
+const char en_check_pat[]="Checking Patch file...";
+const char en_make_pat[] ="Creating Patch file...";
 
-const char en_loading_game[]="Loading Game";
+const char en_loading_game[]="Loading ROM...";
 
 const char en_engine[]="   Engine";
 const char en_use_engine[]="Fast Patch Engine";
 
-const char en_recently_play[]="Recent Played";
+const char en_recently_play[]="Recently Played";
 
 const char en_START_help[]="Open recently played list";
 const char en_SELECT_help[]="Toggle thumbnail";
@@ -216,6 +223,8 @@ const char en_no_game_played[]="No recently played games yet...";
 
 const char en_ingameRTC[]=" Game RTC";
 const char en_offRTC_powersave[]="Turn off to Powersave";
+
+const char en_copying_data[]="Copying ROM...";
 
 const char *en_rom_menu[] = {
 	"Clean boot",
@@ -269,7 +278,10 @@ void LoadChinese(void)
 	gl_zh_lang = (char*)zh_lang;;
 	gl_set_btn = (char*)zh_set_btn;
 	gl_ok_btn = (char*)zh_ok_btn;
-	gl_formatnor_info = (char*)zh_formatnor_info;
+	gl_formatnor_info1 = (char*)zh_formatnor_info;
+	gl_formatnor_info2= " ";
+	
+	temp = " ";
 
 	gl_check_sav = (char*)zh_check_sav;
 	gl_make_sav = (char*)zh_make_sav;
@@ -299,6 +311,8 @@ void LoadChinese(void)
 	//
 	gl_rom_menu = (char**)zh_rom_menu;
 	gl_nor_op = (char**)zh_nor_op;
+	
+	gl_copying_data = (char**)zh_copying_data;
 
 }
 //---------------------------------------------------------------------------------
@@ -338,7 +352,10 @@ void LoadEnglish(void)
 	gl_zh_lang = (char*)zh_lang;;
 	gl_set_btn = (char*)en_set_btn;
 	gl_ok_btn = (char*)en_ok_btn;
-	gl_formatnor_info = (char*)en_formatnor_info;
+	gl_formatnor_info1 = (char*)en_formatnor_info1;
+	gl_formatnor_info2= (char*)en_formatnor_info2;
+	
+	temp = "Sure? about 4 mins";
 
 	gl_check_sav = (char*)en_check_sav;
 	gl_make_sav = (char*)en_make_sav;
@@ -369,4 +386,6 @@ void LoadEnglish(void)
 	//
 	gl_rom_menu = (char**)en_rom_menu;
 	gl_nor_op = (char**)en_nor_op;
+	
+	gl_copying_data = (char**)en_copying_data;
 }

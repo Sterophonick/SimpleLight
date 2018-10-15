@@ -2807,10 +2807,12 @@ const SAVE_MODE_  __attribute__((aligned(4))) saveMODE_table[] = {
 {"BRIJ",0x11},//2819 - Rhythm Tengoku(JP).zip
 {"SBJA",0x11},//???? - Super Block Jump - Game Boy Advance Edition (U) (PD).zip
 {"Home",0x11},//???? - Coin Adventure (U) (PD).zip
-{"EBCC",0x11},//???? - EarthBound - The Giygas Chronicles (U) (Hack).zip
+{"A2UU",0x11},//???? - EarthBound - The Giygas Chronicles (U) (Hack).zip
 {"ABHE",0x11},//???? - Blowhole (U) (PD).zip
 {"ZGN0",0x11},//???? - Uranus (U) (PD).zip
 {"TCHK",0x11},//???? - AGB_CHECKER
+{"2003",0x11},//???? - Battle Network Rockman Crystal (U) (Unl).zip
+{"ARSH",0x11},//???? - Tetanus On Drugs (U) (PD).zip
 
 {"FFFF",0x00}
 };

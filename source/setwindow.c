@@ -196,10 +196,10 @@ u32 Setting_window(void)
 			ClearWithBG((u16*)gImage_SET,set_offset, y_offset+line_x*5, 9*6, 13, 1);
 			ClearWithBG((u16*)gImage_SET,set_offset, y_offset+line_x*6, 9*6, 13, 1);
 			if( (v_rts==1) && (v_cheat == 0)  && (v_reset == 0)  && (v_sleep == 0)  ) {
-				sprintf(msg,"%s"," SAVE KEY");					
+				sprintf(msg,"%s"," Save Key");					
 				DrawHZText12(msg,0,set_offset,y_offset+line_x*5,gl_color_selected,1);	
 
-				sprintf(msg,"%s"," LOAD KEY");
+				sprintf(msg,"%s"," Load Key");
 				DrawHZText12(msg,0,set_offset,y_offset+line_x*6,gl_color_selected,1);	
 			}
 			else{

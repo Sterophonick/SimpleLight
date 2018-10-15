@@ -40,7 +40,10 @@ extern char* gl_zh_lang;
 extern char* gl_set_btn;
 extern char* gl_ok_btn;
 
-extern char* gl_formatnor_info;
+extern char* gl_formatnor_info1;
+extern char* gl_formatnor_info2;
+
+extern char* temp;
 
 extern char* gl_check_sav;
 extern char* gl_make_sav;
@@ -52,6 +55,8 @@ extern char* gl_check_pat;
 extern char* gl_make_pat;
 
 extern char* gl_loading_game;
+extern char* gl_copying_data;
+
 extern char* gl_engine;
 extern char* gl_use_engine;
 
