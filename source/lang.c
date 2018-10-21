@@ -138,7 +138,7 @@ const char zh_no_game_played[]="还没玩过游戏";
 const char zh_ingameRTC[]=" 游戏时钟";
 const char zh_offRTC_powersave[]="关闭可以节能";
 
-const char zh_theme_credit[]="Sterophonick的SimpleLight主題1.5";
+const char zh_theme_credit[]="Sterophonick的SimpleLight主題1.6";
 
 const char zh_copying_data[]="复制ROM ...";
 
@@ -194,7 +194,7 @@ const char en_ok_btn[]=" OK";
 const char en_formatnor_info1[]="Sure? This will be";
 const char en_formatnor_info2[]=" about 4 minutes.";
 
-const char en_theme_credit[]="SimpleLight theme 1.5 by";
+const char en_theme_credit[]="SimpleLight theme 1.6 by";
 const char en_theme_credit2[]="Sterophonick.";
 
 const char en_check_sav[]="Checking Save Data...";
@@ -205,6 +205,8 @@ const char en_make_RTS[] ="Creating RTS file...";
 
 const char en_check_pat[]="Checking Patch file...";
 const char en_make_pat[] ="Creating Patch file...";
+
+const char en_please_wait[]="Please Wait...";
 
 const char en_loading_game[]="Loading ROM...";
 

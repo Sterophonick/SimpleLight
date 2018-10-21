@@ -1,5 +1,6 @@
 #include <gba_video.h>
 #include <gba_interrupt.h>
+#include <gba_sound.h>
 #include <gba_systemcalls.h>
 #include <gba_input.h>
 #include <stdio.h>
@@ -239,13 +240,50 @@ void IWRAM_CODE SetRompageWithHardReset(u16 page,u32 bootmode)
 {
     Set_RTC_status(gl_ingame_RTC_open_status);
     SetRompage(page);
-    RegisterRamReset(RESET_EWRAM|RESET_PALETTE| RESET_VRAM|RESET_OAM |RESET_SIO | RESET_SOUND | RESET_OTHER);
-    if(bootmode==1) {
-        HardReset();
-    }
-    else {
-        SoftReset_now();
-    }
+Clear(78+54,160-15,110,15,gl_color_selectBG_sd,1);
+
+	REG_IE=0;
+	REG_IF=0;
+	REG_IME=0;
+	REG_SOUNDBIAS=0x0200;
+
+	if(bootmode==1) {
+		HardReset();
+	} else if (bootmode==2 || bootmode==4) {
+		int i;
+		//Clear exram up to pogoshell arg
+		u32 *p = (u32*)(0x02000000);
+		for(i=0;i<0xfefe;i++)
+			p[i]=0;
+		// Copy plugin to EWRAM using pogoshell arg's size
+		if (bootmode==2)
+			dmaCopy((u8*)(0x08000000),(u8*)(0x02000000), *(u32 *)(0x0203fbfc) & 0x7ffffff);
+		else if (bootmode==4)
+			LZ77UnCompWram((u8*)(0x08000000),(u8*)(0x02000000));
+		RegisterRamReset(0xfc);
+		((void(*)(void))0x02000000)();
+	}
+	else if (bootmode == 3) {
+		int i;
+		//Clear exram up to pogoshell arg
+		u32 *p = (u32*)(0x02000000);
+		for(i=0;i<0xfefe;i++)
+			p[i]=0;
+		//SoftReset_now(0,0x100);
+		SoftReset_now(0,0xfe);
+	}
+	else if (bootmode == 3) {
+		int i;
+		//Clear exram up to pogoshell arg
+		u32 *p = (u32*)(0x02000000);
+		for(i=0;i<0xfefe;i++)
+			p[i]=0;
+		//SoftReset_now(0,0x100);
+		SoftReset_now(0,0xfe);
+	}
+	else {
+		SoftReset_now(0,0xff);
+	}
 }
 // --------------------------------------------------------------------
 void IWRAM_CODE ReadSram(u32 address, u8* data, u32 size )
@@ -553,4 +591,5 @@ u32 crc32(unsigned char *buf, u32 size)
         crc = crc32tab[(crc ^ buf[i]) & 0xff] ^ (crc >> 8);
     }
     return crc^0xFFFFFFFF;
+
 }
