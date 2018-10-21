@@ -77,11 +77,9 @@ SoftReset:
 		ldr		r2, =0x03007f00
 		mov		sp, r2
 		cmp		r1, #0xff
-		bgt		temp
+		bgt		NoRamReset
 		mov		r0, r1
-		nop
-temp:
-		swi 		0
+		swi 1
 		
 NoRamReset:
 		nop
