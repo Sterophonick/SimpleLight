@@ -240,7 +240,7 @@ void IWRAM_CODE SetRompageWithHardReset(u16 page,u32 bootmode)
 {
     Set_RTC_status(gl_ingame_RTC_open_status);
     SetRompage(page);
-Clear(78+54,160-15,110,15,gl_color_selectBG_sd,1);
+//Clear(78+54,160-15,110,15,gl_color_selectBG_sd,1);
 
 	REG_IE=0;
 	REG_IF=0;
@@ -455,7 +455,7 @@ void IWRAM_CODE Check_FW_update(u16 Current_FW_ver,u16 Built_in_ver)
     //if(	get_crc32 != 0x22475DDC) //fw3
     //if(	get_crc32 != 0xEE2DACE7) //fw4
     if(	get_crc32 != 0x7E6212AB) { //fw6
-        sprintf(msg,"CRC32 check error!");
+        sprintf(msg,"CRC32 checksum failure!");
         DrawHZText12(msg,0,2,offset_Y+0*line_x, RGB(31,00,00),1);
         sprintf(msg,"Press (B) to return.");
         DrawHZText12(msg,0,2,offset_Y+2*line_x, 0x7FFF,1);
@@ -474,7 +474,7 @@ void IWRAM_CODE Check_FW_update(u16 Current_FW_ver,u16 Built_in_ver)
     DrawHZText12(msg,0,2,offset_Y+2*line_x, 0x7FFF,1);
     sprintf(msg,"Press (A) to update firmware.");
     DrawHZText12(msg,0,2,offset_Y+4*line_x, 0x7FFF,1);
-    sprintf(msg,"Press (B) to cancel.");
+    sprintf(msg,"Press (B) to cancel update.");
     DrawHZText12(msg,0,2,offset_Y+5*line_x, 0x7FFF,1);
     while(1) {
         VBlankIntrWait();

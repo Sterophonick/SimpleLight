@@ -712,7 +712,7 @@ u32 Check_pat(TCHAR* gamefilename)
 	
 	TCHAR patnamebuf[100];	
 	make_pat_name(patnamebuf,gamefilename);
-	res=f_chdir("/PATCH");
+	res=f_chdir("/SYSTEM/PATCH");
 	if(res == FR_OK)
 	{
 		res = f_open(&gfile,patnamebuf, FA_READ);
@@ -759,8 +759,8 @@ void Make_pat_file(TCHAR* gamefilename)
 	u32 written;
 	u32 w_buffer[16];
 	
-	res = f_mkdir("/PATCH");
-	res=f_chdir("/PATCH");
+	res = f_mkdir("/SYSTEM/PATCH");
+	res=f_chdir("/SYSTEM/PATCH");
 	
 	memset(w_buffer, 0x00, sizeof(w_buffer));
 
@@ -813,7 +813,7 @@ u8 Check_mde_file(TCHAR* gamefilename)
 	TCHAR mdenamebuf[100];	
 	make_mde_name(mdenamebuf,gamefilename);
 	
-	res=f_chdir("/SAVER");
+	res=f_chdir("/SYSTEM/SAVER");
 	if(res == FR_OK)
 	{
 		res = f_open(&gfile,mdenamebuf, FA_OPEN_EXISTING);
@@ -857,8 +857,8 @@ void Make_mde_file(TCHAR* gamefilename,u8 Save_num)
 	memset(currentpath,00,256);
 	res = f_getcwd(currentpath, sizeof currentpath / sizeof *currentpath);
 	
-	res = f_mkdir("/SAVER");
-	res=f_chdir("/SAVER");
+	res = f_mkdir("/SYSETM/SAVER");
+	res=f_chdir("/SYSETM/SAVER");
 	
 	memset(w_buffer, 0x00, sizeof(w_buffer));
 
@@ -894,8 +894,8 @@ u32 Check_RTS(TCHAR* gamefilename)
 	rtsnamebuf[len-2] = 't';
 	rtsnamebuf[len-1] = 's';	
 	
-	res = f_mkdir("/RTS");
-	res=f_chdir("/RTS");
+	res = f_mkdir("/SYSTEM/RTS");
+	res=f_chdir("/SYSTEM/RTS");
 	if(res != FR_OK){
 		return 0;
 	}

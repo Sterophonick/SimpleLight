@@ -82,7 +82,7 @@ SoftReset:
 		swi 1
 		
 NoRamReset:
-		nop
+		swi 0
 		
 		
 	@ldr		r3, =0x03007FFA		@ restart flag

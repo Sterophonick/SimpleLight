@@ -8,6 +8,8 @@ char* gl_file_overflow;
 char* gl_theme_credit;
 char* gl_theme_credit2;
 
+char* gl_generating_emu;
+
 char* gl_menu_btn;
 char* gl_lastest_game;
 
@@ -85,6 +87,8 @@ const char zh_file_overflow[]="文件太大,不能加载";
 const char zh_menu_btn[]=" [B]取消    [A]确定";
 const char zh_writing[]="正在写...";
 const char zh_lastest_game[]="请选择最后一个游戏";
+
+const char zh_generating_emu[]="生成仿真器......";
 
 const char zh_time[] ="     时间";
 const char zh_Mon[]="一";
@@ -227,6 +231,7 @@ const char en_ingameRTC[]=" Game RTC";
 const char en_offRTC_powersave[]="Turn off to Powersave";
 
 const char en_copying_data[]="Copying ROM...";
+const char en_generating_emu[]="Generating Emulator...";
 
 const char *en_rom_menu[] = {
 	"Clean boot",
@@ -316,6 +321,7 @@ void LoadChinese(void)
 	
 	gl_copying_data = (char**)zh_copying_data;
 
+	gl_generating_emu = (char**)zh_generating_emu;
 }
 //---------------------------------------------------------------------------------
 void LoadEnglish(void)
@@ -390,4 +396,6 @@ void LoadEnglish(void)
 	gl_nor_op = (char**)en_nor_op;
 	
 	gl_copying_data = (char**)en_copying_data;
+	
+	gl_generating_emu = (char**)en_generating_emu;
 }
