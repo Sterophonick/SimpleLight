@@ -72,6 +72,7 @@ char* gl_ingameRTC;
 char* gl_offRTC_powersave;
 //--
 char**  gl_rom_menu;
+char**  gl_more_options;
 char**  gl_nor_op;
 
 char* gl_copying_data;
@@ -132,8 +133,8 @@ const char zh_use_engine[]="快速补丁引擎";
 const char zh_recently_play[]="最近游戏列表";
 
 const char zh_START_help[]="打开最近游戏列表";
-const char zh_SELECT_help[]="缩略图开关";
-const char zh_L_A_help[]="冷启动";
+const char zh_SELECT_help[]="更多的选择";
+const char zh_L_A_help[]="没有冷启动";
 const char zh_LSTART_help[]="删除文件";
 const char zh_online_manual[]="  在线说明书";
 
@@ -142,7 +143,7 @@ const char zh_no_game_played[]="还没玩过游戏";
 const char zh_ingameRTC[]=" 游戏时钟";
 const char zh_offRTC_powersave[]="关闭可以节能";
 
-const char zh_theme_credit[]="Sterophonick的SimpleLight主題1.6";
+const char zh_theme_credit[]="Sterophonick的SimpleLight主題2.0";
 
 const char zh_copying_data[]="复制ROM ...";
 
@@ -160,6 +161,10 @@ const char *zh_nor_op[3]={
 	"全部格式化",
 };
 
+const char *zh_more_options[2]={
+	"切换缩略图",
+	"",
+};
 
 
 //英文
@@ -169,7 +174,7 @@ const char en_init_ok[]="microSD card initialization successful.";
 const char en_Loading[]="Loading...";
 const char en_file_overflow[]="The file is too big.";
 
-const char en_menu_btn[]="(B) No      (A) OK";
+const char en_menu_btn[]=" (B) No     (A) OK";
 const char en_writing[]="Writing...";
 const char en_lastest_game[]="Select the lastest";
 
@@ -198,7 +203,7 @@ const char en_ok_btn[]=" OK";
 const char en_formatnor_info1[]="Sure? This will be";
 const char en_formatnor_info2[]=" about 4 minutes.";
 
-const char en_theme_credit[]="SimpleLight theme 1.6 by";
+const char en_theme_credit[]="SimpleLight theme 2.0 by";
 const char en_theme_credit2[]="Sterophonick.";
 
 const char en_check_sav[]="Checking Save Data...";
@@ -220,8 +225,8 @@ const char en_use_engine[]="Fast Patch Engine";
 const char en_recently_play[]="Recently Played";
 
 const char en_START_help[]="Open recently played list";
-const char en_SELECT_help[]="Toggle thumbnail";
-const char en_L_A_help[]="Multiboot";
+const char en_SELECT_help[]="More options";
+const char en_L_A_help[]="No cold start";
 const char en_LSTART_help[]="Delete file";
 const char en_online_manual[]="Online manual";
 
@@ -246,6 +251,10 @@ const char *en_nor_op[3]={
 	"Delete",
 	"Format all",
 };	
+const char *en_more_options[2]={
+	"Toggle thumbnail",
+	"",
+};
 
 //---------------------------------------------------------------------------------
 void LoadChinese(void)
@@ -317,6 +326,7 @@ void LoadChinese(void)
 	gl_offRTC_powersave = (char*)zh_offRTC_powersave;
 	//
 	gl_rom_menu = (char**)zh_rom_menu;
+	gl_more_options = (char**)zh_more_options;
 	gl_nor_op = (char**)zh_nor_op;
 	
 	gl_copying_data = (char**)zh_copying_data;
@@ -394,6 +404,7 @@ void LoadEnglish(void)
 	//
 	gl_rom_menu = (char**)en_rom_menu;
 	gl_nor_op = (char**)en_nor_op;
+	gl_more_options = (char**)en_more_options;
 	
 	gl_copying_data = (char**)en_copying_data;
 	

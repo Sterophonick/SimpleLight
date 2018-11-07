@@ -24,18 +24,20 @@ int viewText(TCHAR *filename)
 	u32 linenumbuf;
 	u32 linenum;
 	char linebuf[38];
+	char txt[2048];
 	u32 filesize;
 	u32 res;
 	FIL txtdoc;
 	res = f_open(&txtdoc, filename, FA_READ);
 	if(res != FR_OK)
-		return 1;
-	filesize = f_size(&txtdoc);
-	f_lseek(&txtdoc, 0x0000);
-	DrawPic((u16*)gImage_TextBG, 0, 0, 240, 160, 0, 0, 1);
-	for(linenumbuf = 0; linenumbuf < 12; linenumbuf++)
-	{
-		
-	}
+	    f_lseek(&txtdoc, 0x0);
+        memset(txt,0x00,512);
+		filesize = f_size(&txtdoc);
+		f_lseek(&txtdoc, 0x0000);
+		DrawPic((u16*)gImage_TextBG, 0, 0, 240, 160, 0, 0, 1);
+		for(linenumbuf = 0; linenumbuf < 12; linenumbuf++)
+		{
+			
+		}
 	return 0;
 }

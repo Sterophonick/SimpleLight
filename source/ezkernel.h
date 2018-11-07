@@ -70,8 +70,8 @@ typedef enum {
 //----------------------------
 extern DWORD Get_NextCluster(	FFOBJID* obj,	DWORD clst);
 extern DWORD ClustToSect(FATFS* fs,DWORD clst);
-extern const unsigned char __attribute__((aligned(4)))gImage_SD[76800];
-extern const unsigned char __attribute__((aligned(4)))gImage_NOR[76800];
+extern const unsigned short __attribute__((aligned(4)))gImage_SD[38400];
+extern const unsigned short __attribute__((aligned(4)))gImage_NOR[38400];
 extern const unsigned char __attribute__((aligned(4)))gImage_LOGO[76800];
 extern const unsigned char __attribute__((aligned(4)))gImage_icons[1344];
 extern const unsigned char __attribute__((aligned(4)))gImage_MENU[28160];

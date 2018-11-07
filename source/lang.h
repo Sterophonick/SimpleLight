@@ -76,6 +76,7 @@ extern char* gl_ingameRTC;
 extern char* gl_offRTC_powersave;
 
 extern char**  	gl_rom_menu;
+extern char**  gl_more_options;
 extern char**   gl_nor_op;
 
 void LoadEnglish(void);

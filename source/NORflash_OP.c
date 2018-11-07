@@ -189,6 +189,7 @@ void IWRAM_CODE WriteFlash_with32word(u32 address,u8 *buffer,u32 size)
 //-----------------------------------------------------------
 u32 Loadfile2NOR(TCHAR *filename, u32 NORaddress,u32 have_patch)
 {
+u8 str_len;
     u32 res;
     u32 ret;
     u32 filesize;
@@ -244,12 +245,13 @@ u32 Loadfile2NOR(TCHAR *filename, u32 NORaddress,u32 have_patch)
         tmpNorFS.have_RTS = gl_rts_on;
         sprintf(tmpNorFS.filename,"%s",filename);
         dmaCopy(&tmpNorFS,&pNorFS[game_total_NOR], sizeof(FM_NOR_FS));
-        Clear(60,160-15,120,15,gl_color_cheat_black,1);
-        DrawHZText12(gl_writing,0,78,160-15,gl_color_text,1);
+        Clear(0,160-15,240,15,gl_color_cheat_black,1);
+        ShowbootProgress(gl_copying_data);
         for(blocknum=0; blocknum<filesize; blocknum+=0x20000) {
             sprintf(msg,"%luMb",(blocknum)/0x20000);
-            Clear(78+54,160-15,100,15,gl_color_cheat_black,1);
-            DrawHZText12(msg,0,78+54,160-15,gl_color_text,1);
+			str_len = strlen(msg);
+            Clear(0,130,240,15,gl_color_cheat_black,1);
+            DrawHZText12(msg,0,(240-str_len*6)/2,160-30,0x7fff,1);
             Block_Erase(blocknum+NORaddress);
             f_lseek(&gfile, blocknum);
             f_read(&gfile, pReadCache, 0x20000, (u32 *)&ret);//pReadCache max 0x20000 Byte
