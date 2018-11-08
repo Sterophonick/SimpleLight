@@ -143,7 +143,8 @@ const char zh_no_game_played[]="还没玩过游戏";
 const char zh_ingameRTC[]=" 游戏时钟";
 const char zh_offRTC_powersave[]="关闭可以节能";
 
-const char zh_theme_credit[]="Sterophonick的SimpleLight主題2.0";
+const char zh_theme_credit[]="Sterophonick的SimpleLight主";
+const char zh_theme_credit2[]="題2.0";
 
 const char zh_copying_data[]="复制ROM ...";
 
@@ -265,6 +266,7 @@ void LoadChinese(void)
 	gl_Loading = (char*)zh_Loading;
 	gl_file_overflow = (char*)zh_file_overflow;
 	gl_theme_credit = (char*)zh_theme_credit;
+	gl_theme_credit2 = (char*)zh_theme_credit2;
 
 	gl_menu_btn = (char*)zh_menu_btn;
 	gl_writing = (char*)zh_writing;

@@ -307,6 +307,9 @@ void Show_ICON_filename(u32 show_offset,u32 file_select,u32 haveThumbnail)
 		else if(!strcasecmp(&(pfilename[strlen8-3]), "txt")) { //Text Document (Not working :( )
             icon = (u16*)(gImage_icon_TXT);
         }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "esv")) { //Fixes the bug with esv files looking like watara supervision
+            icon = (u16*)(gImage_icons+2*16*14*2);
+        }
 		else if(!strcasecmp(&(pfilename[strlen8-2]), "sv")) { //Watara Supervision (HOLY CRAP)
             icon = (u16*)(gImage_icon_SV);
         }
@@ -326,9 +329,6 @@ void Show_ICON_filename(u32 show_offset,u32 file_select,u32 haveThumbnail)
             icon = (u16*)(gImage_icon_PCE);
         }
 		else if(!strcasecmp(&(pfilename[strlen8-3]), "z80")) { //Sinclair ZX-Spectrum (Z80)
-            icon = (u16*)(gImage_icon_ZX);
-        }
-		else if(!strcasecmp(&(pfilename[strlen8-3]), "sna")) { //Sinclair ZX-Spectrum (SNA)
             icon = (u16*)(gImage_icon_ZX);
         }
         else {
@@ -1232,13 +1232,13 @@ void ShowTime(u32 page_num,u32 page_mode)
     rtc_disenable();
     delay(5);
     if(page_mode==0x1) {
-        ClearWithBG((u16*)gImage_RECENTLY,80, 3, 80, 13, 1);
+        //ClearWithBG((u16*)gImage_RECENTLY,80, 3, 80, 13, 1);
     }
     else if(page_num==SD_list) {
-        ClearWithBG((u16*)gImage_SD,100, 3, 50, 13, 1);
+        //ClearWithBG((u16*)gImage_SD,100, 3, 50, 13, 1);
     }
     else if (page_num==NOR_list) {
-        ClearWithBG((u16*)gImage_NOR,100, 3, 50, 13, 1);
+        //ClearWithBG((u16*)gImage_NOR,100, 3, 50, 13, 1);
     }
     u8 HH = UNBCD(datetime[0]&0x3F);
     u8 MM = UNBCD(datetime[1]&0x7F);
@@ -1632,9 +1632,6 @@ u32 Check_file_type(TCHAR *pfilename)
     else if(!strcasecmp(ext, "nes")) {
         return 3;
     }
-    else if(!strcasecmp(ext, "txt")) {
-        return 8;
-    }
     return 0xff;
 }
 //---------------------------------------------------------------------------------
@@ -1875,6 +1872,7 @@ re_showfile:
                 else {
                     DrawPic((u16*)(gImage_NOTFOUND), 120, 80, 120, 80, 0, 0, 1);//show game pic
                 }
+				ClearWithBG((u16*)gImage_SD, 118, 80, 2, 78, 1);
             }
             if(continue_MENU) {
                 break;

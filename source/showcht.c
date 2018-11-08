@@ -730,9 +730,12 @@ u32 Change2cht_folder(u32 chtname)
 	}	
 	else if(num < 2800){
 		folder_name = (TCHAR*)"2600";
-	}				
-	else {
+	}	
+	else if (num < 2900){
 		folder_name = (TCHAR*)"2800";
+	}						
+	else {
+		folder_name = (TCHAR*)"Homebrew";
 	}						
 	
 	
