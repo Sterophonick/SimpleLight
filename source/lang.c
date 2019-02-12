@@ -144,7 +144,7 @@ const char zh_ingameRTC[]=" 游戏时钟";
 const char zh_offRTC_powersave[]="关闭可以节能";
 
 const char zh_theme_credit[]="Sterophonick的SimpleLight主";
-const char zh_theme_credit2[]="題2.0";
+const char zh_theme_credit2[]="題2.1";
 
 const char zh_copying_data[]="复制ROM ...";
 
@@ -204,7 +204,7 @@ const char en_ok_btn[]=" OK";
 const char en_formatnor_info1[]="Sure? This will be";
 const char en_formatnor_info2[]=" about 4 minutes.";
 
-const char en_theme_credit[]="SimpleLight theme 2.0 by";
+const char en_theme_credit[]="SimpleLight theme 2.1 by";
 const char en_theme_credit2[]="Sterophonick.";
 
 const char en_check_sav[]="Checking Save Data...";

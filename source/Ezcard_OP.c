@@ -13,6 +13,7 @@
 #include "ezkernel.h"
 #include "draw.h"
 #include "Newest_FW_ver.h"
+#include "aplib.h"
 extern u32 FAT_table_buffer[FAT_table_size/4]EWRAM_BSS;
 u32 crc32(unsigned char *buf, u32 size);
 
@@ -249,7 +250,7 @@ void IWRAM_CODE SetRompageWithHardReset(u16 page,u32 bootmode)
 
 	if(bootmode==1) {
 		HardReset();
-	} else if (bootmode==2 || bootmode==4) {
+	} else if (bootmode==2 || bootmode==4 || bootmode==5) {
 		int i;
 		//Clear exram up to pogoshell arg
 		u32 *p = (u32*)(0x02000000);
@@ -260,6 +261,8 @@ void IWRAM_CODE SetRompageWithHardReset(u16 page,u32 bootmode)
 			dmaCopy((u8*)(0x08000000),(u8*)(0x02000000), *(u32 *)(0x0203fbfc) & 0x7ffffff);
 		else if (bootmode==4)
 			LZ77UnCompWram((u8*)(0x08000000),(u8*)(0x02000000));
+		else if (bootmode==5)
+			aP_depack((u8*)(0x08000000), (u8*)(0x02000000));
 		RegisterRamReset(0xfc);
 		((void(*)(void))0x02000000)();
 	}

@@ -46,6 +46,13 @@
 #include "images/icon_MSX.h"
 #include "images/icon_PCE.h"
 #include "images/icon_ZX.h"
+#include "images/icon_o2.h"
+#include "images/icon_chip.h"
+#include "images/icon_pokem.h"
+#include "images/icon_vmu.h"
+#include "images/icon_mid.h"
+#include "images/icon_wav.h"
+#include "images/icon_nsf.h"
 #include "images/NOTFOUND.h"
 
 #include "images/Chinese_manual.h"
@@ -330,6 +337,54 @@ void Show_ICON_filename(u32 show_offset,u32 file_select,u32 haveThumbnail)
         }
 		else if(!strcasecmp(&(pfilename[strlen8-3]), "z80")) { //Sinclair ZX-Spectrum (Z80)
             icon = (u16*)(gImage_icon_ZX);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-2]), "o2")) { //Magnavox Odyssey2 (No emu yet, but I'm eventually going to have a finished one. :D)
+            icon = (u16*)(gImage_icon_o2);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-2]), "c8")) { //Chip-8 (Old, Old 1977 VM, emulator coming soon!)
+            icon = (u16*)(gImage_icon_chip);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "ch8")) { //Chip-8 (Old, Old 1977 VM, emulator coming soon!)
+            icon = (u16*)(gImage_icon_chip);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "min")) { //Pokemon Mini (Emulator WIP, but nowhere close to being done. Nothing works yet.)
+            icon = (u16*)(gImage_icon_pokem);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "dci")) { //Visual Memory Unit (No Emu yet, but I will make one at some point)
+            icon = (u16*)(gImage_icon_vmu);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "vmi")) { //Visual Memory Unit (No Emu yet, but I will make one at some point)
+            icon = (u16*)(gImage_icon_vmu);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "mid")) { //MIDI Sequence
+            icon = (u16*)(gImage_icon_mid);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "wav")) { //Wave Sound
+            icon = (u16*)(gImage_icon_wav);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "nsf")) { //NSF sound file
+            icon = (u16*)(gImage_icon_nsf);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "mod")) { //Protracker mod file
+            icon = (u16*)(gImage_icon_mid);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "pcx")) { //ZSoft Paintbrush PCX image
+            icon = (u16*)(gImage_icon_IMG);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "vgm")) { //SMS/GG VGM Rip
+            icon = (u16*)(gImage_icon_wav);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-2]), "sb")) { //ZSoft Paintbrush PCX image
+            icon = (u16*)(gImage_icon_wav);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-2]), "ap")) { //aPlib compressed Mode 3 Bitmap
+            icon = (u16*)(gImage_icon_IMG);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-2]), "lz")) { //LZ77 Compressed Mode 3 Bitmap
+            icon = (u16*)(gImage_icon_IMG);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "bgf")) { //BoyScout module
+            icon = (u16*)(gImage_icon_mid);
         }
         else {
             icon = (u16*)(gImage_icons+2*16*14*2);
@@ -1462,7 +1517,7 @@ u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR *filename,u32 is_EMU)
         f_close(&gfile);
 				Clear(105,160-30,110,15,gl_color_cheat_count,1);
 
-		if ((is_EMU > 3)&&(is_EMU < 8)) {
+		if ((is_EMU > 3)&&(is_EMU < 9)) {
 			Address = rom_start_address + filesize;
 		      	Address = (Address + 0x7fff)&~0x7fff;
 			u32 offset = Address;
@@ -1612,6 +1667,10 @@ u32 Check_file_type(TCHAR *pfilename)
 	res = f_stat(plugin, NULL);
 	if(res == FR_OK)
 		return 7;
+	sprintf(plugin, "/SYSTEM/PLUG/%s.mbap", ext);
+	res = f_stat(plugin, NULL);
+	if(res == FR_OK)
+		return 8;
 
     //u32 is_EMU;
     if(!strcasecmp(ext, "gba")) {
@@ -2315,7 +2374,7 @@ re_show_menu:
 		TCHAR *saveext = strrchr(savfilename, '.');
 		if (saveext == NULL)
 			saveext = savfilename + strlen(savfilename);
-		if ((is_EMU)&&(is_EMU < 8))
+		if ((is_EMU)&&(is_EMU < 9))
 			sprintf(saveext, ".esv");
 		else
 			sprintf(saveext, ".sav");
@@ -2457,26 +2516,19 @@ Error:
             //DEBUG_printf(" %08X %08X ", FAT_table_buffer[0x1F8/4],FAT_table_buffer[0x1FC/4]);
         }
         if(is_EMU) {
-			if(!(is_EMU == 8))
-			{
 				ShowbootProgress(gl_generating_emu);
 				f_chdir(currentpath);//return to game folder
 				FAT_table_buffer[0x1F4/4] = 0x2;  	//copy mode
 				Send_FATbuffer(FAT_table_buffer,1); //only save FAT
 				res=LoadEMU2PSRAM(pfilename,is_EMU);
-				int bootmode=((is_EMU > 3)&&(is_EMU < 8)) ?
+				int bootmode=((is_EMU > 3)&&(is_EMU < 9)) ?
 					((is_EMU == 6) ? 2
-				       : ((is_EMU == 7) ? 4 : 3)) : !key_L;
+				       : (is_EMU == 7) ? 4 
+					    : ((is_EMU == 8) ? 5 : 3)) : !key_L;
 				SetRompageWithHardReset(0x200, bootmode);
 				while(1) {
 					VBlankIntrWait();
 				}
-			}else{
-				if(is_EMU == 8)
-				{
-					viewText(pfilename);
-				}
-			}
         }
         if(page_num==NOR_list) { //boot nor game
             if(pNorFS[show_offset+file_select].have_patch && pNorFS[show_offset+file_select].have_RTS) {
