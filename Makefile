@@ -18,17 +18,17 @@ include $(DEVKITARM)/gba_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	omega-kernel
 BUILD		:=	build
-SOURCES		:=	source source/ff13b
+SOURCES		:=	source source/ff13c
 DATA		:=
 GRAPHICS	:=	gfx	
-INCLUDES	:=  $(INCLUDES) include source/ff13b
+INCLUDES	:=  $(INCLUDES) include source/ff13c
 
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
 ARCH	:=	-mthumb -mthumb-interwork
 
-CFLAGS	:=	-g -Wall -Os\
+CFLAGS	:= -g -Wall -Os \
 		-mcpu=arm7tdmi -mtune=arm7tdmi\
  		-fomit-frame-pointer\
 		-ffast-math \

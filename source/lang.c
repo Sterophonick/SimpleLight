@@ -69,7 +69,17 @@ char* gl_online_manual;
 char* gl_no_game_played;
 
 char* gl_ingameRTC;
-char* gl_offRTC_powersave;
+//char* gl_offRTC_powersave;
+char* gl_ingameRTC_open;
+char* gl_ingameRTC_close;
+
+char* gl_error_0;
+char* gl_error_1;
+char* gl_error_2;
+char* gl_error_3;
+char* gl_error_4;
+char* gl_error_5;
+char* gl_error_6;
 //--
 char**  gl_rom_menu;
 char**  gl_more_options;
@@ -141,10 +151,20 @@ const char zh_online_manual[]="  在线说明书";
 const char zh_no_game_played[]="还没玩过游戏";
 
 const char zh_ingameRTC[]=" 游戏时钟";
-const char zh_offRTC_powersave[]="关闭可以节能";
+//const char zh_offRTC_powersave[]=" ";
+const char zh_ingameRTC_open[]="打开";
+const char zh_ingameRTC_close[]="关闭";//TURNOFF TO POWER SAVE
+
+const char zh_error_0[]="文件夹错误";
+const char zh_error_1[]="文件错误";
+const char zh_error_2[]="SAVER错误";
+const char zh_error_3[]="存档错误";
+const char zh_error_4[]="读取存档错误";
+const char zh_error_5[]="创建存档错误";
+const char zh_error_6[]="RTS文件错误";
 
 const char zh_theme_credit[]="Sterophonick的SimpleLight主";
-const char zh_theme_credit2[]="題2.1";
+const char zh_theme_credit2[]="題2.3";
 
 const char zh_copying_data[]="复制ROM ...";
 
@@ -204,7 +224,7 @@ const char en_ok_btn[]=" OK";
 const char en_formatnor_info1[]="Sure? This will be";
 const char en_formatnor_info2[]=" about 4 minutes.";
 
-const char en_theme_credit[]="SimpleLight theme 2.1 by";
+const char en_theme_credit[]="SimpleLight theme 2.3 by";
 const char en_theme_credit2[]="Sterophonick.";
 
 const char en_check_sav[]="Checking Save Data...";
@@ -220,6 +240,8 @@ const char en_please_wait[]="Please Wait...";
 
 const char en_loading_game[]="Loading ROM...";
 
+const char en_no_roms[]="No .gba ROMs found!";
+
 const char en_engine[]="   Engine";
 const char en_use_engine[]="Fast Patch Engine";
 
@@ -234,7 +256,16 @@ const char en_online_manual[]="Online manual";
 const char en_no_game_played[]="No recently played games yet...";
 
 const char en_ingameRTC[]=" Game RTC";
-const char en_offRTC_powersave[]="Turn off to Powersave";
+const char en_ingameRTC_open[]="Open";
+const char en_ingameRTC_close[]="Close";//TURNOFF TO POWER SAVE
+
+const char en_error_0[]="Folder error";
+const char en_error_1[]="File error";
+const char en_error_2[]="SAVER error";
+const char en_error_3[]="Save error";
+const char en_error_4[]="Read save error";
+const char en_error_5[]="Make save error";
+const char en_error_6[]="RTS file error";
 
 const char en_copying_data[]="Copying ROM...";
 const char en_generating_emu[]="Generating Emulator...";
@@ -254,7 +285,7 @@ const char *en_nor_op[3]={
 };	
 const char *en_more_options[2]={
 	"Toggle thumbnail",
-	"",
+	"",//Start Random Game
 };
 
 //---------------------------------------------------------------------------------
@@ -325,7 +356,17 @@ void LoadChinese(void)
 	gl_no_game_played = (char*)zh_no_game_played;
 	
 	gl_ingameRTC = (char*)zh_ingameRTC;
-	gl_offRTC_powersave = (char*)zh_offRTC_powersave;
+	//gl_offRTC_powersave = (char*)zh_offRTC_powersave;
+	gl_ingameRTC_open = (char*)zh_ingameRTC_open;
+	gl_ingameRTC_close = (char*)zh_ingameRTC_close;
+
+	gl_error_0 = (char*)zh_error_0;
+	gl_error_1 = (char*)zh_error_1;
+	gl_error_2 = (char*)zh_error_2;
+	gl_error_3 = (char*)zh_error_3;
+	gl_error_4 = (char*)zh_error_4;
+	gl_error_5 = (char*)zh_error_5;
+	gl_error_6 = (char*)zh_error_6;
 	//
 	gl_rom_menu = (char**)zh_rom_menu;
 	gl_more_options = (char**)zh_more_options;
@@ -402,7 +443,17 @@ void LoadEnglish(void)
 	gl_no_game_played = (char*)en_no_game_played;
 	
 	gl_ingameRTC = (char*)en_ingameRTC;
-	gl_offRTC_powersave = (char*)en_offRTC_powersave;
+	//gl_offRTC_powersave = (char*)en_offRTC_powersave;
+	gl_ingameRTC_open = (char*)en_ingameRTC_open;
+	gl_ingameRTC_close = (char*)en_ingameRTC_close;
+
+	gl_error_0 = (char*)en_error_0;
+	gl_error_1 = (char*)en_error_1;
+	gl_error_2 = (char*)en_error_2;
+	gl_error_3 = (char*)en_error_3;
+	gl_error_4 = (char*)en_error_4;
+	gl_error_5 = (char*)en_error_5;
+	gl_error_6 = (char*)en_error_6;
 	//
 	gl_rom_menu = (char**)en_rom_menu;
 	gl_nor_op = (char**)en_nor_op;

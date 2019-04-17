@@ -53,6 +53,7 @@
 #include "images/icon_mid.h"
 #include "images/icon_wav.h"
 #include "images/icon_nsf.h"
+#include "images/icon_arc.h"
 #include "images/NOTFOUND.h"
 
 #include "images/Chinese_manual.h"
@@ -61,12 +62,13 @@
 #include "goomba.h"
 #include "pocketnes.h"
 
-#include "viewText.h"
-
 //Planned features:
-//Text Document Reading
 //Cold reset on Emulators (Pogo)
 //Start random game option
+//Fairchild Channel-F, VMU, Atari 2600, Sharp MZ-700, Pokemon Mini, Bally Astrocade, Microvision, Game Pocket Computer Emulation
+//Second Page for settings
+//Start Random Game option
+//Launching .mbz file
 
 char *mod_ee;
 
@@ -165,7 +167,7 @@ void Show_help_window()
     DrawHZText12(gl_online_manual,0,240-70-10,74, gl_color_text,1);
     DrawHZText12(gl_theme_credit,0,4,105, gl_color_selected,1);
     DrawHZText12(gl_theme_credit2,0,4,120, gl_color_selected,1);
-    DrawHZText12("K:1.04 F:6",0,4,143,gl_color_text,1);
+    DrawHZText12("K:1.06 F:7",0,4,143,gl_color_text,1);
     while(1) {
         VBlankIntrWait();
         scanKeys();
@@ -311,13 +313,13 @@ void Show_ICON_filename(u32 show_offset,u32 file_select,u32 haveThumbnail)
 		else if(!strcasecmp(&(pfilename[strlen8-3]), "bmp")) { //BMP Image
             icon = (u16*)(gImage_icon_IMG);
         }
-		else if(!strcasecmp(&(pfilename[strlen8-3]), "txt")) { //Text Document (Not working :( )
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "txt")) { //Text Document
             icon = (u16*)(gImage_icon_TXT);
         }
 		else if(!strcasecmp(&(pfilename[strlen8-3]), "esv")) { //Fixes the bug with esv files looking like watara supervision
             icon = (u16*)(gImage_icons+2*16*14*2);
         }
-		else if(!strcasecmp(&(pfilename[strlen8-2]), "sv")) { //Watara Supervision (HOLY CRAP)
+		else if(!strcasecmp(&(pfilename[strlen8-2]), "sv")) { //Watara Supervision
             icon = (u16*)(gImage_icon_SV);
         }
 		else if(!strcasecmp(&(pfilename[strlen8-2]), "ws")) { //Wonderswan
@@ -341,13 +343,13 @@ void Show_ICON_filename(u32 show_offset,u32 file_select,u32 haveThumbnail)
 		else if(!strcasecmp(&(pfilename[strlen8-2]), "o2")) { //Magnavox Odyssey2 (No emu yet, but I'm eventually going to have a finished one. :D)
             icon = (u16*)(gImage_icon_o2);
         }
-		else if(!strcasecmp(&(pfilename[strlen8-2]), "c8")) { //Chip-8 (Old, Old 1977 VM, emulator coming soon!)
+		else if(!strcasecmp(&(pfilename[strlen8-2]), "c8")) { //Chip-8
             icon = (u16*)(gImage_icon_chip);
         }
-		else if(!strcasecmp(&(pfilename[strlen8-3]), "ch8")) { //Chip-8 (Old, Old 1977 VM, emulator coming soon!)
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "ch8")) { //Chip-8
             icon = (u16*)(gImage_icon_chip);
         }
-		else if(!strcasecmp(&(pfilename[strlen8-3]), "min")) { //Pokemon Mini (Emulator WIP, but nowhere close to being done. Nothing works yet.)
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "min")) { //Pokemon Mini (No Emu yet)
             icon = (u16*)(gImage_icon_pokem);
         }
 		else if(!strcasecmp(&(pfilename[strlen8-3]), "dci")) { //Visual Memory Unit (No Emu yet, but I will make one at some point)
@@ -385,6 +387,9 @@ void Show_ICON_filename(u32 show_offset,u32 file_select,u32 haveThumbnail)
         }
 		else if(!strcasecmp(&(pfilename[strlen8-3]), "bgf")) { //BoyScout module
             icon = (u16*)(gImage_icon_mid);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "arc")) { //4kb Arcadia 2001 ROM File
+            icon = (u16*)(gImage_icon_arc);
         }
         else {
             icon = (u16*)(gImage_icons+2*16*14*2);
@@ -1229,6 +1234,7 @@ u32 IWRAM_CODE Loadfile2PSRAM(TCHAR *filename)
         return 1;
     }
 }
+
 //---------------------------------------------------------------------------------
 void CheckLanguage(void)
 {
@@ -1694,6 +1700,43 @@ u32 Check_file_type(TCHAR *pfilename)
     return 0xff;
 }
 //---------------------------------------------------------------------------------
+void Show_error_num(u8 error_num)
+{
+	char msg[50];
+
+	ClearWithBG((u16*)gImage_SD,90, 2, 90, 13, 1);
+	switch(error_num)
+	{
+		case 0x0:
+			sprintf(msg,"%s",gl_error_0);
+			break;
+		case 0x1:
+			sprintf(msg,"%s",gl_error_1);
+			break;
+		case 0x2:
+			sprintf(msg,"%s",gl_error_2);
+			break;
+		case 0x3:
+			sprintf(msg,"%s",gl_error_3);
+			break;
+		case 0x4:
+			sprintf(msg,"%s",gl_error_4);
+			break;
+		case 0x5:
+			sprintf(msg,"%s",gl_error_5);
+			break;
+		case 0x6:
+			sprintf(msg,"%s",gl_error_6);
+			break;
+		default:
+			sprintf(msg,"%s","error?");
+			break;				
+	}
+
+	DrawHZText12(msg,0,90,2, RGB(31,00,00),1);
+	wait_btn();
+}
+//---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------
 // Program entry point
@@ -1713,13 +1756,13 @@ int main(void)
     u32 page_mode;
     u32 shift;
     u32 short_filename=0;
-    u32 error_num;
+    u8 error_num;
     gl_currentpage = 0x8002 ;//kernel mode
     SetMode (MODE_3 | BG2_ENABLE );
     SD_Disable();
     Set_RTC_status(1);
     //check FW
-    u16 Built_in_ver = 6;   //Newest_FW_ver
+    u16 Built_in_ver = 7;   //Newest_FW_ver
     u16 Current_FW_ver = Read_FPGA_ver();
     if((Current_FW_ver < Built_in_ver) || (Current_FW_ver == 99)) { //99 is test ver
         Check_FW_update(Current_FW_ver,Built_in_ver);
@@ -2053,7 +2096,8 @@ re_showfile:
                         res=f_chdir(currentpath);
                         if(res != FR_OK) {
                             error_num = 10;
-                            goto Error;
+                            Show_error_num(error_num);
+							goto re_showfile;
                         }
                         p_folder_select_show_offset[folder_select] = 0;//clean
                         p_folder_select_file_select[folder_select] = 0;//clean
@@ -2137,7 +2181,8 @@ re_showfile:
                         res=f_chdir(currentpath);
                         if(res != FR_OK) {
                             error_num = 0;
-                            goto Error;
+                            Show_error_num(error_num);
+							goto re_showfile;
                         }
                         p_folder_select_show_offset[folder_select] = show_offset;
                         p_folder_select_file_select[folder_select] = file_select;
@@ -2360,7 +2405,8 @@ re_show_menu:
                 res = Check_game_save_FAT(pfilename,1);//game FAT
                 if(res == 0xffffffff) {
                     error_num = 1;
-                    goto Error;
+                    Show_error_num(error_num);
+					goto re_showfile;
                 }
             }
         }
@@ -2390,7 +2436,8 @@ re_show_menu:
         res=f_chdir("/SYSTEM/SAVER");
         if(res != FR_OK) {
             error_num = 2;
-            goto Error;
+            Show_error_num(error_num);
+			goto re_showfile;
         }
         if(page_num==SD_list) {
             if(MENU_line<2) { //PSRAM DirectPSRAM or soft reset
@@ -2475,7 +2522,8 @@ re_show_menu:
             res = SavefileWrite(savfilename, savefilesize);
             if(res == 0) {
                 error_num = 5;
-                goto Error;
+                Show_error_num(error_num);
+				goto re_showfile;
             }
         }
 #ifdef DEBUG
@@ -2486,19 +2534,14 @@ re_show_menu:
             if(savefilesize) {
                 res = Check_game_save_FAT(savfilename,2);//save FAT
                 if(res == 0xffffffff) { //   save file error
-                    char msg[30];
-                    error_num = 4;
-Error:
-                    //DEBUG_printf("Fragmentation error");
-                    //ClearWithBG((u16*)gImage_SD,90, 2, 60, 13, 1);
-                    sprintf(msg,"%s %lu","Error",error_num);			 //Fragmentation
-                    DrawHZText12(msg,0,90,2, 0x7FFF,1);
-                    wait_btn();
-                    goto re_showfile;
+					error_num = 4;
+					Show_error_num(error_num);
+					goto re_showfile;
                 }
                 if(FAT_table_buffer[(FAT_table_SAV_offset+4)/4] == 0) { //save fat
                     error_num = 3;
-                    goto Error;
+                    Show_error_num(error_num);
+					goto re_showfile;
                 }
                 Bank_Switching(0);
                 res = Loadsavefile(savfilename);
@@ -2535,8 +2578,9 @@ Error:
                 ShowbootProgress(gl_check_RTS);
                 u32 size = Check_RTS(pfilename);
                 if(size ==0) {
-                    error_num = 3;
-                    goto Error;
+					error_num = 6;
+					Show_error_num(error_num);
+					goto re_showfile;
                 }
             }
             FAT_table_buffer[0x1F4/4] = 0x2;  //copy mode
@@ -2565,8 +2609,9 @@ Error:
                         ShowbootProgress(gl_check_RTS);
                         u32 size = Check_RTS(pfilename);
                         if(size ==0) {
-                            error_num = 3;
-                            goto Error;
+                            error_num = 6;
+                            Show_error_num(error_num);
+							goto re_showfile;
                         }
                     }
                     ShowbootProgress(gl_check_pat);

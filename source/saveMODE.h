@@ -2805,6 +2805,19 @@ const SAVE_MODE_  __attribute__((aligned(4))) saveMODE_table[] = {
 {"AX4J",0x31},//2817 - Super Mario Advance 4(JP).zip
 {"B3DJ",0x11},//2818 - Densetsu no Stafy 3(JP).zip
 {"BRIJ",0x11},//2819 - Rhythm Tengoku(JP).zip
+{"AWRC",0x32},//Advance_Wars_(Prototype,_iQue).zip
+{"AVFC",0x11},//Densetsu_no_Stafy2_(Prototype,_iQue).zip
+{"ASTC",0x11},//Densetsu_no_Stafy_(Prototype,_iQue).zip
+{"BBKC",0x11},//DK_King_of_Swing_(Prototype,_iQue).zip
+{"FICC",0x22},//Famicom_Mini_Collection_(Prototype,_iQue).zip
+{"AFEC",0x11},//Fire_Emblem_(Prototype,_iQue).zip
+{"A9QC",0x11},//Kuruin_Paradise_(Prototype,_iQue).zip
+{"AKRC",0x11},//Kuru_Kuru_Kuruin_(Prototype,_iQue).zip
+{"AMKC",0x32},//Mario_Kart_Super_Circuit_(Prototype,_iQue).zip
+{"A88C",0x22},//Mario_Luigi_Super_Star_Saga_(Prototype,_iQue).zip
+{"BIIC",0x33},//Polarium_Advance_(Prototype,_iQue).zip
+{"AGLC",0x22},//Tomato_Adventure_(Prototype,_iQue).zip
+
 {"SBJU",0x11},//???? - Super Block Jump - Game Boy Advance Edition (U) (PD).zip
 {"Home",0x11},//???? - Coin Adventure (U) (PD).zip
 {"A2UU",0x11},//???? - EarthBound - The Giygas Chronicles (U) (Hack).zip

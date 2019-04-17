@@ -1,2 +1,0 @@
-
-int viewText(TCHAR *filename);
