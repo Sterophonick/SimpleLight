@@ -1209,6 +1209,7 @@ void save_set_info(void)
 	SET_info_buffer[12] = gl_show_Thumbnail;	
 	
 	SET_info_buffer[13] = gl_ingame_RTC_open_status;
+	SET_info_buffer[14] = gl_toggle_reset;
 						
 	//save to nor 
 	Save_SET_info(SET_info_buffer,0x200);

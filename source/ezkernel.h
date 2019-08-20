@@ -98,6 +98,7 @@ extern u16 gl_color_NORFULL;
 extern u16 gl_color_btn_clean;
 
 u32 Setting_window(void);
+extern u16 gl_toggle_reset;
 
 
 u32 LoadRTSfile(TCHAR *filename);

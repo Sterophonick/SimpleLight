@@ -164,7 +164,7 @@ const char zh_error_5[]="创建存档错误";
 const char zh_error_6[]="RTS文件错误";
 
 const char zh_theme_credit[]="Sterophonick的SimpleLight主";
-const char zh_theme_credit2[]="題2.3";
+const char zh_theme_credit2[]="題2.5";
 
 const char zh_copying_data[]="复制ROM ...";
 
@@ -184,9 +184,8 @@ const char *zh_nor_op[3]={
 
 const char *zh_more_options[2]={
 	"切换缩略图",
-	"",
+	"切换重置",
 };
-
 
 //英文
 const char en_init_error[]="Failed to initialize microSD card.";
@@ -224,7 +223,7 @@ const char en_ok_btn[]=" OK";
 const char en_formatnor_info1[]="Sure? This will be";
 const char en_formatnor_info2[]=" about 4 minutes.";
 
-const char en_theme_credit[]="SimpleLight theme 2.3 by";
+const char en_theme_credit[]="SimpleLight theme 2.5 by";
 const char en_theme_credit2[]="Sterophonick.";
 
 const char en_check_sav[]="Checking Save Data...";
@@ -285,7 +284,8 @@ const char *en_nor_op[3]={
 };	
 const char *en_more_options[2]={
 	"Toggle thumbnail",
-	"",//Start Random Game
+	"Toggle reset",
+	//Start Random Game
 };
 
 //---------------------------------------------------------------------------------

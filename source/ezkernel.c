@@ -69,6 +69,7 @@
 //Second Page for settings
 //Start Random Game option
 //Launching .mbz file
+//Toggleable cheats in-game
 
 char *mod_ee;
 
@@ -101,6 +102,7 @@ u16 gl_select_lang;
 u16 gl_engine_sel;
 
 u16 gl_show_Thumbnail;
+u16 gl_toggle_reset;
 u16 gl_ingame_RTC_open_status;
 
 
@@ -1277,6 +1279,10 @@ void CheckSwitch(void)
     if( (gl_show_Thumbnail != 0x0) && (gl_show_Thumbnail != 0x1)) {
         gl_show_Thumbnail = 0x0;
     }
+    gl_toggle_reset = Read_SET_info(14);
+    if( (gl_toggle_reset != 0x0) && (gl_toggle_reset != 0x1)) {
+        gl_toggle_reset = 0x0;
+    }
     gl_ingame_RTC_open_status = Read_SET_info(13);
     if( (gl_ingame_RTC_open_status != 0x0) && (gl_ingame_RTC_open_status != 0x1)) {
         gl_ingame_RTC_open_status = 0x1;
@@ -1514,7 +1520,7 @@ u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR *filename,u32 is_EMU)
             Address=blocknum;
             while(Address>=0x400000) {
                 Address-=0x400000;
-                page+=0x8000;
+                page+=0x800;
             }
             SetPSRampage(page);
             dmaCopy((void*)pReadCache,PSRAMBase_S98 + rom_start_address + Address, 0x20000);
@@ -1550,6 +1556,7 @@ void save_set_info_SELECT(void)
         SET_info_buffer[address] = Read_SET_info(address);
     }
     SET_info_buffer[12] = gl_show_Thumbnail;
+	SET_info_buffer[14] = gl_toggle_reset;
     //save to nor
     Save_SET_info(SET_info_buffer,0x200);
 }
@@ -1757,6 +1764,8 @@ int main(void)
     u32 shift;
     u32 short_filename=0;
     u8 error_num;
+	gl_show_Thumbnail = Read_SET_info(12);
+	gl_toggle_reset = Read_SET_info(14);
     gl_currentpage = 0x8002 ;//kernel mode
     SetMode (MODE_3 | BG2_ENABLE );
     SD_Disable();
@@ -1821,6 +1830,16 @@ int main(void)
         memset(pNorFS,00,sizeof(FM_NOR_FS)*MAX_NOR);
         Save_NOR_info(pNorFS,sizeof(FM_NOR_FS)*MAX_NOR);
     }
+	else {
+		VBlankIntrWait();
+		scanKeys();
+		if(keysDownRepeat() & KEY_L || keysDown() & KEY_L)
+		{
+			page_num = NOR_list;
+			goto load_file;
+		}
+	}
+
 refind_file:
     if(page_num== SD_list) {
         folder_total = 0;
@@ -2113,12 +2132,23 @@ re_showfile:
 					Show_MENU_btn();
 										u8 MENU_line = 0;
 					u8 re_menu=1;
-					u8 MENU_max = 0;
+					u8 MENU_max = 1;
+					u16 name_color = 0;
 				while(1)
 				{
 					if(re_menu == 1)
 					{
 						Show_Extra_Menu(MENU_line);
+        if(MENU_line== 1) {
+            name_color = gl_color_selected;
+        }
+        else {
+            name_color = gl_color_text;
+        }
+		if(gl_toggle_reset)
+			DrawHZText12("(ON)", 32, 60+(6*13), 44, name_color, 1);
+		else
+			DrawHZText12("(OFF)", 32, 60+(6*13), 44, name_color, 1);
 					    re_menu=0;
 					}
 					re_menu = 0;
@@ -2131,18 +2161,10 @@ re_showfile:
                     MENU_line++;
                     re_menu=1;
                 }
-                else if(MENU_line == MENU_max) {
-                    MENU_line=0;
-                    re_menu=1;
-                }
             }
             else if(keysdown & KEY_UP) {
-                if (MENU_line ) {
+                if (MENU_line > 0) {
                     MENU_line--;
-                    re_menu=1;
-                }
-                else if(MENU_line == 0) {
-                    MENU_line=MENU_max;
                     re_menu=1;
                 }
             }
@@ -2161,10 +2183,17 @@ re_showfile:
 							gl_show_Thumbnail = !gl_show_Thumbnail;
 							save_set_info_SELECT();
 							updata=1;
-							 Refresh_filename(show_offset,file_select,updata,gl_show_Thumbnail&&is_GBA);
-							 goto refind_file;
+							Refresh_filename(show_offset,file_select,updata,gl_show_Thumbnail&&is_GBA);
+							goto refind_file;
 						}
 						else if(MENU_line==1) {
+							gl_toggle_reset = !gl_toggle_reset;
+							save_set_info_SELECT();
+							updata=1;
+							Refresh_filename(show_offset,file_select,updata,gl_show_Thumbnail&&is_GBA);
+							goto refind_file;
+						}
+						else if(MENU_line==2) {
 							//StartRandomROM(currentpath);
 						}
 					}
@@ -2375,6 +2404,9 @@ re_show_menu:
             }
             ShowTime(page_num,page_mode);
         }	//3
+load_file:
+
+
         Clear(0, 0, 240, 160, gl_color_cheat_black, 1);
         DrawHZText12(gl_Loading,0,(240-strlen(gl_Loading)*6)/2,74, gl_color_text,1);
         u32 gamefilesize=0;
@@ -2567,7 +2599,7 @@ re_show_menu:
 				int bootmode=((is_EMU > 3)&&(is_EMU < 9)) ?
 					((is_EMU == 6) ? 2
 				       : (is_EMU == 7) ? 4 
-					    : ((is_EMU == 8) ? 5 : 3)) : !key_L;
+					    : ((is_EMU == 8) ? 5 : 3)) : gl_toggle_reset;
 				SetRompageWithHardReset(0x200, bootmode);
 				while(1) {
 					VBlankIntrWait();
@@ -2598,7 +2630,7 @@ re_show_menu:
                     Send_FATbuffer(FAT_table_buffer,0);
                     GBApatch_Cleanrom(PSRAMBase_S98,gamefilesize);
                     //wait_btn();
-                    SetRompageWithHardReset(0x200,!key_L);
+                    SetRompageWithHardReset(0x200,gl_toggle_reset);
                     break;
                 case 1://PSRAM BOOT WITH ADDON
                     gl_reset_on = Read_SET_info(1);
@@ -2650,7 +2682,7 @@ re_show_menu:
                         Make_pat_file(pfilename);
                     }
                     //wait_btn();
-                    SetRompageWithHardReset(0x200,!key_L);
+                    SetRompageWithHardReset(0x200,gl_toggle_reset);
                     break;
                 case 2://WRITE TO NOR CLEAN
                     f_chdir(currentpath);//return to game folder
