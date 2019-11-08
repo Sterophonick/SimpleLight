@@ -846,7 +846,7 @@ void Open_cht_file(TCHAR *gamefilename,u32 havecht)
 		
 	if(havecht == 0x0000FFFF)
 	{
-		res=f_chdir("/SYSTSEM/CHEAT");
+		res=f_chdir("/SYSTEM/CHEAT");
 		if(res != FR_OK){
 			return;
 		}	
