@@ -1,4 +1,4 @@
-#EZ-FLASH OMEGA Kernel
+# EZ-FLASH OMEGA Kernel
 
 ### How to build 
 
