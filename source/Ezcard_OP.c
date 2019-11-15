@@ -17,6 +17,10 @@
 extern u32 FAT_table_buffer[FAT_table_size/4]EWRAM_BSS;
 u32 crc32(unsigned char *buf, u32 size);
 
+extern     u32 key_L;
+
+u8 resettemp;
+
 extern FIL gfile;
 // --------------------------------------------------------------------
 #define FlashBase_S71		0x08000000
@@ -249,7 +253,11 @@ void IWRAM_CODE SetRompageWithHardReset(u16 page,u32 bootmode)
 	REG_SOUNDBIAS=0x0200;
 
 	if(bootmode==1) {
-		HardReset();
+		if(key_L)
+			SoftReset_now(0,0xff);
+		else
+			HardReset();
+		
 	} else if (bootmode==2 || bootmode==4 || bootmode==5) {
 		int i;
 		//Clear exram up to pogoshell arg
@@ -285,7 +293,10 @@ void IWRAM_CODE SetRompageWithHardReset(u16 page,u32 bootmode)
 		SoftReset_now(0,0xfe);
 	}
 	else {
-		SoftReset_now(0,0xff);
+		if(key_L)
+			HardReset();
+		else
+			SoftReset_now(0,0xff);
 	}
 }
 // --------------------------------------------------------------------
