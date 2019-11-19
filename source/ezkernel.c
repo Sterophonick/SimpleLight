@@ -102,6 +102,8 @@ u8 p_folder_select_show_offset[100]EWRAM_BSS;
 u8 p_folder_select_file_select[100]EWRAM_BSS;
 u32 folder_select;
 
+    u32 key_L=0;
+
 u32 game_total_SD;
 u32 game_total_NOR;
 u32 folder_total;
@@ -1910,7 +1912,6 @@ re_showfile:
     shift =0;
     page_mode=0;
     updata=1;
-    u32 key_L=0;
     setRepeat(5,1);
     while(1) {
         while(1) { //2
