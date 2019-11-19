@@ -22,13 +22,23 @@
 #include "showcht.h"
 
 #include "images/splash.h"
+
+#ifdef DARK
+#include "images/SDd.h"
+#include "images/NORd.h"
+#include "images/SETd.h"
+#include "images/HELPd.h"
+#include "images/RECENTLYd.h"
+#include "images/MENUd.h"
+#else
 #include "images/SD.h"
 #include "images/NOR.h"
 #include "images/SET.h"
 #include "images/HELP.h"
 #include "images/RECENTLY.h"
-
 #include "images/MENU.h"
+#endif
+
 #include "images/icons.h"
 #include "images/nor_icon.h"
 #include "images/icon_FC.h"
