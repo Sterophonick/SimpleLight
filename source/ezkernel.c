@@ -933,7 +933,7 @@ u32 show_recently_play(void)
     u32 return_val=0xBB;
     u32 firsttime = 1;
     DrawPic((u16*)gImage_RECENTLY, 0, 0, 240, 160, 0, 0, 1);
-    DrawHZText12(gl_recently_play,0,(240-strlen(gl_recently_play)*6)/2,4, 0x7F00,1);//TITLE
+    //DrawHZText12(gl_recently_play,0,(240-strlen(gl_recently_play)*6)/2,4, 0x7F00,1);//TITLE
     all_count = get_count();
     if(all_count) {
         setRepeat(15,1);

@@ -835,7 +835,6 @@ u32 Check_cheat_file(TCHAR *gamefilename)
 void Show_num(u32 totalcount,u32 select)
 {
 	char msg[20];
-	//DrawPic((u16*)gImage_RECENTLY, 0, 0, 240, 160, 0, 0, 1);
 	#ifdef DARK
 	Clear(120,0,120,18,0x1084,1);
 	#else
@@ -848,6 +847,7 @@ void Show_num(u32 totalcount,u32 select)
 //------------------------------------------------------------------
 void Open_cht_file(TCHAR *gamefilename,u32 havecht)
 {
+	DrawPic((u16*)gImage_RECENTLY, 0, 0, 240, 160, 0, 0, 1);
 	u32 res;
 	char msg[128];
 	TCHAR chtnamebuf[100];	
