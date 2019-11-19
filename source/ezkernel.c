@@ -39,30 +39,34 @@
 #include "images/MENU.h"
 #endif
 
+#ifdef DARK
+#include "images/icon_chipd.h"
+#else
+#include "images/icon_chip.h"
+#endif
+
+#include "images/icon_CV.h"
+#include "images/icon_MSX.h"
+#include "images/icon_GG.h"
+#include "images/icon_SMS.h"
 #include "images/icons.h"
+#include "images/icon_SV.h"
+#include "images/icon_a26.h"
 #include "images/nor_icon.h"
+#include "images/icon_GBC.h"
+#include "images/icon_WS.h"
 #include "images/icon_FC.h"
 #include "images/icon_GB.h"
-#include "images/icon_GBC.h"
-#include "images/icon_GG.h"
 #include "images/icon_SG.h"
-#include "images/icon_SMS.h"
 #include "images/icon_NG.h"
 #include "images/icon_IMG.h"
 #include "images/icon_TXT.h"
-#include "images/icon_SV.h"
-#include "images/icon_WS.h"
-#include "images/icon_CV.h"
-#include "images/icon_MSX.h"
 #include "images/icon_PCE.h"
 #include "images/icon_ZX.h"
 #include "images/icon_o2.h"
-#include "images/icon_chip.h"
 #include "images/icon_pokem.h"
 #include "images/icon_vmu.h"
-#include "images/icon_mid.h"
 #include "images/icon_wav.h"
-#include "images/icon_nsf.h"
 #include "images/icon_arc.h"
 #include "images/NOTFOUND.h"
 
@@ -133,7 +137,11 @@ u16 gl_cheat_on;
 
 //----------------------------------------
 u16 gl_color_selected 		= RGB(00,20,26);
+#ifdef DARK
+u16 gl_color_text 				= RGB(31,31,31);
+#else
 u16 gl_color_text 				= RGB(00,00,00);
+#endif
 u16 gl_color_selectBG_sd 	= RGB(15,15,31);
 u16 gl_color_selectBG_nor = RGB(18,3,3);
 u16 gl_color_MENU_btn			= RGB(20,20,20);
@@ -373,16 +381,19 @@ void Show_ICON_filename(u32 show_offset,u32 file_select,u32 haveThumbnail)
             icon = (u16*)(gImage_icon_vmu);
         }
 		else if(!strcasecmp(&(pfilename[strlen8-3]), "mid")) { //MIDI Sequence
-            icon = (u16*)(gImage_icon_mid);
+            icon = (u16*)(gImage_icon_wav);
         }
 		else if(!strcasecmp(&(pfilename[strlen8-3]), "wav")) { //Wave Sound
             icon = (u16*)(gImage_icon_wav);
         }
 		else if(!strcasecmp(&(pfilename[strlen8-3]), "nsf")) { //NSF sound file
-            icon = (u16*)(gImage_icon_nsf);
+            icon = (u16*)(gImage_icon_wav);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "k3m")) { //Krawall Advance Module
+            icon = (u16*)(gImage_icon_wav);
         }
 		else if(!strcasecmp(&(pfilename[strlen8-3]), "mod")) { //Protracker mod file
-            icon = (u16*)(gImage_icon_mid);
+            icon = (u16*)(gImage_icon_wav);
         }
 		else if(!strcasecmp(&(pfilename[strlen8-3]), "pcx")) { //ZSoft Paintbrush PCX image
             icon = (u16*)(gImage_icon_IMG);
@@ -400,10 +411,13 @@ void Show_ICON_filename(u32 show_offset,u32 file_select,u32 haveThumbnail)
             icon = (u16*)(gImage_icon_IMG);
         }
 		else if(!strcasecmp(&(pfilename[strlen8-3]), "bgf")) { //BoyScout module
-            icon = (u16*)(gImage_icon_mid);
+            icon = (u16*)(gImage_icon_wav);
         }
 		else if(!strcasecmp(&(pfilename[strlen8-3]), "arc")) { //4kb Arcadia 2001 ROM File
             icon = (u16*)(gImage_icon_arc);
+        }
+		else if(!strcasecmp(&(pfilename[strlen8-3]), "a26")) { //Atari 2600 ROM file (emu indev)
+            icon = (u16*)(gImage_icon_a26);
         }
         else {
             icon = (u16*)(gImage_icons+2*16*14*2);
@@ -1788,45 +1802,48 @@ int main(void)
     if((Current_FW_ver < Built_in_ver) || (Current_FW_ver == 99)) { //99 is test ver
         Check_FW_update(Current_FW_ver,Built_in_ver);
     }
-    REG_BLDCNT = 0x0084;
-    REG_BLDY = 0x0010;
+    //REG_BLDCNT = 0x0084;
+    //REG_BLDY = 0x0010;
     DrawPic((u16*)gImage_splash, 0, 0, 240, 160, 0, 0, 1);
     CheckLanguage();
     CheckSwitch();
     u8 i;
+	/*
     for(i = 16; i > 0; i--) {
         VBlankIntrWait();
         VBlankIntrWait();
         VBlankIntrWait();
         REG_BLDY = i;
     }
+	*/
     REG_BLDCNT = 0x00C4;
     res = f_mount(&EZcardFs, "", 1);
     if( res != FR_OK) {
-        DrawHZText12(gl_init_error,0,2,20, gl_color_text,1);
-        DrawHZText12(gl_power_off,0,2,33, gl_color_text,1);
+        DrawHZText12(gl_init_error,0,2,20, 0x0000,1);
+        DrawHZText12(gl_power_off,0,2,33, 0x0000,1);
         while(1) {
             VBlankIntrWait();
         }
     }
     else {
-        DrawHZText12(gl_init_ok,0,2,20, gl_color_text,1);
-        DrawHZText12(gl_Loading,0,2,33, gl_color_text,1);
+        DrawHZText12(gl_init_ok,0,2,20, 0x0000,1);
+        DrawHZText12(gl_Loading,0,2,33, 0x0000,1);
     }
-    for(i = 0; i < 30; i++) {
-        VBlankIntrWait();
-    }
+	/*
     for(i = 0; i < 16; i++) {
         VBlankIntrWait();
         REG_BLDY = i;
     }
+	*/
     if(page_num==SD_list) {
         DrawPic((u16*)gImage_SD, 0, 0, 240, 160, 0, 0, 1);
     }
+	/*
     for(i = 16; i > 0; i--) {
         VBlankIntrWait();
         REG_BLDY = i;
     }
+	*/
     f_chdir("/");
     TCHAR currentpath[MAX_path_len];
     memset(currentpath,00,MAX_path_len);
@@ -2419,7 +2436,7 @@ load_file:
 
 
         Clear(0, 0, 240, 160, gl_color_cheat_black, 1);
-        DrawHZText12(gl_Loading,0,(240-strlen(gl_Loading)*6)/2,74, gl_color_text,1);
+        //DrawHZText12(gl_Loading,0,(240-strlen(gl_Loading)*6)/2,74, gl_color_text,1);
         u32 gamefilesize=0;
         u32 savefilesize=0;
         u32 ret;

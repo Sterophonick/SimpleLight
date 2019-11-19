@@ -836,7 +836,11 @@ void Show_num(u32 totalcount,u32 select)
 {
 	char msg[20];
 	//DrawPic((u16*)gImage_RECENTLY, 0, 0, 240, 160, 0, 0, 1);
-	Clear(0,0,240,18,0x7F00,1);
+	#ifdef DARK
+	Clear(120,0,120,18,0x1084,1);
+	#else
+	Clear(120,0,120,18,0x7F00,1);
+	#endif
 	sprintf(msg,"[%03lu/%03lu]",select,totalcount);
 
 	DrawHZText12(msg,0,182,3, gl_color_chtTXT,1);
