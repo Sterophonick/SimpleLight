@@ -1522,13 +1522,6 @@ u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR *filename,u32 is_EMU)
 			dmaCopy((void*)pReadCache,PSRAMBase_S98 + 0x57de, 0x4);	//exit no sram write
 			dmaCopy((void*)pReadCache,PSRAMBase_S98 + 0x57ea, 0x4);
         }
-        else if (is_EMU==2 || is_EMU==1) {
-            *(vu32*)pReadCache = 0x46c046c0;
-            dmaCopy((void*)pReadCache,PSRAMBase_S98 + 0x3AA0, 0x4);	//exit no sram write
-            dmaCopy((void*)pReadCache,PSRAMBase_S98 + 0x39F8, 0x4);	//L R no write
-            *(vu32*)pReadCache = 0x1C2246c0;//usr rtc
-            dmaCopy((void*)pReadCache,PSRAMBase_S98 + 0x830, 0x4);
-        }
         Clear(60,160-15,120,15,gl_color_cheat_black,1);
         ShowbootProgress(gl_generating_emu);
         f_lseek(&gfile, 0x0000);
