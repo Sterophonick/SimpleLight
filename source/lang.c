@@ -187,7 +187,7 @@ const char *zh_more_options[2]={
 	"«–ªª÷ÿ÷√",
 };
 
-//”¢Œƒ
+//English
 const char en_init_error[]="Failed to initialize microSD card.";
 const char en_power_off[]="Power off the console.";
 const char en_init_ok[]="microSD card initialization successful.";
