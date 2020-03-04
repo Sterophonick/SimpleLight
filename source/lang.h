@@ -88,6 +88,9 @@ extern char**  	gl_rom_menu;
 extern char**  gl_more_options;
 extern char**   gl_nor_op;
 
+// ASCII Font
+extern unsigned char* ASC_DATA;
+
 void LoadEnglish(void);
 void LoadChinese(void);
 

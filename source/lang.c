@@ -1,5 +1,8 @@
 #include "lang.h"
 
+#include "asc126_old.h"
+#include "asc126_new.h"
+
 char* gl_init_error;
 char* gl_power_off;
 char* gl_init_ok;
@@ -87,6 +90,7 @@ char**  gl_nor_op;
 
 char* gl_copying_data;
 
+unsigned char* ASC_DATA;
 
 //中文
 const char zh_init_error[]="TF卡初始化失败";
@@ -376,6 +380,9 @@ void LoadChinese(void)
 	gl_copying_data = (char**)zh_copying_data;
 
 	gl_generating_emu = (char**)zh_generating_emu;
+
+	// For Chinese, Use old font
+	ASC_DATA = ASC_DATA_OLD;
 }
 //---------------------------------------------------------------------------------
 void LoadEnglish(void)
@@ -463,4 +470,7 @@ void LoadEnglish(void)
 	gl_copying_data = (char**)en_copying_data;
 	
 	gl_generating_emu = (char**)en_generating_emu;
+
+	// For English, Use new font
+	ASC_DATA = ASC_DATA_NEW;
 }
