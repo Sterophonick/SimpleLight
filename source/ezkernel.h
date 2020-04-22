@@ -99,6 +99,7 @@ extern u16 gl_color_btn_clean;
 
 u32 Setting_window(void);
 extern u16 gl_toggle_reset;
+extern u16 gl_toggle_backup;
 
 
 u32 LoadRTSfile(TCHAR *filename);
