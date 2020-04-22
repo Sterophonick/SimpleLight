@@ -67,6 +67,7 @@ ifneq ($(BUILDDIR), $(CURDIR))
 #---------------------------------------------------------------------------------
  
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
+export KERNEL   :=  $(CURDIR)/ezkernel.bin
  
 export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
 					$(foreach dir,$(DATA),$(CURDIR)/$(dir)) \
@@ -122,7 +123,7 @@ $(BUILD):
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).gba 
+	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).gba $(KERNEL)
  
  
 #---------------------------------------------------------------------------------
@@ -131,6 +132,9 @@ else
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
+
+$(KERNEL)    :   $(OUTPUT).gba
+	@cp $(OUTPUT).gba $(KERNEL)
 
 $(OUTPUT).gba	:	$(OUTPUT).elf
 

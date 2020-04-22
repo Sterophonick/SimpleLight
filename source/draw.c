@@ -7,7 +7,6 @@
 
 #include "lang.h"
 #include "HZK12.h"
-#include "asc126.h"
 
 
 #include "ezkernel.h"

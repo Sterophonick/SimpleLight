@@ -1,5 +1,8 @@
 #include "lang.h"
 
+#include "asc126_old.h"
+#include "asc126_new.h"
+
 char* gl_init_error;
 char* gl_power_off;
 char* gl_init_ok;
@@ -87,6 +90,7 @@ char**  gl_nor_op;
 
 char* gl_copying_data;
 
+unsigned char* ASC_DATA;
 
 //中文
 const char zh_init_error[]="TF卡初始化失败";
@@ -96,10 +100,8 @@ const char zh_Loading[]="加载中...";
 const char zh_file_overflow[]="文件太大,不能加载";
 
 const char zh_menu_btn[]=" [B]取消    [A]确定";
-const char zh_writing[]="正在写...";
+const char zh_writing[]="正在写入...";
 const char zh_lastest_game[]="请选择最后一个游戏";
-
-const char zh_generating_emu[]="生成仿真器......";
 
 const char zh_time[] ="     时间";
 const char zh_Mon[]="一";
@@ -121,10 +123,12 @@ const char zh_hot_key2[]=" 菜单热键";
 
 const char zh_language[]=" LANGUAGE";
 const char zh_lang[]=" 中文";
-
 const char zh_set_btn[]="设置";
 const char zh_ok_btn[]="保存";
 const char zh_formatnor_info[]="确定?大约4分钟";
+
+const char zh_theme_credit[]="Simple主题 v2.7";
+const char zh_theme_credit2[]="by Sterophonick";
 
 const char zh_check_sav[]="检查SAV文件";
 const char zh_make_sav[]="创建SAV文件";
@@ -135,7 +139,11 @@ const char zh_make_RTS[]="创建RTS文件";
 const char zh_check_pat[]="检查PAT文件";
 const char zh_make_pat[]="创建PAT文件";
 
+const char zh_please_wait[]="请等待...";
+
 const char zh_loading_game[]="加载游戏";
+
+const char zh_no_roms[]="找不到.gba文件!";
 
 const char zh_engine[]="     引擎";
 const char zh_use_engine[]="快速补丁引擎";
@@ -143,15 +151,14 @@ const char zh_use_engine[]="快速补丁引擎";
 const char zh_recently_play[]="最近游戏列表";
 
 const char zh_START_help[]="打开最近游戏列表";
-const char zh_SELECT_help[]="更多的选择";
-const char zh_L_A_help[]="没有冷启动";
+const char zh_SELECT_help[]="更多选项";
+const char zh_L_A_help[]="临时切换冷启动";
 const char zh_LSTART_help[]="删除文件";
 const char zh_online_manual[]="  在线说明书";
 
-const char zh_no_game_played[]="还没玩过游戏";
+const char zh_no_game_played[]="最近还没玩过游戏";
 
 const char zh_ingameRTC[]=" 游戏时钟";
-//const char zh_offRTC_powersave[]=" ";
 const char zh_ingameRTC_open[]="打开";
 const char zh_ingameRTC_close[]="关闭";//TURNOFF TO POWER SAVE
 
@@ -163,10 +170,8 @@ const char zh_error_4[]="读取存档错误";
 const char zh_error_5[]="创建存档错误";
 const char zh_error_6[]="RTS文件错误";
 
-const char zh_theme_credit[]="Sterophonick的Simple主";
-const char zh_theme_credit2[]="題2.7";
-
-const char zh_copying_data[]="复制ROM ...";
+const char zh_copying_data[]="复制ROM...";
+const char zh_generating_emu[]="生成模拟器...";
 
 const char *zh_rom_menu[]={
 	"直接启动",
@@ -184,10 +189,10 @@ const char *zh_nor_op[3]={
 
 const char *zh_more_options[2]={
 	"切换缩略图",
-	"切换重置",
+	"切换冷启动",
 };
 
-//英文
+//English
 const char en_init_error[]="Failed to initialize microSD card.";
 const char en_power_off[]="Power off the console.";
 const char en_init_ok[]="microSD card initialization successful.";
@@ -375,6 +380,9 @@ void LoadChinese(void)
 	gl_copying_data = (char**)zh_copying_data;
 
 	gl_generating_emu = (char**)zh_generating_emu;
+
+	// For Chinese, Use old font
+	ASC_DATA = ASC_DATA_OLD;
 }
 //---------------------------------------------------------------------------------
 void LoadEnglish(void)
@@ -462,4 +470,7 @@ void LoadEnglish(void)
 	gl_copying_data = (char**)en_copying_data;
 	
 	gl_generating_emu = (char**)en_generating_emu;
+
+	// For English, Use new font
+	ASC_DATA = ASC_DATA_NEW;
 }
