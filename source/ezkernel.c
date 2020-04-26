@@ -68,6 +68,7 @@
 #include "images/icon_vmu.h"
 #include "images/icon_wav.h"
 #include "images/icon_arc.h"
+#include "images/icon_sc3000.h"
 #include "images/NOTFOUND.h"
 
 #include "images/Chinese_manual.h"
@@ -420,6 +421,9 @@ void Show_ICON_filename(u32 show_offset, u32 file_select, u32 haveThumbnail)
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "a26")) { //Atari 2600 ROM file (emu indev)
 			icon = (u16*)(gImage_icon_a26);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "sc")) { //Sega SC-3000 ROM File
+			icon = (u16*)(gImage_icon_SC3000);
 		}
 		else {
 			icon = (u16*)(gImage_icons + 2 * 16 * 14 * 2);
@@ -2820,7 +2824,7 @@ re_showfile:
 					goto refind_file;
 				}
 				else if (res == 2) {
-					DrawHZText12("NOR Full!", 0, 0, 160 - 15, gl_color_NORFULL, 1);
+					DrawHZText12("NOR Full!",0,(240-(9*6))/2,86,gl_color_NORFULL,1);
 					wait_btn();
 					goto refind_file;
 				}

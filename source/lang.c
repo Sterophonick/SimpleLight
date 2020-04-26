@@ -127,7 +127,7 @@ const char zh_set_btn[]="设置";
 const char zh_ok_btn[]="保存";
 const char zh_formatnor_info[]="确定?大约4分钟";
 
-const char zh_theme_credit[]="Simple主题 v2.8";
+const char zh_theme_credit[]="Simple主题 v2.9";
 const char zh_theme_credit2[]="by Sterophonick";
 
 const char zh_check_sav[]="检查SAV文件";
@@ -229,7 +229,7 @@ const char en_ok_btn[]=" OK";
 const char en_formatnor_info1[]="Sure? This will be";
 const char en_formatnor_info2[]=" about 4 minutes.";
 
-const char en_theme_credit[]="Simple theme 2.8 by";
+const char en_theme_credit[]="Simple v2.9 by";
 const char en_theme_credit2[]="Sterophonick.";
 
 const char en_check_sav[]="Checking Save Data...";
