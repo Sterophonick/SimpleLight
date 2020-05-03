@@ -1,0 +1,7 @@
+%rename link                old_link
+
+*link:
+%(old_link) -T ../src/gba_mb_my.ld%s
+
+*startfile:
+gba_crt0_my%O%s crti%O%s crtbegin%O%s

@@ -1480,7 +1480,7 @@ u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR* filename, u32 is_EMU)
 	case 3://nes
 		dmaCopy((void*)pocketnes_gba, pReadCache, pocketnes_gba_size);
 		dmaCopy((void*)pReadCache, PSRAMBase_S98, pocketnes_gba_size);
-		rom_start_address = pocketnes_gba_size + 0x30;
+		rom_start_address = pocketnes_gba_size;
 		break;
 	default:
 		res = f_open(&gfile, plugin, FA_READ);
@@ -1526,18 +1526,6 @@ u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR* filename, u32 is_EMU)
 	res = f_open(&gfile, filename, FA_READ);
 	if (res == FR_OK) {
 		filesize = f_size(&gfile);
-		if (is_EMU == 3) { //nes pocketnes_2013_07_01
-			*(vu32*)pReadCache = 0x45564153;
-			*((vu32*)pReadCache + 1) = 0x0;
-			dmaCopy((void*)pReadCache, PSRAMBase_S98 + rom_start_address - 0x30, 0x8);
-			*(vu32*)pReadCache = filesize;
-			dmaCopy((void*)pReadCache, PSRAMBase_S98 + rom_start_address - 0x10, 0x4);
-			*(vu32*)pReadCache = 0x709346c0;//usr rtc
-			dmaCopy((void*)pReadCache, PSRAMBase_S98 + 0x1EA0, 0x4);
-			*(vu32*)pReadCache = 0x46c046c0;
-			dmaCopy((void*)pReadCache, PSRAMBase_S98 + 0x57de, 0x4);	//exit no sram write
-			dmaCopy((void*)pReadCache, PSRAMBase_S98 + 0x57ea, 0x4);
-		}
 		Clear(60, 160 - 15, 120, 15, gl_color_cheat_black, 1);
 		ShowbootProgress(gl_generating_emu);
 		f_lseek(&gfile, 0x0000);
@@ -1683,6 +1671,33 @@ void SD_list_L_START(show_offset, file_select, folder_total)
 		}
 	}
 }
+
+//---------------------------------------------------------------------------------
+//Delete save file
+void SD_list_L_SELECT(show_offset, file_select, folder_total)
+{
+	u32 res;
+	DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 1, 0, 1);//show menu pic
+	Show_MENU_btn();
+	DrawHZText12(gl_LSTART_help, 0, 60, 60, gl_color_text, 1);//use sure?gl_LSTART_help
+	DrawHZText12(pFilename_buffer[show_offset + file_select - folder_total].filename, 20, 60, 75, 0x001F, 1);//file name
+	DrawHZText12(temp, 5, 60, 90, gl_color_text, 1);//use sure?
+	while (1) {
+		VBlankIntrWait();
+		scanKeys();
+		u16 keysdown = keysDown();
+		if (keysdown & KEY_A) {
+			TCHAR* pdelfilename;
+			pdelfilename = pFilename_buffer[show_offset + file_select - folder_total].filename;
+			res = f_unlink(pdelfilename);
+			break;
+		}
+		else if (keysdown & KEY_B) {
+			break;
+		}
+	}
+}
+
 //---------------------------------------------------------------------------------
 u32 Check_file_type(TCHAR* pfilename)
 {
@@ -2417,6 +2432,7 @@ re_showfile:
 			havecht = 0;
 			Save_num = 0xF;
 			MENU_max = 0;
+			goto load_file;;
 		}
 		else {
 			res = f_chdir(currentpath);//can open  re list game
