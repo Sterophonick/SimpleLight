@@ -67,6 +67,7 @@ char* gl_START_help;
 char* gl_SELECT_help;
 char* gl_L_A_help;
 char* gl_LSTART_help;
+char* gl_LSELECT_help;
 char* gl_online_manual;
 
 char* gl_no_game_played;
@@ -154,6 +155,7 @@ const char zh_START_help[]="打开最近游戏列表";
 const char zh_SELECT_help[]="更多选项";
 const char zh_L_A_help[]="临时切换冷启动";
 const char zh_LSTART_help[]="删除文件";
+const char zh_LSELECT_help[]="删除保存文件";
 const char zh_online_manual[]="  在线说明书";
 
 const char zh_no_game_played[]="最近还没玩过游戏";
@@ -256,6 +258,7 @@ const char en_START_help[]="Open recently played list";
 const char en_SELECT_help[]="More options";
 const char en_L_A_help[]="No cold start";
 const char en_LSTART_help[]="Delete file";
+const char en_LSELECT_help[]="Delete save file";
 const char en_online_manual[]="Online manual";
 
 const char en_no_game_played[]="No recently played games yet...";
@@ -358,6 +361,7 @@ void LoadChinese(void)
 	gl_SELECT_help = (char*)zh_SELECT_help;
 	gl_L_A_help = (char*)zh_L_A_help;
 	gl_LSTART_help = (char*)zh_LSTART_help;
+	gl_LSELECT_help = (char*)zh_LSELECT_help;
 	gl_online_manual = (char*)zh_online_manual;
 	
 	gl_no_game_played = (char*)zh_no_game_played;
@@ -448,6 +452,7 @@ void LoadEnglish(void)
 	gl_SELECT_help = (char*)en_SELECT_help;
 	gl_L_A_help = (char*)en_L_A_help;
 	gl_LSTART_help = (char*)en_LSTART_help;
+	gl_LSELECT_help = (char*)en_LSELECT_help;
 	gl_online_manual = (char*)en_online_manual;
 	
 	gl_no_game_played = (char*)en_no_game_played;

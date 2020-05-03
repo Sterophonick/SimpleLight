@@ -68,6 +68,7 @@ extern char* gl_START_help;
 extern char* gl_SELECT_help;
 extern char* gl_L_A_help;
 extern char* gl_LSTART_help;
+extern char* gl_LSELECT_help;
 extern char* gl_online_manual;
 
 extern char* gl_no_game_played;

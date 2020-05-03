@@ -1679,7 +1679,7 @@ void SD_list_L_SELECT(show_offset, file_select, folder_total)
 	u32 res;
 	DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 1, 0, 1);//show menu pic
 	Show_MENU_btn();
-	DrawHZText12(gl_LSTART_help, 0, 60, 60, gl_color_text, 1);//use sure?gl_LSTART_help
+	DrawHZText12(gl_LSELECT_help, 0, 60, 60, gl_color_text, 1);//use sure?gl_LSTART_help
 	DrawHZText12(pFilename_buffer[show_offset + file_select - folder_total].filename, 20, 60, 75, 0x001F, 1);//file name
 	DrawHZText12(temp, 5, 60, 90, gl_color_text, 1);//use sure?
 	while (1) {
@@ -2251,6 +2251,15 @@ re_showfile:
 				}
 			}
 			else if (keysdown & KEY_SELECT) {
+				/*
+					if (key_L) {
+						if (show_offset + file_select >= folder_total) {
+							SD_list_L_SELECT(show_offset, file_select, folder_total);
+							goto refind_file;
+						}
+					}
+				else {
+					*/
 				DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 1, 0, 1);//show menu pic
 				Show_MENU_btn();
 				u8 MENU_line = 0;
@@ -2343,6 +2352,7 @@ re_showfile:
 						}
 					}
 				}
+			//}
 			}
 			else if (keysdown & KEY_A) {
 				if (page_num == SD_list) {
