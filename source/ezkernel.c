@@ -404,7 +404,7 @@ void Show_ICON_filename(u32 show_offset, u32 file_select, u32 haveThumbnail)
 		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "vgm")) { //SMS/GG VGM Rip
 			icon = (u16*)(gImage_icon_wav);
 		}
-		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "sb")) { //ZSoft Paintbrush PCX image
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "sb")) { //MaxMod SoundBank
 			icon = (u16*)(gImage_icon_wav);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "ap")) { //aPlib compressed Mode 3 Bitmap
@@ -434,7 +434,7 @@ void Show_ICON_filename(u32 show_offset, u32 file_select, u32 haveThumbnail)
 			16,
 			14,
 			1,
-			gl_color_text,
+			0x0000,
 			1);
 		DrawHZText12(pFilename_buffer[offset + line - need_show_folder].filename, char_num, 3 + 16, showy, name_color, 1);
 		if ((haveThumbnail == 1) && (line > 3))
@@ -1676,12 +1676,15 @@ void SD_list_L_START(show_offset, file_select, folder_total)
 //Delete save file
 void SD_list_L_SELECT(show_offset, file_select, folder_total)
 {
+	u32 strlen8;
+	TCHAR* pfilename;
 	u32 res;
 	DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 1, 0, 1);//show menu pic
 	Show_MENU_btn();
 	DrawHZText12(gl_LSELECT_help, 0, 60, 60, gl_color_text, 1);//use sure?gl_LSTART_help
 	DrawHZText12(pFilename_buffer[show_offset + file_select - folder_total].filename, 20, 60, 75, 0x001F, 1);//file name
 	DrawHZText12(temp, 5, 60, 90, gl_color_text, 1);//use sure?
+			strlen8 = strlen(pfilename);
 	while (1) {
 		VBlankIntrWait();
 		scanKeys();
