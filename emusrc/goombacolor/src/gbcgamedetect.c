@@ -149,6 +149,9 @@ static const int FIRST_GBC_PALETTE = 49;
 
 int GetGbcPaletteNumber(u8 *rom)
 {
+	// Always "Grayscale"
+	return 1;
+#if 0
 	int entryCount = ARRSIZE(gameHashTable);
 	int nameSum = 0;
 	for (int i = 0; i < 16; i++)
@@ -175,4 +178,5 @@ int GetGbcPaletteNumber(u8 *rom)
 		}
 	}
 	return 0;
+#endif
 }
