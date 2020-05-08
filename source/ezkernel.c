@@ -145,7 +145,7 @@ u16 gl_color_text = RGB(31, 31, 31);
 u16 gl_color_text = RGB(00, 00, 00);
 #endif
 u16 gl_color_selectBG_sd = RGB(15, 15, 31);
-u16 gl_color_selectBG_nor = RGB(18, 3, 3);
+u16 gl_color_selectBG_nor = RGB(13, 23, 15);
 u16 gl_color_MENU_btn = RGB(20, 20, 20);
 u16 gl_color_cheat_count = RGB(00, 31, 00);
 u16 gl_color_cheat_black = RGB(00, 00, 00);
@@ -425,6 +425,9 @@ void Show_ICON_filename(u32 show_offset, u32 file_select, u32 haveThumbnail)
 		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "sc")) { //Sega SC-3000 ROM File
 			icon = (u16*)(gImage_icon_SC3000);
 		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "mda")) { //Sharp X68000 music
+			icon = (u16*)(gImage_icon_wav);
+		}
 		else {
 			icon = (u16*)(gImage_icons + 2 * 16 * 14 * 2);
 		}
@@ -670,7 +673,7 @@ void Refresh_filename_NOR(u32 show_offset, u32 file_select, u32 updown)
 		showy1 = y_offset + (file_select - 1) * 14;
 		showy2 = y_offset + (file_select) * 14;
 		ClearWithBG((u16*)gImage_NOR, 17, 20 + xx1 * 14, clean_len, 13, 1);
-		Clear(17, 20 + xx2 * 14, clean_len, 13, gl_color_selectBG_nor, 1);
+		Clear(17, 20 + xx2 * 14, clean_len-2, 13, gl_color_selectBG_nor, 1);
 	}
 	else //if(updown ==3)//up
 	{
@@ -678,7 +681,7 @@ void Refresh_filename_NOR(u32 show_offset, u32 file_select, u32 updown)
 		xx2 = file_select + 1;
 		showy1 = y_offset + (file_select) * 14;
 		showy2 = y_offset + (file_select + 1) * 14;
-		Clear(17, 20 + xx1 * 14, clean_len, 13, gl_color_selectBG_nor, 1);
+		Clear(17, 20 + xx1 * 14, clean_len-2, 13, gl_color_selectBG_nor, 1);
 		ClearWithBG((u16*)gImage_NOR, 17, 20 + xx2 * 14, clean_len, 13, 1);
 	}
 
@@ -699,14 +702,15 @@ void Show_game_num(u32 count, u32 list)
 		if (game_total_SD + folder_total == 0) {
 			count = 0;
 		}
-		sprintf(msg, "", count, game_total_SD + folder_total);
+		sprintf(msg, "[%03lu/%03lu]", count, game_total_SD + folder_total);
 	}
 	else {
 		if (game_total_NOR == 0) {
 			count = 0;
 		}
-		sprintf(msg, "", count, game_total_NOR);
+		sprintf(msg, "[%03lu/%03lu]", count, game_total_NOR);
 	}
+	DrawHZText12(msg,0,185,3, gl_color_text,1);
 }
 //---------------------------------------------------------------------------------
 void Filename_loop(u32 shift, u32 show_offset, u32 file_select, u32 haveThumbnail)
@@ -2066,8 +2070,8 @@ re_showfile:
 			}
 			if (updata == 1) { //reshow all
 				if (page_num == SD_list) {
-					DrawPic((u16*)gImage_SD, 0, 0, 240, 160, 0, 0, 1);
-					//ClearWithBG((u16*)gImage_SD,0, 0, 90, 20, 1);  //
+					DrawPic((u16*)gImage_SD, 0, 0, 240, 160, 0, 0, 1);	
+					//ClearWithBG((u16*)gImage_SD,0, 0, 90, 20, 1);  //  		
 					//ClearWithBG((u16*)gImage_SD,185+6, 3, 6*3, 16, 1);//Show_game_num
 					//ClearWithBG((u16*)gImage_SD,0, 20, 240, 160-20, 1);
 					Show_ICON_filename(show_offset, file_select, gl_show_Thumbnail && is_GBA);
@@ -2099,7 +2103,7 @@ re_showfile:
 					//ClearWithBG((u16*)gImage_NOR,0, 20, 240, 160-20, 1);
 					Show_ICON_filename_NOR(show_offset, file_select);
 				}
-				//Show_game_num(file_select+show_offset+1,page_num);
+				Show_game_num(file_select+show_offset+1,page_num);
 			}
 			else if (updata > 1) {
 				if (page_num == NOR_list) {

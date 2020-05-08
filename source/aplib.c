@@ -7,18 +7,19 @@
  * All Rights Reserved
  */
 
+#include <gba_types.h>
 #include "aplib.h"
 
 /* global variables used */
-unsigned char *aP_d_output;
-unsigned char *aP_d_input;
-unsigned char aP_d_tagbyte;
-unsigned long aP_d_tagpos;
+u8 *aP_d_output;
+u8 *aP_d_input;
+u8 aP_d_tagbyte;
+u32 aP_d_tagpos;
 
 /* input functions */
-unsigned long aP_d_getbit()
+u32 aP_d_getbit()
 {
-   unsigned long tmp;
+   u32 tmp;
 
    if (!aP_d_tagpos--)
    {
@@ -33,9 +34,9 @@ unsigned long aP_d_getbit()
    return (tmp);
 }
 
-unsigned long aP_d_getgamma()
+u32 aP_d_getgamma()
 {
-   unsigned long result = 1;
+   u32 result = 1;
 
    do {
       result = (result << 1) + aP_d_getbit();
@@ -45,11 +46,11 @@ unsigned long aP_d_getgamma()
 }
 
 /* the main depacking function */
-unsigned long aP_depack(unsigned char *source, unsigned char *destination)
+u32 aP_depack(u8 *source, u8 *destination)
 {
-   unsigned long offs, len, R0, LWM;
-   signed long done;
-   signed long i;
+   u32 offs, len, R0, LWM;
+   s32 done;
+   s32 i;
 
    aP_d_input = source;
    aP_d_output = destination;
