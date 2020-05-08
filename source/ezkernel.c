@@ -145,7 +145,11 @@ u16 gl_color_text = RGB(31, 31, 31);
 u16 gl_color_text = RGB(00, 00, 00);
 #endif
 u16 gl_color_selectBG_sd = RGB(15, 15, 31);
+#ifdef DARK
+u16 gl_color_selectBG_nor = RGB(18, 3, 3);
+#else
 u16 gl_color_selectBG_nor = RGB(13, 23, 15);
+#endif
 u16 gl_color_MENU_btn = RGB(20, 20, 20);
 u16 gl_color_cheat_count = RGB(00, 31, 00);
 u16 gl_color_cheat_black = RGB(00, 00, 00);
