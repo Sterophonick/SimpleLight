@@ -263,7 +263,7 @@ void Show_ICON_filename(u32 show_offset, u32 file_select, u32 haveThumbnail)
 			16,
 			14,
 			1,
-			gl_color_text,
+			0x0000,
 			1);
 		DrawHZText12(pFolder[show_offset + line].filename, char_num, 3 + 16, y_offset + line * 14, name_color, 1);
 		if ((haveThumbnail == 1) && (line > 3))
@@ -645,7 +645,7 @@ void Show_ICON_filename_NOR(u32 show_offset, u32 file_select)
 			16,
 			14,
 			1,
-			gl_color_text,
+			0x0000,
 			1);
 		DrawHZText12(pNorFS[show_offset + line].filename, char_num, 1 + 16, y_offset + line * 14, name_color, 1);
 		sprintf(msg, "%4luM", pNorFS[show_offset + line].filesize >> 20);
@@ -947,8 +947,13 @@ u32 show_recently_play(void)
 	u32 re_show = 1;
 	u32 return_val = 0xBB;
 	u32 firsttime = 1;
+#ifdef DARK
+	u16 rcolor = 0x7F00;
+#else
+	u16 rcolor = 0x001F;
+#endif
 	DrawPic((u16*)gImage_RECENTLY, 0, 0, 240, 160, 0, 0, 1);
-	//DrawHZText12(gl_recently_play,0,(240-strlen(gl_recently_play)*6)/2,4, 0x7F00,1);//TITLE
+	DrawHZText12(gl_recently_play,0,(240-strlen(gl_recently_play)*6)/2,4, rcolor,1);//TITLE
 	all_count = get_count();
 	if (all_count) {
 		setRepeat(15, 1);
@@ -1342,15 +1347,12 @@ void ShowTime(u32 page_num, u32 page_mode)
 	rtc_gettime(datetime);
 	rtc_disenable();
 	delay(5);
-	if (page_mode == 0x1) {
-		//ClearWithBG((u16*)gImage_RECENTLY,80, 3, 80, 13, 1);
-	}
-	else if (page_num == SD_list) {
-		//ClearWithBG((u16*)gImage_SD,100, 3, 50, 13, 1);
-	}
-	else if (page_num == NOR_list) {
-		//ClearWithBG((u16*)gImage_NOR,100, 3, 50, 13, 1);
-	}
+	if(page_mode==0x1)
+		ClearWithBG((u16*)gImage_RECENTLY,80, 3, 80, 13, 1);	
+	else if(page_num==SD_list)
+		ClearWithBG((u16*)gImage_SD,100, 3, 50, 13, 1);
+	else if (page_num==NOR_list)
+		ClearWithBG((u16*)gImage_NOR,100, 3, 50, 13, 1);
 	u8 HH = UNBCD(datetime[0] & 0x3F);
 	u8 MM = UNBCD(datetime[1] & 0x7F);
 	u8 SS = UNBCD(datetime[2] & 0x7F);
@@ -1363,7 +1365,8 @@ void ShowTime(u32 page_num, u32 page_mode)
 	if (SS > 59) {
 		SS = 0;
 	}
-	sprintf(msgtime, "", HH, MM, SS);
+	sprintf(msgtime, "%02u:%02u:%02u", HH, MM, SS);
+	DrawHZText12(msgtime,0,100,3,gl_color_text,1);
 }
 
 void IWRAM_CODE make_pogoshell_arguments(TCHAR* cmdname, TCHAR* filename, u32 cmdsize, u32 filesize, u32 Address, u32 offset)
