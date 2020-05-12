@@ -571,7 +571,7 @@ void IWRAM_CODE Refresh_filename(u32 show_offset, u32 file_select, u32 updown, u
 		showy1 = y_offset + (file_select) * 14;
 		showy2 = y_offset + (file_select + 1) * 14;
 		Clear(18, 20 + xx1 * 14, clean_len1 - 3, 13, gl_color_selectBG_sd, 1);
-		ClearWithBG((u16*)gImage_SD, 18, 20 + xx2 * 14, clean_len2 - 2, 13, 1);
+		ClearWithBG((u16*)gImage_SD, 18, 20 + xx2 * 14, clean_len2, 13, 1);
 	}
 	if ((file_select == (need_show_folder - 1)) && (updown == 3)) {
 		DrawHZText12(pFolder[show_offset + xx1].filename, char_num1, 3 + 16, showy1, name_color1, 1);
@@ -1933,7 +1933,7 @@ int main(void)
 	}
 	*/
 	REG_BLDCNT = 0x00C4;
-	//res = f_mount(&EZcardFs, "", 1);
+	res = f_mount(&EZcardFs, "", 1);
 	if (res != FR_OK) {
 		DrawHZText12(gl_init_error, 0, 2, 20, 0x0000, 1);
 		DrawHZText12(gl_power_off, 0, 2, 33, 0x0000, 1);
