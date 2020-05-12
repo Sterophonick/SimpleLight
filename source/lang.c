@@ -189,10 +189,11 @@ const char *zh_nor_op[3]={
 	"全部格式化",
 };
 
-const char *zh_more_options[3]={
+const char *zh_more_options[4]={
 	"切换缩略图",
 	"切换冷启动",
 	"切换备份",
+	"切换粗体",
 };
 
 //English
@@ -291,10 +292,11 @@ const char *en_nor_op[3]={
 	"Delete",
 	"Format all",
 };	
-const char *en_more_options[3]={
+const char *en_more_options[4]={
 	"Toggle thumbnail",
 	"Toggle reset",
 	"Toggle backup",
+	"Toggle bold",
 	//Start Random Game
 };
 
