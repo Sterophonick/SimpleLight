@@ -295,7 +295,7 @@ void Show_ICON_filename(u32 show_offset, u32 file_select, u32 haveThumbnail)
 			char_num = 32;
 		}
 		if (line == file_select) {
-			Clear(18, 20 + file_select * 14, ((char_num == 17) ? (17 * 6 + 1) : (240 - 17)) - 3, 13, gl_color_selectBG_sd, 1);
+			Clear(18, 20 + file_select * 14, ((char_num == 17) ? (17 * 6 + 1) : (240 - 17)), 13, gl_color_selectBG_sd, 1);
 		}
 		u32 showy = y_offset + (line) * 14;
 		pfilename = pFilename_buffer[offset + line - need_show_folder].filename;
@@ -557,21 +557,23 @@ void IWRAM_CODE Refresh_filename(u32 show_offset, u32 file_select, u32 updown, u
 	}
 	name_color1 = gl_color_text;
 	//name_color2 = 0x7FFF;
-	if (updown == 2) { //down
-		xx1 = file_select - 1;
+	if(updown ==2) //down
+	{
+		xx1 = file_select-1;
 		xx2 = file_select;
-		showy1 = y_offset + (file_select - 1) * 14;
-		showy2 = y_offset + (file_select) * 14;
-		ClearWithBG((u16*)gImage_SD, 18, 20 + xx1 * 14, clean_len1, 13, 1);
-		Clear(18, 20 + xx2 * 14, clean_len2 - 3, 13, gl_color_selectBG_sd, 1);
+		showy1 = y_offset +(file_select-1)*14;
+		showy2 = y_offset +(file_select)*14;
+		ClearWithBG((u16*)gImage_SD,17, 20 + xx1*14, clean_len1, 13, 1);
+		Clear(18,20 + xx2*14,clean_len2,13,gl_color_selectBG_sd,1);
 	}
-	else { // if(updown ==3)//up
+	else// if(updown ==3)//up
+	{
 		xx1 = file_select;
-		xx2 = file_select + 1;
-		showy1 = y_offset + (file_select) * 14;
-		showy2 = y_offset + (file_select + 1) * 14;
-		Clear(18, 20 + xx1 * 14, clean_len1 - 3, 13, gl_color_selectBG_sd, 1);
-		ClearWithBG((u16*)gImage_SD, 18, 20 + xx2 * 14, clean_len2, 13, 1);
+		xx2 = file_select+1;
+		showy1 = y_offset +(file_select)*14;
+		showy2 = y_offset +(file_select+1)*14;	
+		Clear(18,20 + xx1*14,clean_len1,13,gl_color_selectBG_sd,1);	
+		ClearWithBG((u16*)gImage_SD,17, 20 + xx2*14,clean_len2, 13, 1);	
 	}
 	if ((file_select == (need_show_folder - 1)) && (updown == 3)) {
 		DrawHZText12(pFolder[show_offset + xx1].filename, char_num1, 3 + 16, showy1, name_color1, 1);
@@ -671,23 +673,23 @@ void Refresh_filename_NOR(u32 show_offset, u32 file_select, u32 updown)
 
 	name_color1 = gl_color_text;
 
-	if (updown == 2) //down
+	if(updown ==2) //down
 	{
-		xx1 = file_select - 1;
+		xx1 = file_select-1;
 		xx2 = file_select;
-		showy1 = y_offset + (file_select - 1) * 14;
-		showy2 = y_offset + (file_select) * 14;
-		ClearWithBG((u16*)gImage_NOR, 17, 20 + xx1 * 14, clean_len, 13, 1);
-		Clear(17, 20 + xx2 * 14, clean_len-2, 13, gl_color_selectBG_nor, 1);
+		showy1 = y_offset +(file_select-1)*14;
+		showy2 = y_offset +(file_select)*14;
+		ClearWithBG((u16*)gImage_NOR,17, 20 + xx1*14, clean_len, 13, 1);
+		Clear(18,20 + xx2*14,clean_len,13,gl_color_selectBG_nor,1);
 	}
 	else //if(updown ==3)//up
 	{
 		xx1 = file_select;
-		xx2 = file_select + 1;
-		showy1 = y_offset + (file_select) * 14;
-		showy2 = y_offset + (file_select + 1) * 14;
-		Clear(17, 20 + xx1 * 14, clean_len-2, 13, gl_color_selectBG_nor, 1);
-		ClearWithBG((u16*)gImage_NOR, 17, 20 + xx2 * 14, clean_len, 13, 1);
+		xx2 = file_select+1;
+		showy1 = y_offset +(file_select)*14;
+		showy2 = y_offset +(file_select+1)*14;
+		Clear(18,20 + xx1*14,clean_len,13,gl_color_selectBG_nor,1);
+		ClearWithBG((u16*)gImage_NOR,17, 20 + xx2*14,clean_len, 13, 1);
 	}
 
 	DrawHZText12(pNorFS[show_offset + xx1].filename, char_num, 1 + 16, showy1, name_color1, 1);
@@ -780,7 +782,7 @@ void Filename_loop(u32 shift, u32 show_offset, u32 file_select, u32 haveThumbnai
 				else {
 					dwName = 0;
 				}
-				Clear(18, 20 + file_select * 14, ((char_num) * 6) - 3, 13, gl_color_selectBG_sd, 1);
+				Clear(18, 20 + file_select * 14, ((char_num) * 6), 13, gl_color_selectBG_sd, 1);
 				DrawHZText12(msg, char_num - 1, 3 + 16, y_offset + file_select * 14, gl_color_text, 1);
 			}
 		}
