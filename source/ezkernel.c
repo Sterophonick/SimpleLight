@@ -640,7 +640,7 @@ void Show_ICON_filename_NOR(u32 show_offset, u32 file_select)
 	}
 	for (line = 0; line < need_show; line++) {
 		if (line == file_select) {
-			Clear(17, 20 + (file_select * 14), 240 - 19, 13, gl_color_selectBG_nor, 1);
+			Clear(18,20 + file_select*14,240-17,13,gl_color_selectBG_nor,1);
 		}
 		DrawPic((u16*)gImage_nor_icon/*(gImage_icons+2*16*14*2)*/,
 			2,
@@ -953,7 +953,7 @@ u32 show_recently_play(void)
 #ifdef DARK
 	u16 rcolor = 0x7F00;
 #else
-	u16 rcolor = 0x001F;
+	u16 rcolor = 0x7C00;
 #endif
 	DrawPic((u16*)gImage_RECENTLY, 0, 0, 240, 160, 0, 0, 1);
 	DrawHZText12(gl_recently_play,0,(240-strlen(gl_recently_play)*6)/2,4, rcolor,1);//TITLE
