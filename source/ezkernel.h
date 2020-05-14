@@ -39,6 +39,7 @@
 #define _MIN	5
 #define _SEC	6
 
+int aP_depack(u8 *source,u8 *destination);
 
 typedef struct FM_NOR_FILE_SECT{////save to nor
 	unsigned char filename[100];	

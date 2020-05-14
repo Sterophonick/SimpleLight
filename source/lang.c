@@ -100,7 +100,7 @@ const char zh_init_ok[]="TF卡初始化成功";
 const char zh_Loading[]="加载中...";
 const char zh_file_overflow[]="文件太大,不能加载";
 
-const char zh_menu_btn[]=" [B]取消    [A]确定";
+const char zh_menu_btn[]=" (B)取消    (A)确定";
 const char zh_writing[]="正在写入...";
 const char zh_lastest_game[]="请选择最后一个游戏";
 
@@ -128,7 +128,7 @@ const char zh_set_btn[]="设置";
 const char zh_ok_btn[]="保存";
 const char zh_formatnor_info[]="确定?大约4分钟";
 
-const char zh_theme_credit[]="Simple主题 v3.3";
+const char zh_theme_credit[]="Simple主题 v3.31";
 const char zh_theme_credit2[]="by Sterophonick";
 
 const char zh_check_sav[]="检查SAV文件";
@@ -153,7 +153,7 @@ const char zh_recently_play[]="最近游戏列表";
 
 const char zh_START_help[]="打开最近游戏列表";
 const char zh_SELECT_help[]="更多选项";
-const char zh_L_A_help[]="临时切换冷启动";
+const char zh_L_A_help[]="反转冷启动选项";
 const char zh_LSTART_help[]="删除文件";
 const char zh_LSELECT_help[]="删除保存文件";
 const char zh_online_manual[]="  在线说明书";
@@ -232,7 +232,7 @@ const char en_ok_btn[]=" OK";
 const char en_formatnor_info1[]="Sure? This will be";
 const char en_formatnor_info2[]=" about 4 minutes.";
 
-const char en_theme_credit[]="Simple v3.3 by";
+const char en_theme_credit[]="Simple v3.31 by";
 const char en_theme_credit2[]="Sterophonick.";
 
 const char en_check_sav[]="Checking Save Data...";
@@ -257,7 +257,7 @@ const char en_recently_play[]="Recently Played";
 
 const char en_START_help[]="Open recently played list";
 const char en_SELECT_help[]="More options";
-const char en_L_A_help[]="No cold start";
+const char en_L_A_help[]="Invert cold start option";
 const char en_LSTART_help[]="Delete file";
 const char en_LSELECT_help[]="Delete save file";
 const char en_online_manual[]="Online manual";

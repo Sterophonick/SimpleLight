@@ -69,6 +69,7 @@
 #include "images/icon_wav.h"
 #include "images/icon_arc.h"
 #include "images/icon_sc3000.h"
+#include "images/icon_EXE.h"
 #include "images/NOTFOUND.h"
 
 #include "images/Chinese_manual.h"
@@ -87,6 +88,8 @@
 //Toggleable cheats in-game
 
 char* mod_ee;
+
+u8 in_recently_play;
 
 FM_FILE_FS pFilename_buffer[MAX_files]EWRAM_BSS;
 FM_NOR_FS pNorFS[MAX_NOR]EWRAM_BSS;
@@ -145,11 +148,15 @@ u16 gl_color_text = RGB(31, 31, 31);
 #else
 u16 gl_color_text = RGB(00, 00, 00);
 #endif
+#ifdef DARK
 u16 gl_color_selectBG_sd = RGB(15, 15, 31);
+#else
+u16 gl_color_selectBG_sd = RGB(17, 17, 31);
+#endif
 #ifdef DARK
 u16 gl_color_selectBG_nor = RGB(18, 3, 3);
 #else
-u16 gl_color_selectBG_nor = RGB(13, 23, 15);
+u16 gl_color_selectBG_nor = RGB(12, 24, 4);
 #endif
 u16 gl_color_MENU_btn = RGB(20, 20, 20);
 u16 gl_color_cheat_count = RGB(00, 31, 00);
@@ -304,8 +311,17 @@ void Show_ICON_filename(u32 show_offset, u32 file_select, u32 haveThumbnail)
 		if (!strcasecmp(&(pfilename[strlen8 - 3]), "gba")) { //GBA
 			icon = (u16*)(gImage_icons + 1 * 16 * 14 * 2);
 		}
-		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "bin")) { //GBA
-			icon = (u16*)(gImage_icons + 1 * 16 * 14 * 2);
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "bin")) { //.bin file
+			icon = (u16*)(gImage_icon_EXE);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "mb")) { //PogoShell Plugin/Multiboot image
+			icon = (u16*)(gImage_icon_EXE);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "mbz")) { //Compressed PogoShell Plugin
+			icon = (u16*)(gImage_icon_EXE);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 4]), "mbap")) { //Compressed PogoShell Plugin
+			icon = (u16*)(gImage_icon_EXE);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "agb")) { //GBA
 			icon = (u16*)(gImage_icons + 1 * 16 * 14 * 2);
@@ -407,6 +423,9 @@ void Show_ICON_filename(u32 show_offset, u32 file_select, u32 haveThumbnail)
 			icon = (u16*)(gImage_icon_IMG);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "vgm")) { //SMS/GG VGM Rip
+			icon = (u16*)(gImage_icon_wav);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "cwz")) { //Unknown Music file, contained in a package for PogoShell 1.2
 			icon = (u16*)(gImage_icon_wav);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "sb")) { //MaxMod SoundBank
@@ -650,7 +669,7 @@ void Show_ICON_filename_NOR(u32 show_offset, u32 file_select)
 			1,
 			0x0000,
 			1);
-		DrawHZText12(pNorFS[show_offset + line].filename, char_num, 1 + 16, y_offset + line * 14, name_color, 1);
+		DrawHZText12(pNorFS[show_offset + line].filename, char_num, 3 + 16, y_offset + line * 14, name_color, 1);
 		sprintf(msg, "%4luM", pNorFS[show_offset + line].filesize >> 20);
 		DrawHZText12(msg, 0, 208, y_offset + line * 14, name_color, 1);
 	}
@@ -692,8 +711,8 @@ void Refresh_filename_NOR(u32 show_offset, u32 file_select, u32 updown)
 		ClearWithBG((u16*)gImage_NOR,17, 20 + xx2*14,clean_len, 13, 1);
 	}
 
-	DrawHZText12(pNorFS[show_offset + xx1].filename, char_num, 1 + 16, showy1, name_color1, 1);
-	DrawHZText12(pNorFS[show_offset + xx2].filename, char_num, 1 + 16, showy2, name_color1, 1);
+	DrawHZText12(pNorFS[show_offset + xx1].filename, char_num, 3 + 16, showy1, name_color1, 1);
+	DrawHZText12(pNorFS[show_offset + xx2].filename, char_num, 3 + 16, showy2, name_color1, 1);
 
 	sprintf(msg, "%4luM", (pNorFS[show_offset + xx1].filesize) >> 20);
 	DrawHZText12(msg, 0, 208, showy1, name_color1, 1);
@@ -944,6 +963,7 @@ u32  get_count(void)
 //---------------------------------------------------------------------------------
 u32 show_recently_play(void)
 {
+	in_recently_play = 1;
 	u32 res;
 	u32 all_count = 0;
 	u32 Select = 0;
@@ -983,6 +1003,7 @@ u32 show_recently_play(void)
 				}
 			}
 			else if (keysup & KEY_B) {
+				in_recently_play = 0;
 				return_val = 0xBB;
 				break;
 			}
@@ -1355,7 +1376,8 @@ void ShowTime(u32 page_num, u32 page_mode)
 	rtc_disenable();
 	delay(5);
 	if(page_mode==0x1)
-		ClearWithBG((u16*)gImage_RECENTLY,80, 3, 80, 13, 1);	
+		//ClearWithBG((u16*)gImage_RECENTLY,80, 3, 80, 13, 1);
+		asm("nop");
 	else if(page_num==SD_list)
 		ClearWithBG((u16*)gImage_SD,100, 3, 50, 13, 1);
 	else if (page_num==NOR_list)
@@ -1372,8 +1394,11 @@ void ShowTime(u32 page_num, u32 page_mode)
 	if (SS > 59) {
 		SS = 0;
 	}
-	sprintf(msgtime, "%02u:%02u:%02u", HH, MM, SS);
-	DrawHZText12(msgtime,0,100,3,gl_color_text,1);
+	if(!in_recently_play)
+	{
+		sprintf(msgtime, "%02u:%02u:%02u", HH, MM, SS);
+		DrawHZText12(msgtime,0,100,3,gl_color_text,1);
+	}
 }
 
 void IWRAM_CODE make_pogoshell_arguments(TCHAR* cmdname, TCHAR* filename, u32 cmdsize, u32 filesize, u32 Address, u32 offset)
@@ -1954,6 +1979,7 @@ int main(void)
 	}
 	*/
 	if (page_num == SD_list) {
+		in_recently_play = 0;
 		DrawPic((u16*)gImage_SD, 0, 0, 240, 160, 0, 0, 1);
 	}
 	/*
@@ -2086,6 +2112,7 @@ re_showfile:
 			}
 			if (updata == 1) { //reshow all
 				if (page_num == SD_list) {
+					in_recently_play = 0;
 					DrawPic((u16*)gImage_SD, 0, 0, 240, 160, 0, 0, 1);	
 					//ClearWithBG((u16*)gImage_SD,0, 0, 90, 20, 1);  //  		
 					//ClearWithBG((u16*)gImage_SD,185+6, 3, 6*3, 16, 1);//Show_game_num
@@ -2358,6 +2385,7 @@ re_showfile:
 							strncpy(currentpath, currentpath_temp, 256);//
 						}
 						f_chdir(currentpath);//return to old folder
+						in_recently_play = 0;
 						DrawPic((u16*)gImage_SD, 0, 0, 240, 160, 0, 0, 1);
 						Refresh_filename(show_offset, file_select, updata, gl_show_Thumbnail && is_GBA);
 						goto refind_file;
@@ -2435,6 +2463,7 @@ re_showfile:
 					else { //only START //Recently played
 						play_re = show_recently_play();
 						if (play_re == 0xBB) {
+							in_recently_play = 0;
 							goto refind_file;//KEY B
 						}
 						else {
