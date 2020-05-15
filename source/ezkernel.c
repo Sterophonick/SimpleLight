@@ -79,13 +79,11 @@
 #include "pocketnes.h"
 
 //Planned features:
-//Cold reset on Emulators (Pogo)
 //Start random game option
 //Fairchild Channel-F, VMU, Atari 2600, Sharp MZ-700, Pokemon Mini, Bally Astrocade, Microvision, Game Pocket Computer Emulation
 //Second Page for settings
-//Start Random Game option
-//Launching .mbz file
-//Toggleable cheats in-game
+//.mbap plugins
+//pinned directories
 
 char* mod_ee;
 
@@ -151,18 +149,18 @@ u16 gl_color_text = RGB(00, 00, 00);
 #ifdef DARK
 u16 gl_color_selectBG_sd = RGB(15, 15, 31);
 #else
-u16 gl_color_selectBG_sd = RGB(17, 17, 31);
+u16 gl_color_selectBG_sd = RGB(19, 19, 31);
 #endif
 #ifdef DARK
 u16 gl_color_selectBG_nor = RGB(18, 3, 3);
 #else
-u16 gl_color_selectBG_nor = RGB(12, 24, 4);
+u16 gl_color_selectBG_nor = RGB(15, 28, 7);
 #endif
-u16 gl_color_MENU_btn = RGB(20, 20, 20);
+u16 gl_color_MENU_btn = RGB(23, 23, 23);
 u16 gl_color_cheat_count = RGB(00, 31, 00);
 u16 gl_color_cheat_black = RGB(00, 00, 00);
 u16 gl_color_NORFULL = RGB(31, 00, 00);
-u16 gl_color_btn_clean = RGB(00, 00, 31);
+u16 gl_color_btn_clean = RGB(8, 8, 31);
 //******************************************************************************
 void delay(u32 R0)
 {
@@ -470,7 +468,7 @@ void Show_ICON_filename(u32 show_offset, u32 file_select, u32 haveThumbnail)
 		else {
 			char msg[20];
 			Get_file_size(offset + line - need_show_folder, msg);
-			DrawHZText12(msg, 0, 208, showy, name_color, 1);
+			DrawHZText12(msg, 0, 209, showy, name_color, 1);
 		}
 	}
 }
@@ -603,7 +601,7 @@ void IWRAM_CODE Refresh_filename(u32 show_offset, u32 file_select, u32 updown, u
 		}
 		if (char_num2 == 32) {
 			Get_file_size(0, msg);
-			DrawHZText12(msg, 0, 208, showy2, name_color1, 1);
+			DrawHZText12(msg, 0, 209, showy2, name_color1, 1);
 		}
 	}
 	else if (file_select < need_show_folder) {
@@ -626,7 +624,7 @@ void IWRAM_CODE Refresh_filename(u32 show_offset, u32 file_select, u32 updown, u
 		}
 		if (char_num2 == 32) {
 			Get_file_size(0, msg);
-			DrawHZText12(msg, 0, 208, showy2, name_color1, 1);
+			DrawHZText12(msg, 0, 209, showy2, name_color1, 1);
 		}
 	}
 	else {
@@ -634,11 +632,11 @@ void IWRAM_CODE Refresh_filename(u32 show_offset, u32 file_select, u32 updown, u
 		DrawHZText12(pFilename_buffer[offset + xx2 - need_show_folder].filename, char_num2, 3 + 16, showy2, name_color1, 1);
 		if (char_num1 == 32) {
 			Get_file_size(offset + xx1 - need_show_folder, msg);
-			DrawHZText12(msg, 0, 208, showy1, name_color1, 1);
+			DrawHZText12(msg, 0, 209, showy1, name_color1, 1);
 		}
 		if (char_num2 == 32) {
 			Get_file_size(offset + xx2 - need_show_folder, msg);
-			DrawHZText12(msg, 0, 208, showy2, name_color1, 1);
+			DrawHZText12(msg, 0, 209, showy2, name_color1, 1);
 		}
 	}
 }
@@ -671,7 +669,7 @@ void Show_ICON_filename_NOR(u32 show_offset, u32 file_select)
 			1);
 		DrawHZText12(pNorFS[show_offset + line].filename, char_num, 3 + 16, y_offset + line * 14, name_color, 1);
 		sprintf(msg, "%4luM", pNorFS[show_offset + line].filesize >> 20);
-		DrawHZText12(msg, 0, 208, y_offset + line * 14, name_color, 1);
+		DrawHZText12(msg, 0, 209, y_offset + line * 14, name_color, 1);
 	}
 }
 //---------------------------------------------------------------------------------
