@@ -70,7 +70,6 @@
 #include "images/icon_arc.h"
 #include "images/icon_sc3000.h"
 #include "images/icon_EXE.h"
-#include "images/icon_mod.h"
 #include "images/NOTFOUND.h"
 
 #include "images/Chinese_manual.h"
@@ -404,31 +403,31 @@ void Show_ICON_filename(u32 show_offset, u32 file_select, u32 haveThumbnail)
 			icon = (u16*)(gImage_icon_vmu);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "mid")) { //MIDI Sequence
-			icon = (u16*)(gImage_icon_mod);
+			icon = (u16*)(gImage_icon_wav);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "wav")) { //Wave Sound
 			icon = (u16*)(gImage_icon_wav);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "nsf")) { //NSF sound file
-			icon = (u16*)(gImage_icon_mod);
+			icon = (u16*)(gImage_icon_wav);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "k3m")) { //Krawall Advance Module
-			icon = (u16*)(gImage_icon_mod);
+			icon = (u16*)(gImage_icon_wav);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "mod")) { //Protracker mod file
-			icon = (u16*)(gImage_icon_mod);
+			icon = (u16*)(gImage_icon_wav);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "pcx")) { //ZSoft Paintbrush PCX image
 			icon = (u16*)(gImage_icon_IMG);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "vgm")) { //SMS/GG VGM Rip
-			icon = (u16*)(gImage_icon_mod);
+			icon = (u16*)(gImage_icon_wav);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "cwz")) { //Unknown Music file, contained in a package for PogoShell 1.2
-			icon = (u16*)(gImage_icon_mod);
+			icon = (u16*)(gImage_icon_wav);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "sb")) { //MaxMod SoundBank
-			icon = (u16*)(gImage_icon_mod);
+			icon = (u16*)(gImage_icon_wav);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "ap")) { //aPlib compressed Mode 3 Bitmap
 			icon = (u16*)(gImage_icon_IMG);
@@ -437,7 +436,7 @@ void Show_ICON_filename(u32 show_offset, u32 file_select, u32 haveThumbnail)
 			icon = (u16*)(gImage_icon_IMG);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "bgf")) { //BoyScout module
-			icon = (u16*)(gImage_icon_mod);
+			icon = (u16*)(gImage_icon_wav);
 		}
 		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "arc")) { //4kb Arcadia 2001 ROM File
 			icon = (u16*)(gImage_icon_arc);
