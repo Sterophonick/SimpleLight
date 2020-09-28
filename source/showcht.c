@@ -493,13 +493,13 @@ void Show_KEY_val(u32 total,u32 Select,u32 showoffset)
 		if(line== Select)
 			name_color = gl_color_selected;
 		else
-			name_color = 0x7FFF;
+			name_color = gl_color_chtTXT;
 			
 		u8 select	= ((FM_CHT_LINE*)pCHTbuffer)[showoffset+line].select;
 		
 		if( ((FM_CHT_LINE*)pCHTbuffer)[showoffset+line].is_section==1)
 		{
-			Clear(X_offset+3, Y_offset+line*line_x+4, 4, 4, 0x7FFF, 1);//section flag
+			Clear(X_offset+3, Y_offset+line*line_x+4, 4, 4, gl_color_chtTXT, 1);//section flag
 			
 			sprintf(msg,"%s",((FM_CHT_LINE*)pCHTbuffer)[showoffset+line].LINEname);		
 			
@@ -835,11 +835,9 @@ u32 Check_cheat_file(TCHAR *gamefilename)
 void Show_num(u32 totalcount,u32 select)
 {
 	char msg[20];
-	#ifdef DARK
-	Clear(120,0,120,18,0x1084,1);
-	#else
-	Clear(120,0,120,18,0x7F00,1);
-	#endif
+
+	ClearWithBG((u16*)gImage_RECENTLY, 180, 0, 60, 18, 1);
+
 	sprintf(msg,"[%03lu/%03lu]",select,totalcount);
 
 	DrawHZText12(msg,0,182,3, gl_color_chtTXT,1);
@@ -882,7 +880,7 @@ void Open_cht_file(TCHAR *gamefilename,u32 havecht)
 		Get_KEY_val(&gfile,"GameInfo","Name",buffer);
 		sprintf(msg,"%s ",buffer);
 		
-		DrawHZText12(msg,30,2,4, 0x7FFF,1);
+		DrawHZText12(msg,30,2,4, gl_color_chtTXT,1);
 		
 		u32 all_count = Get_all_Section_val(&gfile);
 		u32 Select = 1;
