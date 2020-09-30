@@ -88,6 +88,8 @@
 
 char* mod_ee;
 
+char credit_line_1[64] = "";
+
 u8 in_recently_play;
 
 FM_FILE_FS pFilename_buffer[MAX_files]EWRAM_BSS;
@@ -200,7 +202,7 @@ void Show_help_window()
 	DrawHZText12("L+Start:", 0, 3, 65, gl_color_selected, 1);
 	DrawHZText12(gl_LSTART_help, 0, 52, 65, gl_color_text, 1);
 	DrawHZText12(gl_online_manual, 0, 240 - 70 - 10, 74, gl_color_text, 1);
-	DrawHZText12(gl_theme_credit, 0, 4, 105, gl_color_selected, 1);
+	DrawHZText12(credit_line_1, 0, 4, 105, gl_color_selected, 1);
 	DrawHZText12(gl_theme_credit2, 0, 4, 120, gl_color_selected, 1);
 	DrawHZText12("K:1.06 F:7", 0, 4, 143, gl_color_text, 1);
 	while (1) {
@@ -1319,6 +1321,18 @@ void CheckLanguage(void)
 	else { //ÖÐÎÄ
 		LoadChinese();
 	}
+	//Modify credit string
+	strcpy(credit_line_1, gl_theme_credit);
+	strcat(credit_line_1, " ");
+	strcat(credit_line_1, gl_sl_version);
+	strcat(credit_line_1, " ");
+	
+#ifdef DARK
+	strcat(credit_line_1, gl_sl_dark);
+#else
+	strcat(credit_line_1, gl_sl_light);
+#endif
+	
 }
 //---------------------------------------------------------------------------------
 void CheckSwitch(void)
@@ -1404,7 +1418,7 @@ void IWRAM_CODE make_pogoshell_arguments(TCHAR* cmdname, TCHAR* filename, u32 cm
 {
 	u32* p, addr;
 	char* ptr, * cmdptr, * fileptr;
-	int i = 0;
+	//int i = 0; // not used
 
 	addr = 0x08000000 + cmdsize;
 
@@ -2593,12 +2607,13 @@ re_showfile:
 						break;
 					}
 					else if (MENU_line == 1) {
-						//delete lastest geme
+						//display message saying to delete last game first
 						if (show_offset + file_select + 1 == game_total_NOR) {
 							Block_Erase(gl_norOffset - pNorFS[show_offset + file_select].filesize);
 						}
 						else {
-							DrawHZText12(gl_lastest_game, 0, 66, 118 - 15, gl_color_text, 1);
+							DrawHZText12(gl_lastest_game, 0, 66, 88, gl_color_text, 1);
+							DrawHZText12(gl_lastest_game2, 0, 66, 103, gl_color_text, 1);
 							wait_btn();
 						}
 						page_num = NOR_list;
