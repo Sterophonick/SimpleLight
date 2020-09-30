@@ -88,3 +88,17 @@ _**Follow the installation instructions in the !!!!!!!!!IMPORTANT!!!!!!!!!!!.TXT
 5. Follow the installation instructions above.
 4. Update your flashcart and enjoy! :)
 
+### Special Greetz & Contributors:
+Sasq
+Moonlight
+Kuwanger
+veikkos
+DarkFader
+CoolHJ
+Let's Emu!
+Izder456
+NuVanDibe
+SLKun
+Mintmoon
+
+
