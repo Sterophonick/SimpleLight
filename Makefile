@@ -20,7 +20,7 @@ include $(DEVKITARM)/gba_rules
 # the makefile is found
 #
 #---------------------------------------------------------------------------------
-TARGET		:= simplelight
+TARGET		:= ezkernel
 BUILD		:= build
 SOURCES		:= source source/ff13c
 INCLUDES	:= include source/ff13c
@@ -135,7 +135,7 @@ else
 
 $(KERNEL)    :   $(OUTPUT).gba
 	@cp $(OUTPUT).gba $(KERNEL)
-
+	@rm $(OUTPUT).gba
 $(OUTPUT).gba	:	$(OUTPUT).elf
 
 $(OUTPUT).elf	:	$(OFILES)
