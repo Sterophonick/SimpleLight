@@ -7,7 +7,6 @@
 
 #include "lang.h"
 #include "HZK12.h"
-#include "asc126.h"
 
 
 #include "ezkernel.h"
@@ -141,6 +140,33 @@ void DrawHZText12(char *str, u16 len, u16 x, u16 y, u16 c, u8 isDrawDirect)
                 if(cc & 0x80) {
                     v[x+yy]=c;
                 }
+				if(gl_toggle_bold)
+				{
+                if(cc & 0x01) {
+                    v[(x+1)+7+yy]=c;
+                }
+                if(cc & 0x02) {
+                    v[(x+1)+6+yy]=c;
+                }
+                if(cc & 0x04) {
+                    v[(x+1)+5+yy]=c;
+                }
+                if(cc & 0x08) {
+                    v[(x+1)+4+yy]=c;
+                }
+                if(cc & 0x10) {
+                    v[(x+1)+3+yy]=c;
+                }
+                if(cc & 0x20) {
+                    v[(x+1)+2+yy]=c;
+                }
+                if(cc & 0x40) {
+                    v[(x+1)+1+yy]=c;
+                }
+                if(cc & 0x80) {
+                    v[(x+1)+yy]=c;
+                }
+				}
                 yy+=240;
             }
             x+=6;

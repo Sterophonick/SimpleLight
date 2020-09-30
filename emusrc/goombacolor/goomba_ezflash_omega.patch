@@ -1,0 +1,61 @@
+diff --git a/src/config.h b/src/config.h
+index cbc7539..33f3072 100644
+--- a/src/config.h
++++ b/src/config.h
+@@ -7,7 +7,7 @@
+ #define SRAM_SIZE 64
+ #endif
+ 
+-#define VERSION "12-14-14"
++#define VERSION "05-04-19"
+ 
+ //#define LITTLESOUNDDJ 0
+ //Little Sound DJ Hack requires M3/G6/Supercard
+@@ -35,6 +35,7 @@
+ #define LCD_HACKS_ACCURATE 1
+ #define LCD_HACKS_ACCURATE_DIV 1
+ #define JOYSTICK_READ_HACKS 0
++#define EZFLASH_OMEGA_BUILD
+ 
+ #ifdef _MB_VERSION
+ 	#define RTCSUPPORT 0
+diff --git a/src/main.c b/src/main.c
+index 51c0cbf..cd02121 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -229,7 +229,10 @@ void C_entry()
+ 
+ 	#if RTCSUPPORT
+ 	*timeregs=1;
+-	if(*timeregs & 1) rtc=1;
++	#ifndef EZFLASH_OMEGA_BUILD
++	if(*timeregs & 1)
++	#endif
++          rtc=1;
+ 	#endif
+ 	gbaversion=CheckGBAVersion();
+ 	vblankfptr=&vbldummy;
+diff --git a/src/ui.c b/src/ui.c
+index 50cd2c2..7a7924e 100644
+--- a/src/ui.c
++++ b/src/ui.c
+@@ -233,7 +233,9 @@ void ui()
+ 	{
+ 		get_saved_sram();
+ 	}
++#ifndef EZFLASH_OMEGA_BUILD
+ 	writeconfig();			//save any changes
++#endif
+ #endif
+ 	scrolll(2);
+ 	/*
+@@ -647,7 +649,9 @@ void restart()
+ void exit_()
+ {
+ #if CARTSRAM
++#ifndef EZFLASH_OMEGA_BUILD
+ 	writeconfig();					//save any changes
++#endif
+ #endif
+ 	fadetowhite();
+ 	REG_DISPCNT=FORCE_BLANK;		//screen OFF

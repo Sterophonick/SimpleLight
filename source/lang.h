@@ -68,6 +68,7 @@ extern char* gl_START_help;
 extern char* gl_SELECT_help;
 extern char* gl_L_A_help;
 extern char* gl_LSTART_help;
+extern char* gl_LSELECT_help;
 extern char* gl_online_manual;
 
 extern char* gl_no_game_played;
@@ -87,6 +88,9 @@ extern char* gl_error_6;
 extern char**  	gl_rom_menu;
 extern char**  gl_more_options;
 extern char**   gl_nor_op;
+
+// ASCII Font
+extern unsigned char* ASC_DATA;
 
 void LoadEnglish(void);
 void LoadChinese(void);

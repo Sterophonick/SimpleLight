@@ -18,6 +18,7 @@ extern u16 gl_show_Thumbnail;
 extern u16 gl_ingame_RTC_open_status;
 
 u16 SET_info_buffer [0x200]EWRAM_BSS;
+u16 frames;
 
 #define	K_A		 	 (0)
 #define	K_B		 	 (1)
@@ -293,10 +294,14 @@ u32 Setting_window(void)
 				if(HH >23)HH=0;
 				if(MM >59)MM=0;
 				if(SS >59)SS=0;
-				sprintf(msg,"%u/%02u/%02u %02d:%02d:%02d %s",UNBCD(datetime[0])+2000,UNBCD(datetime[1]&0x1F),UNBCD(datetime[2]&0x3F),HH,MM,SS, wkday);
-				ClearWithBG((u16*)gImage_SET,x_offset, y_offset, 22*6, 13, 1);	
-				DrawHZText12(msg,0,x_offset,y_offset,gl_color_text,1);	
+				if(!(frames % 15))
+				{
+					ClearWithBG((u16*)gImage_SET,125, 24, 72, 13, 1);
+					sprintf(msg,"%u/%02u/%02u %02d:%02d:%02d %s",UNBCD(datetime[0])+2000,UNBCD(datetime[1]&0x1F),UNBCD(datetime[2]&0x3F),HH,MM,SS, wkday);	
+					DrawHZText12(msg,0,x_offset,y_offset,gl_color_text,1);	
+				}
 				VBlankIntrWait();
+				frames++;
 
 				u16 read5 = Read_SET_info(5); 
 				u16 read6 = Read_SET_info(6); 
@@ -1210,6 +1215,7 @@ void save_set_info(void)
 	
 	SET_info_buffer[13] = gl_ingame_RTC_open_status;
 	SET_info_buffer[14] = gl_toggle_reset;
+	SET_info_buffer[15] = gl_toggle_backup;
 						
 	//save to nor 
 	Save_SET_info(SET_info_buffer,0x200);

@@ -538,8 +538,8 @@ void GBApatch_Cleanrom(u32* address,int filesize)//Only once
 {
 	windows_offset = 0;
 	is_NORpatch = 0;
-	CheckNes(address);
-	PatchNes(address);
+	//CheckNes(address);
+	//PatchNes(address);
 	PatchDragonBallZ(address);
 		Check_Fire_Emblem();
 }
