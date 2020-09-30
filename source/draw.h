@@ -1,7 +1,8 @@
+
 #include <gba_base.h>
 
+// Uncomment the following line to generate a dark theme ezkernel.bin
 #define DARK
-
 
 
 void Clear(u16 x, u16 y, u16 w, u16 h, u16 c, u8 isDrawDirect);

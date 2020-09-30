@@ -1404,7 +1404,7 @@ void IWRAM_CODE make_pogoshell_arguments(TCHAR* cmdname, TCHAR* filename, u32 cm
 {
 	u32* p, addr;
 	char* ptr, * cmdptr, * fileptr;
-	int i = 0;
+	//int i = 0; // not used
 
 	addr = 0x08000000 + cmdsize;
 
