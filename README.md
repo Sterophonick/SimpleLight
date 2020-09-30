@@ -80,15 +80,11 @@ _**Follow the installation instructions in the !!!!!!!!!IMPORTANT!!!!!!!!!!!.TXT
 3. Take a blank file, and also add the Official Colecovision BIOS.
 4. Create col.gba in the PLUG folder.
 
-# EZ-FLASH OMEGA Kernel
-
 ### How to build 
+1. Install devkitPro
+2. Set the following environment variables to their correct directories: `DEVKITPRO, DEVKITARM, LIBGBA`
+3. Comment or uncomment the `#define DARK` line in `draw.h`. If uncommented, a dark theme is generated.
+4. Run the command `make`. If done successfully, this should give you an `ezkernel.bin` file.
+5. Follow the installation instructions in the `!!!!!!!!!IMPORTANT!!!!!!!!!!!.TXT` file in the GBAtemp package.
+4. Update your flashcart and enjoy! :)
 
-The original developers of the EZ-Flash Omega kernel recommend using devkitARM_r47. Sometime after devkitARM_r50, any level of optimization began preventing PogoShell plugins from properly generating. The code has been adjusted since then to remove optimizations and so will compile and run properly on the most recent build of devkitARM (as of September 29, 2020).
-	
-##### Compiling light and dark themes:
-1. Comment or uncomment the "#define DARK" line in "draw.h". If uncommented, a dark theme is generated.
-2. Set the following environment variables in system, or modify the value in build.bat, based on your installation path
-    ```PATH,DEVKITARM,DEVKITPRO,LIBGBA```
-3. Double click on build.bat under Windows. If everything is set up, you will get ezkernel.bin
-	
