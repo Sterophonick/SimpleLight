@@ -1,11 +1,10 @@
-# EZ-FLASH OMEGA Kernel
+# EZ-FLASH OMEGA Simple kernel
 
 ### How to build 
 
-    1.We use devkitARM_r47, you can use the current version or newer.
-    2.Set the following environment variables in system, or modify the value in build.bat, based on your installation path
- 
-        PATH,DEVKITARM,DEVKITPRO,LIBGBA
-
-    3.Double click on build.bat under winodws. If it goes well, you will get ezkernel.gba
-    4.Rename the ezkernel.gba to ezkernel.bin, that is the omega kernel upgrade file
+1. Install devkitPro
+2. Set the following environment variables to their correct directories: `DEVKITPRO, DEVKITARM, LIBGBA`
+3. Comment or uncomment the `#define DARK` line in `draw.h`. If uncommented, a dark theme is generated.
+4. Run the command `make`. If done successfully, this should give you an `ezkernel.bin` file.
+5. Follow the installation instructions in the `!!!!!!!!!IMPORTANT!!!!!!!!!!!.TXT` file in the GBAtemp package.
+4. Update your flashcart and enjoy! :)
