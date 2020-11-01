@@ -1,0 +1,923 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <meta name="generator" content="Context">
+  <meta name="Author" content="Cearn">
+  <meta name="Created" content="20080504">
+  <meta name="Modified" content="20080504">
+
+  <title>Grit in project builds</title>
+  <link rel="stylesheet" type="text/css" href="tonc.css">
+  <script language="JavaScript" type="text/javascript" src="tonc.js"></script>
+</head>
+<body onload="main();">
+
+<!--567890123456789012345678901234567890123456789012345678901234567-->
+
+<!-- [[header]] -->
+<table class=header>
+<tr>
+  <td class=hdr_l><a href="grit.htm">Prev</a>
+  <td class=hdr_c><a href="index.htm">Contents</a>
+  <td class=hdr_r><a href="wingrit.htm">Next</a>
+</table>
+<!-- [[/header]] -->
+
+<hr>
+
+<h1>Grit in project builds</h1>
+
+<!-- [[toc]] -->
+<ul>
+  <li><a href="#sec-intro">Introduction</a></li>
+  <li><a href="#sec-run">Running grit</a></li>
+  <li><a href="#sec-template">Grit in template makefiles</a></li>
+  <li><a href="#sec-gfxmake">Grit as a separate process</a></li>
+  <li><a href="#sec-conc">Conclusions</a></li>
+</ul>
+<!-- [[/toc]] -->
+
+<!-- ============================================================== -->
+
+<h2 id="sec-intro">2.1.
+  Introduction
+</h2>
+
+<p>
+Knowing what <a href="grit.htm">grit is capable of</a> is only the 
+first step. To use it comfortably, you need to know how to integrate 
+it into the standard build process of your project. In this chapter, 
+I'll explain how to do that. First up is, using grit with 
+or without <tt>.grit</tt> configuration files. After that, I'll show
+how to use these rules on the standard template makefiles. Finally, 
+I'll describe how to split off the image conversion to a separate 
+process, keeping the interference to the main makefile to a minimum. 
+Part of this is step is also putting the graphics into an archive 
+(<tt>.a</tt>) and creating a master header file.
+</p>
+
+
+<!-- ============================================================== -->
+
+<h2 id="sec-run">2.2.
+  Running grit
+</h2>
+
+<p>
+The basic format of a grit command is as follows
+</p>
+
+<pre class=proglist>
+grit <i>source files</i> <i>options</i>
+</pre>
+
+<p>
+The list of options start at the first argument that begins with a 
+hyphen, '<tt>-</tt>'. You have have one or more source files, but you 
+cannot use wildcards. The output file can be specified with the 
+<tt>-o</tt> flag, but it is not required. If no options are given, 
+<tt>grit</tt> will try to guess what you meant from the file itself, 
+but this can be a bit dangerous. It is advised to give at least 
+graphics type (<tt>-gb</tt>/<tt>-gt</tt> for bitmaps/tiles),  
+bitdepth (<tt>-gB <i>num</i></tt>) and probably output filetype as well 
+(<tt>-ft <i>type</i></tt>). Examples:
+</p>
+
+<pre class=proglist>
+<span class=cmt># Single bitmap
+# Input: foo.bmp
+# Output: foo.s, 16bpp bitmap as asm array named fooBitmap</span>
+grit foo.bmp -fts -gb -gB16
+
+<span class=cmt># Sprite sheets (32x32p sprites)
+# Input mario.png, luigi.png
+# Output: karts.s, 4bpp tiles in 4x4t groups as arrays marioTiles and 
+#   luigiTiles, no palette.</span>
+grit mario.png luigi.png -o karts.s -gt -gB4 -Mw4 -Mh4 -p!
+</pre>
+
+<h3 id="ssec-run-base">2.2.1.
+  Simple Makefile Rules
+</h3>
+
+<p>
+The previous examples would work if you'd enter them on the 
+command-line manually, or via a batchfile. for makefiles, you'd need 
+a little bit extra. The (near) equivalent of the previous examples 
+in makefilese are:
+</p>
+
+<pre class=proglist>
+GRIT := grit.exe
+
+<span class=cmt># foo.bmp -&gt; foo.s ; fooBitmap = 16bpp bitmap.</span>
+foo.s foo.h : foo.bmp
+	$(GRIT) $&lt; -fts -gb -gB16
+
+<span class=cmt># mario.png, luigi.png -&gt; karts.s ; marioTiles, <!--
+-->luigiTiles as 4bpp tiles.</span>
+karts.s karts.h : mario.png luigi.png
+	$(GRIT) $^ -o$* -fts -gt -gB4 -Mw4 -Mh4 -p!
+</pre>
+
+<p>
+The terms <code>$&lt;</code>, <code>$^</code> and <code>$*</code> are 
+some of makefile's automatic variables; they stand for the first 
+prerequisite, all prerequisites and the 'stem' of the targets, 
+respectively. In these rules, that equates to 
+<code>$&lt;</code>&nbsp;=&nbsp;<code>foo.bmp</code>, 
+<code>$^</code>&nbsp;=&nbsp;<code>mario.png&nbsp;luigi.png</code> and 
+<code>$*</code>&nbsp;=&nbsp;<code>karts</code>.Note that in the second 
+rule, <code>-o$*</code> doesn't add an extension. This is alright 
+because <code>-fts</code> takes care of that.
+</p>
+<p>
+I should point out that 
+the use of <code>$*</code> is somewhat iffy. Sometimes it works just 
+fine, but in other cases it's empty, which mucks up everything. Usually, 
+<code>$@</code> works just as well.
+</p>
+
+<h3 id="ssec-run-cfg">2.2.2.
+  Configuration files
+</h3>
+
+<p>
+Having separate rules for each image doesn't exactly scale well. For 
+this reason, grit also allows you to read the flags from 
+<dfn>configuration files</dfn>, usually with the <tt>.grit</tt> 
+extension. With these files, you can put the image-specific options 
+inside the config file and call them with a generalized rule.
+</p>
+<p>
+You can indicate the config file with the <tt>-ff</tt> option. For 
+example, `<tt>-ff foo.grit</tt>' would read additional options from 
+<tt>foo.grit</tt>. The config file uses the '<code>#</code>' character 
+for comments, much like makefiles. The config file for <tt>foo.bmp</tt>
+would look something like this:
+</p>
+
+<pre class=proglist id="cd-grit-cfg">
+<span class=cmt>#
+# foo.grit : example of a .grit file
+#</span>
+
+-gb         <span class=cmt># Bitmapped output</span>
+-gB16       <span class=cmt># 16 bpp</span>
+</pre>
+
+<p>
+The rule to go with this would be something like the following. 
+Here you have a pattern rule that likes a .s and .h file to 
+a .png and .grit file, so that if either the png or grit file is 
+altered, the rule is run again. Technically, there should be a
+`<tt>-ff $*.grit</tt>' argument here as well, but grit always 
+looks for an appropriate grit-file automatically, so I can omit it 
+here.
+</p>
+<p>
+Note that the <tt>-fts</tt> option is still in the rule 
+itself. The extra options from the .grit-file are simply added to 
+the set of command-line options; they do not replace them.
+</p>
+
+<pre class=proglist id="cd-cfg-rule-single">
+<span class=cmt># Main rule.</span>
+%.s %.h	: %.png %.grit
+	$(GRIT) $&lt; -fts
+</pre>
+
+<p>
+This procedure works out nice if you have lots of different options 
+for different files, but when you have a great many images 
+that use the same conversion, you <i>really</i> don't want to have 
+to write grit-files for each image. It would be preferable to have 
+a single grit-file that can be used by all.
+</p>
+<p>
+In most cases, you'd have to write explicit rules for this because 
+you can't get the name of the grit-file from the names of the 
+images. There is one exception to this, namely when you have a 
+whole directory of images. If you then base the name of the grit-file 
+on the directory name (say, <tt>dir/dir.grit</tt>), you can use this:
+</p>
+
+<pre class=proglist id="cd-cfg-rule-dir">
+<span class=cmt># Using <i>dir</i>.grit for a whole directory.</span>
+%.s %.h	: %.png
+	$(GRIT) $&lt; -fts -ff $(&lt;D)/$(notdir $(&lt;D)).grit
+</pre>
+
+<p>
+The tricky part is `<tt>$(&lt;D)/$(notdir $(&lt;D)).grit</tt>'. This takes 
+the directory part of a source image and turns it into a full path 
+for the grit-file. For example, for <tt>/c/stuff/dir/foo.png</tt>, 
+it gives <tt>/c/stuff/dir/dir.grit</tt>.
+</p>
+<p>
+The single-file rule (`<tt>%.png %.grit</tt>') and the directory rule 
+(`<tt>%.png</tt>') can work in the same makefile, but you do have 
+to be little careful with it. When <tt>make</tt> checks for matching 
+files to rules, it'll use the first rule that gives a match. You need 
+to have the single-file rule <b>before</b> the directory-rule. In 
+that case the single-file rule is used if a png-file does have 
+an accompanying grit-file, but it'll fall back on the directory-rule 
+if it's absent. If you reversed the order of the rules, it'd 
+always use the directory-rule, which is probably not what you'd want.
+</p>
+<p>
+These rules are for .png files. You can create similar rules of 
+other image types, obviously.
+</p>
+
+<div class=note id="nt-rules">
+<div class=nhcare>Rule order is important</div>
+<p>
+In a makefile, if a prerequisite or combination of prerequisites 
+follows more than one rule, the first rule that fits is used. So order 
+the grit rules like this:
+</p>
+
+<pre class=proglist>
+<span class=cmt># With matching grit-file</span>
+%.s %.h	: %.png %.grit
+	$(GRIT) $&lt; -fts
+
+<span class=cmt># No grit-file: try using dir.grit</span>
+%.s %.h	: %.png
+	$(GRIT) $&lt; -fts -ff $(&lt;D)/$(notdir $(&lt;D)).grit
+</pre>
+</div>
+
+
+<!-- ============================================================== -->
+
+<h2 id="sec-template">2.3.
+  Grit in template makefiles
+</h2>
+
+<p>
+The standard practice for building gba/nds homebrew apps nowadays is 
+to use the template makefiles that come with the devkitPro 
+distribution, or derivatives thereof. These makefiles may have to be 
+altered in several places to make them work for grit. Here is a summary 
+of you may need to do.
+</p>
+
+<ul>
+  <li>Add GRIT and GRAPHICS variables.</li>
+  <li>Create a GFXFILES list.</li>
+  <li>Add the GFXFILES to the OFILES list.</li>
+  <li>Add the png-file rules.</li>
+</ul>
+
+<h4>Add GRIT and GRAPHICS variables</h4>
+<p>
+The GRAPHICS variable is for graphics what SOURCES is for the source 
+files: it's a list of all the directories with graphics. Technically, 
+creating a GRIT variables isn't required, but it can be useful if you 
+have different grit versions around. Add GRIT somewhere at the top, 
+near the inclusion of <tt>gba_rules</tt> or <tt>nds_rules</tt>, 
+and GRAPHICS near SOURCES.
+</p>
+
+<pre class=proglist>
+include $(DEVKITARM)/ds_rules
+<b>GRIT    := grit</b>
+
+<span class=cmt># ... stuff ...</span>
+
+TARGET      := $(notdir $(CURDIR))
+BUILD       := build
+SOURCES     := source
+DATA        := data
+INCLUDES    := include
+<b>GRAPHICS    := gfx</b>
+</pre>
+
+<p>
+The graphics directory also needs to be added to VPATH:
+</p>
+
+<pre class=proglist>
+export <span class="keyw">VPATH</span>    :=  $(<span 
+class=keyw>foreach</span> dir, $(SOURCES),  $(CURDIR)/$(dir)) \
+                    $(<span 
+class=keyw>foreach</span> dir, $(DATA),     $(CURDIR)/$(dir)) \
+<b>                    $(foreach dir, $(GRAPHICS), $(CURDIR)/$(dir))</b>
+</pre>
+
+<h4>Create a GFXFILES variable</h4>
+<p>
+Next, we need a list of all the graphics files. This is the analogon 
+of CFILES for the C sources, and it's placed in the same spot.
+</p>
+
+<pre class=proglist>
+CFILES      := $(<span class=keyw>foreach</span> dir, $(SOURCES),  $(<span 
+class=keyw>notdir</span> $(<span class=keyw>wildcard</span> $(dir)/*.c)))
+CPPFILES    := $(<span class=keyw>foreach</span> dir, $(SOURCES),  $(<span 
+class=keyw>notdir</span> $(<span class=keyw>wildcard</span> $(dir)/*.cpp)))
+SFILES      := $(<span class=keyw>foreach</span> dir, $(SOURCES),  $(<span 
+class=keyw>notdir</span> $(<span class=keyw>wildcard</span> $(dir)/*.s)))
+BINFILES    := $(<span class=keyw>foreach</span> dir, $(DATA),     $(<span 
+class=keyw>notdir</span> $(<span class=keyw>wildcard</span> $(dir)/*.*)))
+<b>GFXFILES    := $(foreach dir, $(GRAPHICS), <!--
+-->$(notdir $(wildcard $(dir)/*.png)))</b>
+</pre>
+
+<p>
+If you want BMPs as well, you can add them here in the same way, only 
+with <code>+=</code> instead of <code>:=</code>.
+</p>
+
+<h4>Add GFXFILES to the OFILES list</h4>
+<p>
+This is the trickiest step. OFILES lists all the object (<tt>.o</tt>) 
+files that the build creates, and it will run along these files 
+in the order they're listed. For this reason, the object files of the
+GFXFILES must occur <b>before</b> those of the cpp/c/s files. If not, 
+<tt>make</tt> will try to compile/assemble the files that grit creates 
+before they're actually created.
+yet.
+</p>
+
+<pre class=proglist>
+<span class=cmt>## NOTE: add the GFXFILES line <b>before</b> the sources!!!</span>
+<span class=keyw>export</span> OFILES   :=  $(<span 
+class=keyw>addsuffix</span> .o,$(BINFILES)) \
+                    <b>$(GFXFILES:.png=.o)</b>         \
+                    $(CPPFILES:.cpp=.o) $(CFILES:.c=.o) $(SFILES:.s=.o)
+</pre>
+
+<h4>Add grit rules</h4>
+<p>
+Finally, add the rules for grit conversion that I gave before. The best 
+place to add these are at the bottom of the makefile; somewhere after 
+the $(OUTPUT) lines, but before the dependencies.
+</p>
+
+<pre class=proglist>
+<b><span class=cmt># With matching grit-file</span>
+%.s %.h	: %.png %.grit
+	$(GRIT) $&lt; -fts
+
+<span class=cmt># No grit-file: try using dir.grit</span>
+%.s %.h	: %.png
+	$(GRIT) $&lt; -fts -ff $(&lt;D)/$(notdir $(&lt;D)).grit</b>
+
+-<span class=keyw>include</span> $(DEPENDS)
+ 
+<span class=keyw>endif</span>
+</pre>
+
+<p>
+For other image filetypes, add similar rules with those extensions.
+</p>
+
+
+<!-- ============================================================== -->
+
+<h2 id="sec-gfxmake">2.4.
+  Grit as a separate process
+</h2>
+
+<p>
+Adding the rules to the main makefile works, but it has a number of 
+disadvantages. First, of course, is that you have to change the 
+makefile, and this can be tricky in itself for those new to makefiles.
+Tied to that is the fact that the order of the changes matters as 
+well. Finally, it makes it harder to create specialized rules. The 
+rules I created above process one image at a time, but sometimes you 
+really need to have multiple sources, like when sharing palettes or 
+tilesets.
+</p>
+<p>
+In many ways, it'll be easier to handle image conversion as a 
+completely separate process, to be done before any real source files 
+are done. Not only are you more in control of the build order, but 
+you can also do all the unseemly steps that you may require in image 
+processing without it upsetting main makefile itself.
+</p>
+<p>
+In this section, I'll illustrate how you can convert the images in 
+different ways and archive the output into a resource library to be 
+linked into the project like any other lib. I'll also show how you 
+can combine the separate headers into a master header, which makes 
+#including the declarations considerably easier. This is one step 
+that would simply be impossible if you'd use a single makefile.
+</p>
+
+<h3 id="ssec-gfxmake-make">2.4.1.
+  gfxmake and libgfx
+</h3>
+
+<p>
+Splitting of the graphics conversion involved the use of a second 
+makefile which I call <tt>gfxmake</tt>. Here it is in full.
+</p>
+
+<pre class=proglist id="cd-gfxmake">
+<span class=cmt>#
+# Making a gfx library from grit output
+#
+# For use on data-arrays only. NO CODE!!!
+#
+
+# ---------------------------------------------------------------------
+# SETUP
+# ---------------------------------------------------------------------
+</span>
+export PATH :=  $(DEVKITARM)/bin:$(PATH)
+
+GRIT        := grit.exe
+
+.SUFFIXES:
+
+include $(DEVKITARM)/base_rules
+
+
+<span class=cmt># ---------------------------------------------------------------------
+# <b>(1)</b> PROJECT DETAILS
+# ---------------------------------------------------------------------
+
+# GFXTITLE  : Graphics library name
+# BUILD     : Directory for build process temporaries. Should NOT be empty!
+# GFXDIRS   : List of graphics directories
+# GFXEXTS   : Graphics extensions.
+# General note: use . for the current dir, don't leave them empty.</span>
+
+BUILD       := build
+GFXDIRS     := gfx level1 palmerge smkkarts
+GFXLIB      ?= libgfx.a
+GFXHDR      ?= all_gfx.h
+
+GFXEXTS     := png bmp
+
+<span class=cmt># --- Exceptions ---
+# Add files/file-variables for special rules here. Put the rules 
+# At the bottom of the makefile. Be careful with directories, as
+# we'll be in $(BUILD) when converting.
+# GFXSPECIALS   : removed from GFXFILES
+# OSPECIALS     : added to OFILES</span>
+
+export LOZLEVEL1    ?= $(<span class=keyw>notdir</span> $(<span 
+class=keyw>wildcard</span> level1/*.png))
+export PALMERGE     ?= $(<span class=keyw>notdir</span> $(<span 
+class=keyw>wildcard</span> palmerge/*.png))
+
+<span class=cmt># Key exception variables</span>
+export GFXSPECIALS  := $(LOZLEVEL1) $(PALMERGE)
+OSPECIALS           := level1.o palmerge.o
+
+
+<span class=cmt># ---------------------------------------------------------------------
+# BUILD FLAGS
+# ---------------------------------------------------------------------
+
+# Since there's no code to compile, we won't need optimizations, 
+# architectures etc.
+</span>
+<span class=keyw>CFLAGS</span>      := 
+<span class=keyw>CXXFLAGS</span>    := $(<span 
+class=keyw>CFLAGS</span>) -fno-rtti -fno-exceptions
+<span class=keyw>ASFLAGS</span>     := 
+
+
+<span class=cmt># ---------------------------------------------------------------------
+# <b>(2)</b> BUILD PROCEDURE
+# ---------------------------------------------------------------------
+</span>
+<span class=keyw>ifneq</span> ($(BUILD),$(<span class=keyw>notdir</span> $(CURDIR)))
+
+<span class=cmt># still in main directory.
+</span>
+export TARGET   :=  $(CURDIR)/$(GFXLIB)
+
+export <span class=keyw>VPATH</span>    :=  $(<span 
+class=keyw>foreach</span> <span class=keyw>dir</span>, $(GFXDIRS), $(CURDIR)/$(<span 
+class=keyw>dir</span>))
+export DEPSDIR  :=  $(CURDIR)/$(BUILD)
+
+GFXFILES    := $(<span class=keyw>filter-out</span> $(GFXSPECIALS),         \
+    $(<span class=keyw>foreach</span> <span class=keyw>dir</span>, $(GFXDIRS),                      \
+        $(<span class=keyw>foreach</span> ext, $(GFXEXTS),                  \
+            $(<span class=keyw>notdir</span> $(<span 
+class=keyw>wildcard</span> $(<span class=keyw>dir</span>)/*.$(ext)))   \
+    )))
+
+export OFILES   := $(<span class=keyw>addsuffix</span> .o, $(<span 
+class=keyw>basename</span> $(GFXFILES))) $(OSPECIALS)
+
+
+<span class=cmt># --- More targets ----------------------------------------------------
+</span>
+.PHONY: $(BUILD) clean
+
+<span class=cmt># --- Create BUILD if necessary, and run this makefile from there ---
+</span>
+$(BUILD):
+    @[ -d $@ ] || mkdir -p $@
+    @make --no-print-directory -C $(BUILD) -f $(CURDIR)/gfxmake
+
+all : $(BUILD)
+
+clean:
+    @echo clean ...
+    @rm -fr $(BUILD) $(TARGET) $(GFXHDR)
+
+    
+<span class=cmt># ---------------------------------------------------------------------</span>
+
+<span class=keyw>else</span>
+
+DEPENDS :=  $(OFILES:.o=.d)
+
+.PHONY : all 
+
+all : $(TARGET) $(GFXHDR)
+
+$(TARGET) : $(OFILES)
+    @echo Archiving into $(<span class=keyw>notdir</span> $@)
+    -@rm -f $@
+    @$(<span class=keyw>AR</span>) rcs $@ $(OFILES)
+
+
+$(GFXHDR) : $(OFILES)
+    @echo <span class=str>&quot;Creating master header: $@&quot;</span>
+    @$(<span class=keyw>call</span> master-header, $@, $(<span 
+class=keyw>notdir</span> $(^:.o=.h)) )
+
+
+<span class=cmt># ---------------------------------------------------------------------
+# <b>(3)</b> BASE CONVERSION RULES
+# ---------------------------------------------------------------------
+
+# --- With separate .grit file ---
+</span>
+%.s %.h : %.png %.grit
+    $(GRIT) $&lt; -fts
+
+%.s %.h : %.bmp %.grit
+    $(GRIT) $&lt; -fts
+
+%.s %.h : %.pcx %.grit
+    $(GRIT) $&lt; -fts
+
+%.s %.h : %.jpg %.grit
+    $(GRIT) $&lt; -fts
+
+
+<span class=cmt># --- Without .grit file ; uses dirname/dirname.grit for options ---
+</span>
+%.s %.h : %.png
+    $(GRIT) $&lt; -fts -ff $(&lt;D)/$(<span class=keyw>notdir</span> $(&lt;D)).grit
+
+%.s %.h : %.bmp
+    $(GRIT) $&lt; -fts -ff $(&lt;D)/$(<span class=keyw>notdir</span> $(&lt;D)).grit
+
+%.s %.h : %.pcx
+    $(GRIT) $&lt; -fts -ff $(&lt;D)/$(<span class=keyw>notdir</span> $(&lt;D)).grit
+
+%.s %.h : %.jpg
+    $(GRIT) $&lt; -fts -ff $(&lt;D)/$(<span class=keyw>notdir</span> $(&lt;D)).grit
+
+
+<span class=cmt># ---------------------------------------------------------------------
+# <b>(4)</b> SPECIAL RULES 
+# ---------------------------------------------------------------------
+</span>
+level1.s level1.h : level1.grit $(LOZLEVEL1)
+    @echo $(<span class=keyw>notdir</span> $^)
+    $(GRIT) $(<span class=keyw>sort</span> $(<span 
+class=keyw>filter</span> %.png,$^)) -o$@ -ff $&lt;
+
+palmerge.s palmerge.h : palmerge.grit $(PALMERGE)
+    @echo $(<span class=keyw>notdir</span> $^)
+    $(GRIT) $(<span class=keyw>filter</span> %.png,$^) -o$@ -ff $&lt;
+
+
+<span class=cmt># ---------------------------------------------------------------------
+# <b>(5)</b> UTILITY FUNCTIONS
+# ---------------------------------------------------------------------
+
+## Merge all headers into a single large one for easier including.</span>
+<span class=keyw>define</span> master-header    <span class=cmt># $1 : master path, $2 separate header paths</span>
+    echo -e <span class=str>&quot;//\n// $(notdir $(strip $1))\n//&quot;</span> &gt; $1
+    echo -e <span class=str>&quot;// One header to rule them and in the darkness bind them&quot;</span> &gt;&gt; $1
+    echo -e <span class=str>&quot;// Date: $(shell date +'%F %X' )\n&quot;</span> &gt;&gt; $1
+    echo -e <span class=str>&quot;#ifdef __cplusplus\nextern \&quot;</span>C\<span class=str>&quot; {\n#endif&quot;</span> &gt;&gt; $1
+    cat $2 &gt;&gt; $1
+    echo -e <span class=str>&quot;\n#ifdef __cplusplus\n};\n#endif\n&quot;</span> &gt;&gt; $1
+<span class=keyw>endef</span>
+
+<span class=cmt>## if you just want to include the separate headers, use this instead of cat:
+#   for hdr in $2 ; \
+#       do echo -e &quot;#include \&quot;$$hdr\&quot;&quot; &gt;&gt; $1 ; done;
+
+# --- odds and ends ---
+
+## Get the title-part of filename.</span>
+<span class=keyw>define</span> title        <span class=cmt># $1: filepath</span>
+    $(<span class=keyw>basename</span> $(<span class=keyw>notdir</span> $1))
+<span class=keyw>endef</span>
+
+<span class=cmt>## Get a valid C identifier for a name.</span>
+<span class=keyw>define</span> cident       <span class=cmt># $1: name</span>
+    `echo $1 | sed -e 's|^\([<span class=num>0</span>-<span class=num>9</span>]\)|_\<span class=num>1</span>| ; s|[./\\-]|_|g'`
+<span class=keyw>endef</span>
+
+<span class=cmt>## Create a header file for a bin2s converted binary.</span>
+<span class=keyw>define</span> bin-header       <span class=cmt># $1: path, $2: identifier</span>
+    echo <span class=str>&quot;extern const u32 $(strip $2)_size;&quot;</span> &gt;  $1
+    echo <span class=str>&quot;extern const u8 $(strip $2)[];&quot;</span>     &gt;&gt; $1 
+<span class=keyw>endef</span>
+
+<span class=cmt># ---------------------------------------------------------------------
+# DEPENDENCIES
+# ---------------------------------------------------------------------
+</span>
+-include $(DEPENDS)
+
+<span class=keyw>endif</span>
+</pre>
+
+<p>
+The <tt>gfxmake</tt> makefile is divided into a number of sections, 
+of which the five numbered ones are the most important.
+</p>
+
+<ol>
+  <li>Project details.</li>
+  <li>Build procedure.</li>
+  <li>Base rules.</li>
+  <li>Custom rules.</li>
+  <li>Utility functions.</li>
+</ol>
+
+<h4>Project details</h4>
+<p>
+Under project details, you can find the most relevant items for the 
+graphics conversions. The <code>BUILD</code> variable is the directory 
+that the converted items go into and <code>GFXDIRS</code> are the 
+directories where the graphics are. The next two variables, 
+<code>GFXLIB</code> and <code>GFXHDR</code> are the names of the 
+graphics library and master header that <code>gfxmake</code> creates.
+<code>GFXEXTS</code> are the extensions used for the images.
+</p>
+<p>
+The subsection under <code>exceptions</code> can be ignored for now. 
+The variables given there are excluded from the <code>GFXFILES</code> 
+and <code>OFILES</code>, so that they can be built from custom rules.
+</p>
+
+
+<h4>Build procedure</h4>
+<p>
+Here the variables <code>GFXFILES</code> and <code>OFILES</code> 
+are created, much like it was done in the template makefile. Note 
+that because we're not mixing code and data, the order of listing 
+in <code>OFILES</code> is not important.
+</p>
+<p>
+Note the use of <code>GFXSPECIALS</code> and <code>OSPECIALS</code> 
+here. The names under <code>GFXSPECIALS</code> are filtered out 
+of <code>GFXFILES</code> because I want their conversion procedure 
+to follow special rules. The object files created in those rules 
+still have to be added to the <code>OFILES</code>, of course, 
+and that's what <code>OSPECIALS</code> is for.
+</p>
+<p>
+Under the <code>else</code>, right before the Rules section, are the 
+main targets. The target itself is the library file given by 
+<code>GFXLIB</code>, which in this case is called <tt>libgfx.a</tt>. 
+There is also a rule to make the master header, <code>GFXHDR</code>. 
+The latter rule uses a user defined function 
+<code>master-header</code>, which I'll get to shortly.
+</p>
+
+<h4>Base rules</h4>
+<p>
+These are the same rules as before, in the same order. I've already 
+added versions for some other popular graphics types, but more could 
+be added if required. All these rules use assenbly for their output 
+because assembly can be converted to object files a hell of a lot 
+faster than C sources. Since you probably never need to browse through 
+the generated files, assembly should be the better option here.
+</p><br>
+
+<p>
+There is an interesting point that may be worth mentioning about 
+how <tt>make</tt> goes about using these rules to turn graphics into 
+assembly into objects. The rules here go from <tt>.png</tt> in 
+<code>PNGFILES</code> to <tt>.s</tt>, but nowhere are the <tt>.s</tt> 
+files mentioned explicitly. Only the <tt>o.</tt> files they become 
+are given (under <code>OFILES</code>). Basically, the <tt>.s</tt> 
+files are implicit temporaries, and what <tt>make</tt> does in such a 
+case is to <b>remove</b> the temporaries at the end. Only after 
+running through the rules a second time will the assembly files 
+remain in existence.
+</p>
+<p>
+It's a bit odd, I know but that's how it is. This can be more than 
+a little annoying if you want to do something else to those files 
+later, so consider yourself warned.
+</p>
+
+<h4>Special rules</h4>
+<p>
+The normal rules will convert single images into single assembly/object 
+files. For something like sharing tilesets among different maps, this 
+simply won't do. For such occasions, you have to use explicit rules of 
+some kind.
+</p>
+<p>
+<tt>gfxmake</tt> makes this process easier through the 
+<code>GFXSPECIALS</code> and <code>OSPECIALS</code> variables. Files 
+added to <code>GFXSPECIALS</code> won't follow the standard rules, 
+but can be redirected to your own custom rules. In this 
+particular case, I have all the rooms from the first dungeon in 
+Zelda 1 in the <code>level1</code> directory, and I want to 
+convert the maps with a shared tileset. The steps of interest for 
+that are the following.
+</p>
+
+<pre class=proglist id="cd-gfxmake-custom">
+<span class=cmt># Create a variable with the level1 filenames</span>
+export LOZLEVEL1    ?= $(<span class=keyw>notdir</span> $(<span 
+class=keyw>wildcard</span> level1/*.png))
+
+<span 
+class=cmt># Add the sources to GFXSPECIALS and the output file to OSPECIALS</span>
+export GFXSPECIALS  := $(LOZLEVEL1)
+OSPECIALS           := level1.o
+
+
+<span class=cmt># Rule to for the conversion</span>
+level1.s level1.h : level1.grit $(LOZLEVEL1)
+    @echo $(<span class=keyw>notdir</span> $^)
+    $(GRIT) $(<span class=keyw>sort</span> $(<span 
+class=keyw>filter</span> %.png,$^)) -o$@ -ff $&lt;
+</pre>
+
+<p>
+Once <code>GFXSPECIALS</code> and <code>OSPECIALS</code> are set up, 
+you can do with those files whatever you like. The custom rule looks 
+similar to rule for the karts from before, except that now there is a 
+grit-file as well. Unfortunately, I do need some makefile trickery to 
+get it all done. To get the list of sources from the prerequisites, I 
+need to filter for <tt>.png</tt>s only. The sort is somewhat optional, 
+but recommended as well. Another thing I'm doing here is to place 
+the grit-file first in the list. This enables me to get its name 
+with <code>$&lt;</code>, rather than having to filter it out as well.
+</p>
+
+<h4>Utility functions</h4>
+<p>
+<tt>make</tt> allows you to create your own functions as well. 
+These can help in doing special things. Though the others are useful 
+as well, the only one I make actual use of in this 
+<tt>gfxmake</tt> is <code>master-header</code>:
+</p>
+
+<pre class=proglist id="cd-master-header">
+<span class=cmt># Merge all headers into a single large one for easier including.</span>
+<span class=keyw>define</span> master-header    <span class=cmt># $1 : master path, $2 separate header paths</span>
+    echo -e <span class=str>&quot;//\n// $(notdir $(strip $1))\n//&quot;</span> &gt; $1
+    echo -e <span class=str>&quot;// One header to rule them and in the darkness bind them&quot;</span> &gt;&gt; $1
+    echo -e <span class=str>&quot;// Date: $(shell date +'%F %X' )\n&quot;</span> &gt;&gt; $1
+    echo -e <span class=str>&quot;#ifdef __cplusplus\nextern \&quot;</span>C\<span class=str>&quot; {\n#endif&quot;</span> &gt;&gt; $1
+    cat $2 &gt;&gt; $1
+    echo -e <span class=str>&quot;\n#ifdef __cplusplus\n};\n#endif\n&quot;</span> &gt;&gt; $1
+<span class=keyw>endef</span>
+
+<span class=cmt># Usage example </span>
+$(GFXHDR) : $(OFILES)
+    @echo <span class=str>&quot;Creating master header: $@&quot;</span>
+    @$(<span class=keyw>call</span> master-header, $@, $(<span 
+class=keyw>notdir</span> $(^:.o=.h)) )
+</pre>
+
+<p>
+The <code>master-header</code> function takes two arguments: the path of the 
+master header that's to be created, and a list of the original headers. It 
+will create a single header file with a tile-stamped preface and then
+copies all the separate headers into it. This means that the output of
+<code>gfxmake</code> is a combination of one header and one archive, which 
+can be put to use with more ease than a bucketful of separate files.
+</p>
+
+<h3 id="ssec-gfxmake-templ">2.4.2.
+  Modifications to the template
+</h3>
+
+<p>
+Of course, even with <tt>gfxmake</tt> you still need some changes 
+to the template makefile, but they're smaller than adding all of 
+<tt>gfxmake</tt> functionality into the template. There are two 
+main changes to make.
+</p>
+<p>
+The first is to add make <code>libgfx.a</code> 
+and its headers visible. This is done like adding any other library: 
+add <code>-lgfx</code> to the <code>LIBS</code> variable. Technically 
+you should add the appropriate paths to <code>LIBDIRS</code> as well, 
+but since because the files are in the current dir and 
+<code>BUILD</code>, this isn't really necessary.
+</p>
+<p>
+The second is to invoke <tt>gfxmake</tt> from the main makefile. This 
+comes down to adding a line that calls it to the build rule. The whole 
+thing comes down to something like this.
+</p>
+
+<pre class=proglist>
+
+<span class=cmt>## Create a gfx library variable</span>
+<b>GFXLIBS     ?= libgfx.a</b>
+
+
+<span class=cmt>## Add it to the library list.</span>
+LIBS        := <i>standard libs</i> <b>-lgfx</b>
+
+
+<span class=cmt>## Make the .elf depend on the graphics lib(s)</span>
+$(OUTPUT).elf   :   $(OFILES) <b>$(GFXLIBS)</b>
+
+<span class=cmt>## Add line to invoke gfxmake</span>
+$(BUILD):
+    @[ -d $@ ] || mkdir -p $@
+    <b>@make --no-print-directory -f $(CURDIR)/gfxmake</b>
+    @make --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+</pre>
+
+<p>
+And that's about it. I think it should be possible to make it 
+even easier, but this should be enough for now.
+</p>
+
+<!-- ============================================================== -->
+
+<h2 id="sec-conc">2.5.
+  Conclusions
+</h2>
+
+<p>
+Getting grit to work inside your makefile shouldn't be too difficult 
+if you follow these steps. The main thing to remember is to use 
+configuration files and the following makefile rules:
+</p>
+
+<pre class=proglist>
+<span class=cmt># With matching grit-file</span>
+%.s %.h	: %.png %.grit
+	$(GRIT) $&lt; -fts
+
+<span class=cmt># No grit-file: try using dir.grit</span>
+%.s %.h	: %.png
+	$(GRIT) $&lt; -fts -ff $(&lt;D)/$(notdir $(&lt;D)).grit
+</pre>
+
+<p>
+With these rules, you can convert single image either by using a 
+similarly named grit-file, or share a grit-file for a whole directory 
+by naming the grit-file the same basename as the directory. Adding 
+explicit rules is also an option, of course.
+</p>
+<p>
+You also need to add a few variables to the makefiles for bookkeeping 
+purposes. These have to be added very carefully, because the order 
+sometimes matters. An alternative is to pass the conversion process 
+to another script (makefile or otherwise). This can probably save 
+you a lot of hassle in the long run, which is why I'm using that 
+method in grit's demo project. In the end, of course, what you 
+use is up to you.
+</p>
+
+<br>
+
+<div class=endtag>
+  Modified <span class=time>May 4 2008</span>,
+  <a href="mailto:cearn@coranac.com">J Vijn</a>.
+Get grit <a href="http://www.coranac.com/projects/#grit">here</a>
+</div>
+
+<hr>
+
+<!-- [[footer]] -->
+<table class=footer>
+<tr>
+  <td class=hdr_l><a href="grit.htm">Prev</a>
+  <td class=hdr_c><a href="index.htm">Contents</a>
+  <td class=hdr_r><a href="wingrit.htm">Next</a>
+<tr>
+  <td class=hdr_l>Grit
+  <td class=hdr_c>
+  <td class=hdr_r>Wingrit
+</table>
+<!-- [[/footer]] -->
+
+</body>
+</html>
+
