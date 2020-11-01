@@ -233,7 +233,7 @@ const char en_formatnor_info1[]="Are you sure?";
 const char en_formatnor_info2[]="This will take a while.";
 
 const char en_theme_credit[]="Simple v3.41 by";
-const char en_theme_credit2[]="Sterophonick. Edited by Rocky5";
+const char en_theme_credit2[]="Sterophonick.";
 
 const char en_check_sav[]="Checking Save Data...";
 const char en_make_sav[] ="Creating Save Data...";
