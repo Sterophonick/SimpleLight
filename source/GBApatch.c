@@ -640,16 +640,17 @@ void GBApatch_NOR(u32* address,int filesize,u32 offset)
 	PatchNes(address);
 	PatchDragonBallZ(address);
 	Check_Fire_Emblem();
-	if((gl_rts_on==1) ||  ((gl_cheat_on==1)&& (gl_cheat_count>0) ) )		
+
+	if ((gl_rts_on == 1) && (gl_cheat_on == 0) && (gl_reset_on == 0) && (gl_sleep_on == 0))
 	{
 		Patch_RTS_only(address);
-	}  
-	else if((gl_rts_on==1) ||  ((gl_cheat_on==1)&& (gl_cheat_count>0) ) )		
+	}
+	else if ((gl_rts_on == 1) || ((gl_cheat_on == 1) && (gl_cheat_count > 0)))
 	{
 		Patch_RTS_Cheat(address);
 	}
 	else
-	{  
+	{
 		Patch_Reset_Sleep(address);
 	}
 }
