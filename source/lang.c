@@ -128,7 +128,7 @@ const char zh_set_btn[]="设置";
 const char zh_ok_btn[]="保存";
 const char zh_formatnor_info[]="确定?大约4分钟";
 
-const char zh_theme_credit[]="Simple主题 v3.41";
+const char zh_theme_credit[]="Simple主题 v3.42";
 const char zh_theme_credit2[]="by Sterophonick";
 
 const char zh_check_sav[]="检查SAV文件";
@@ -191,7 +191,7 @@ const char *zh_nor_op[3]={
 
 const char *zh_more_options[4]={
 	"切换缩略图",
-	"切换冷启动",
+	"使用BIOS简介",
 	"切换备份",
 	"切换粗体",
 };
@@ -232,7 +232,7 @@ const char en_ok_btn[]=" OK";
 const char en_formatnor_info1[]="Are you sure?";
 const char en_formatnor_info2[]="This will take a while.";
 
-const char en_theme_credit[]="Simple v3.41 by";
+const char en_theme_credit[]="Simple v3.42 by";
 const char en_theme_credit2[]="Sterophonick.";
 
 const char en_check_sav[]="Checking Save Data...";
@@ -283,7 +283,7 @@ const char *en_rom_menu[] = {
 	"Clean boot",
 	"Boot with addon",
 	"Write to NOR clean",
-	"Write to NOR addon",
+	"Write to NOR with addon",
 	"Save type",
 	"Cheat",
 };
@@ -294,7 +294,7 @@ const char *en_nor_op[3]={
 };	
 const char *en_more_options[4]={
 	"Toggle thumbnail",
-	"Clean boot roms",
+	"Use BIOS intro",
 	"Backup saves",
 	"Toggle bold",
 	//Start Random Game

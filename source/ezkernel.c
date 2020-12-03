@@ -2312,6 +2312,10 @@ re_showfile:
 					if (re_menu == 1)
 					{
 						Show_Extra_Menu(MENU_line);
+						if (gl_show_Thumbnail)
+							DrawHZText12("(ON)", 32, 47 + (6 * 20), 30, gl_color_text, 1);
+						else
+							DrawHZText12("(OFF)", 32, 47 + (6 * 20), 30, gl_color_text, 1);
 						if (gl_toggle_reset)
 							DrawHZText12("(ON)", 32, 47 + (6 * 20), 44, gl_color_text, 1);
 						else
@@ -2329,6 +2333,13 @@ re_showfile:
 						}
 						else {
 							name_color = gl_color_text;
+						}
+						if (MENU_line == 0)
+						{
+							if (gl_show_Thumbnail)
+								DrawHZText12("(ON)", 32, 47 + (6 * 20), 30, name_color, 1);
+							else
+								DrawHZText12("(OFF)", 32, 47 + (6 * 20), 30, name_color, 1);
 						}
 						if (MENU_line == 1)
 						{
