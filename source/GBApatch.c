@@ -857,8 +857,8 @@ void Make_mde_file(TCHAR* gamefilename,u8 Save_num)
 	memset(currentpath,00,256);
 	res = f_getcwd(currentpath, sizeof currentpath / sizeof *currentpath);
 	
-	res = f_mkdir("/SYSETM/SAVER");
-	res=f_chdir("/SYSETM/SAVER");
+	res = f_mkdir("/SYSTEM/SAVER");
+	res=f_chdir("/SYSTEM/SAVER");
 	
 	memset(w_buffer, 0x00, sizeof(w_buffer));
 
