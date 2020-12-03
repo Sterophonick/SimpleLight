@@ -1,0 +1,91 @@
+
+         -------------------------------------------------------
+       //                                                       \\
+      ||     WW             q                                    ||
+      ||     WW             qq                                   ||
+      ||   WWWWWW           qq                                   ||
+      ||       WW  i   i  qqq   g ggg    rrrr   i   i   ttt      ||
+      ||      WW   i  i     q    g   g  r    r  i  i   t   t     ||
+      ||     WW     ii      q    g  g   r r  r   ii    t   t     ||
+      ||    WW     i i      q    ggggg   r   r  i i    tttt      ||
+      ||           i i           g              i i    t         ||
+      ||           ii            g              ii     t         ||
+      ||                                                         ||
+      ||=========================================================||
+      ||    Wingrit: Windows GBA Raster Image Transmogrifier     ||
+      ||                  by : Jasper Vijn (cearn)               ||
+      ||                          v0.8.2                         ||
+      ||                 (last update: 2008-11-16)               ||
+      ||                  (started: 2005-01-15)                  ||
+       \\_______________________________________________________//
+
+
+// --------------------------------------------------------------------
+// Introduction
+// --------------------------------------------------------------------
+
+  Yay, yet another image converter. Do we really need another one? 
+Well maybe, maybe not. As far as I can tell there are two 
+very complete gfx exporters right now: gfx2gba (by Markus, not
+the other one) and cog (by OneManBand). The second one seems not to
+be available anymore, and the first one wasn't quite able to do what 
+I wanted. Also, both of these are pure command-line tools.
+  Wingit is a GUI tool, making it easier to get started. The main view
+offers a preview of the image you want to export, which is always nice.
+There's a palette viewer too. By using FreeImage, it can read pretty
+much every kind of image (yes, GIFs too).
+  As for the exporter itself, I've pretty much crammed it full of 
+options. There are separate sections for palette, image and map 
+control, which include cropping the exported image, various bitdepths 
+(including 1 and 2bpp for use BitUnpack) compression and 
+tile-set reduction. There are also options for tile-grouping, not
+only can this be beneficial for sprites in 1d mode, but you can also 
+use it to create meta-maps of arbitrary sizes. The output file(s)
+can be C, GNU asm or binary, a header file is optional and there are 
+choices between u8, u16, and u32 type-sizes. Naturally, the variable 
+name can be altered independently from the file-name.
+
+While the program is useful as is, there is always room for more. 
+There are a few other things I'd like to add, like vertical map 
+layout, merging palettes, and an extra output format or two. And, 
+of course, proper documentation. But I'd also like to get back to real 
+GBA stuff so I'm leaving it as is for now. 
+  Btw, if you would like to see things like this added, the source 
+code is freely available, so why not try it yourself? (Then again, 
+seeing my code...)
+
+
+NOTE: (Win)grit was born '(Win)git. But because the linux kernel
+versioning is also called 'git' and g(r)it's supposed to be a
+multi-platform too, it had to be renamed. Hence, 'grit'.
+
+- J Vijn
+
+mail: cearn@coranac.com
+url: http://www.coranac.com
+
+
+// --------------------------------------------------------------------
+// Changes
+// --------------------------------------------------------------------
+
+v0.8
++ Added GRF format.
++ Added 'fake' compression.
+See grit.txt and documentation for details.
+
+v0.7
++ Name change to '(Win)grit'
++ Fixed pathing problem in ext-tiles (thanks dovoto)
++ Updated documentation.
+
+v0.7b
++ Palette/color transparency options.
++ External tileset support for tile mapping.
++ Logging ... kinda. All logging goes into gxplog.txt in the git directory.
+  I'll add a window for displaying it later.
+ 
+
+Still to come
+- Uhm ... column based maps maybe?
+- GBA/NDS Examples

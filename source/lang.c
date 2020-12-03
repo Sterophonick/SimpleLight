@@ -11,15 +11,10 @@ char* gl_file_overflow;
 char* gl_theme_credit;
 char* gl_theme_credit2;
 
-char* gl_sl_version;
-char* gl_sl_dark;
-char* gl_sl_light;
-
 char* gl_generating_emu;
 
 char* gl_menu_btn;
 char* gl_lastest_game;
-char* gl_lastest_game2;
 
 char* gl_writing;
 
@@ -98,11 +93,6 @@ char* gl_copying_data;
 
 unsigned char* ASC_DATA;
 
-//Simple light version info
-const char sl_version[]="3.41";
-const char sl_dark_theme[]="Dark";
-const char sl_light_theme[]="Light";
-
 //中文
 const char zh_init_error[]="TF卡初始化失败";
 const char zh_power_off[]="关机";
@@ -112,8 +102,7 @@ const char zh_file_overflow[]="文件太大,不能加载";
 
 const char zh_menu_btn[]=" (B)取消    (A)确定";
 const char zh_writing[]="正在写入...";
-const char zh_lastest_game[]=" ";
-const char zh_lastest_game2[]="请选择最后一个游戏";
+const char zh_lastest_game[]="请选择最后一个游戏";
 
 const char zh_time[] ="     时间";
 const char zh_Mon[]="一";
@@ -139,7 +128,7 @@ const char zh_set_btn[]="设置";
 const char zh_ok_btn[]="保存";
 const char zh_formatnor_info[]="确定?大约4分钟";
 
-const char zh_theme_credit[]="Simple主题";
+const char zh_theme_credit[]="Simple主题 v3.42";
 const char zh_theme_credit2[]="by Sterophonick";
 
 const char zh_check_sav[]="检查SAV文件";
@@ -202,7 +191,7 @@ const char *zh_nor_op[3]={
 
 const char *zh_more_options[4]={
 	"切换缩略图",
-	"切换冷启动",
+	"使用BIOS简介",
 	"切换备份",
 	"切换粗体",
 };
@@ -216,8 +205,7 @@ const char en_file_overflow[]="The file is too big.";
 
 const char en_menu_btn[]=" (B) No     (A) OK";
 const char en_writing[]="Writing...";
-const char en_lastest_game[]="Error: Start from";
-const char en_lastest_game2[]="       the bottom";
+const char en_lastest_game[]="Select the lastest";
 
 const char en_time[]="     Time";
 const char en_Mon[]="Mon";
@@ -232,7 +220,7 @@ const char en_addon[]="    Addon";
 const char en_reset[]="Reset";
 const char en_rts[]="Savestate";
 const char en_sleep[]="Sleep";
-const char en_cheat[]="Cheats";
+const char en_cheat[]="Cheat";
 
 const char en_hot_key[] ="Sleep key";
 const char en_hot_key2[]=" Menu key";
@@ -241,11 +229,11 @@ const char en_language[]=" Language";
 const char en_lang[]="English";
 const char en_set_btn[]="Set";
 const char en_ok_btn[]=" OK";
-const char en_formatnor_info1[]="Sure? This will be";
-const char en_formatnor_info2[]=" about 4 minutes.";
+const char en_formatnor_info1[]="Are you sure?";
+const char en_formatnor_info2[]="This will take a while.";
 
-const char en_theme_credit[]="Simple";
-const char en_theme_credit2[]="by Sterophonick";
+const char en_theme_credit[]="Simple v3.42 by";
+const char en_theme_credit2[]="Sterophonick.";
 
 const char en_check_sav[]="Checking Save Data...";
 const char en_make_sav[] ="Creating Save Data...";
@@ -295,7 +283,7 @@ const char *en_rom_menu[] = {
 	"Clean boot",
 	"Boot with addon",
 	"Write to NOR clean",
-	"Write to NOR addon",
+	"Write to NOR with addon",
 	"Save type",
 	"Cheat",
 };
@@ -306,8 +294,8 @@ const char *en_nor_op[3]={
 };	
 const char *en_more_options[4]={
 	"Toggle thumbnail",
-	"Toggle reset",
-	"Toggle backup",
+	"Use BIOS intro",
+	"Backup saves",
 	"Toggle bold",
 	//Start Random Game
 };
@@ -322,15 +310,10 @@ void LoadChinese(void)
 	gl_file_overflow = (char*)zh_file_overflow;
 	gl_theme_credit = (char*)zh_theme_credit;
 	gl_theme_credit2 = (char*)zh_theme_credit2;
-	
-	gl_sl_version = (char*)sl_version;
-	gl_sl_dark = (char*)sl_dark_theme;
-	gl_sl_light = (char*)sl_light_theme;
-	
+
 	gl_menu_btn = (char*)zh_menu_btn;
 	gl_writing = (char*)zh_writing;
 	gl_lastest_game = (char*)zh_lastest_game;
-	gl_lastest_game2 = (char*)zh_lastest_game2;
 	
 	
 	gl_time = (char*)zh_time;	
@@ -410,31 +393,10 @@ void LoadChinese(void)
 	ASC_DATA = ASC_DATA_OLD;
 }
 //---------------------------------------------------------------------------------
-
-void cat(char *a, char *b)
-{
-   while(*a)
-      a++;
-     
-   while(*b)
-   {
-      *a = *b;
-      b++;
-      a++;
-   }
-   *a = '\0';
-}
-
-
 void LoadEnglish(void)
 {
 	gl_theme_credit = (char*)en_theme_credit;
 	gl_theme_credit2 = (char*)en_theme_credit2;
-	
-	gl_sl_version = (char*)sl_version;
-	gl_sl_dark = (char*)sl_dark_theme;
-	gl_sl_light = (char*)sl_light_theme;
-	
 	gl_init_error = (char*)en_init_error;
 	gl_power_off = (char*)en_power_off;
 	gl_init_ok = (char*)en_init_ok;
@@ -444,7 +406,6 @@ void LoadEnglish(void)
 	gl_menu_btn = (char*)en_menu_btn;
 	gl_writing = (char*)en_writing;
 	gl_lastest_game = (char*)en_lastest_game;
-	gl_lastest_game2 = (char*)en_lastest_game2;
 	
 	gl_time = (char*)en_time;	
 	gl_Mon = (char*)en_Mon;
