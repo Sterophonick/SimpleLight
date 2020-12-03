@@ -11,7 +11,6 @@
 #include "draw.h"
 #include "Ezcard_OP.h"
 
-extern const unsigned char __attribute__((aligned(4)))gImage_SET[76800];
 extern u16 gl_select_lang;
 extern u16 gl_engine_sel;
 extern u16 gl_show_Thumbnail;

@@ -10,8 +10,6 @@
 #include "showcht.h"
 #include "draw.h"
 
-extern const unsigned short gImage_RECENTLY[38400];
-
 FM_CHT_LINE tmpCHTFS ;
 
 u8 *pCHTbuffer = (u8*)(pReadCache + 0x2000); //patchbuffer

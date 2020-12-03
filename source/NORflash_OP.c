@@ -88,13 +88,13 @@ void Chip_Erase()
     *((vu16 *)(FlashBase_S98+0x555*2)) = 0xAA ;
     *((vu16 *)(FlashBase_S98+0x2AA*2)) = 0x55 ;
     *((vu16 *)(FlashBase_S98+0x555*2)) = 0x10 ;
+	DrawPic((u16*)gImage_MENU, 36, 25, 168, 110, 1, 0, 1);//show menu pic
     do {
         VBlankIntrWait();
-        VBlankIntrWait();
         ShowTime(NOR_list,0);
-        DrawPic((u16*)(gImage_MENU+78*128*2), 56, 90+13, 128, 13, 0, 0, 1);//show menu pic
         itoa(count,msg,2);
-        DrawHZText12(msg,0,60,90+13,gl_color_text,1);
+		DrawHZText12("Erasing NOR, please wait.",0,45,65,gl_color_text,1);
+        DrawHZText12(msg,0,75,80,gl_color_text,1);
         count++;
         VBlankIntrWait();
         v1 = *((vu16 *)(FlashBase_S98)) ;
@@ -109,14 +109,15 @@ void FormatNor()
 {
     char msg[128];
     sprintf(msg,"%s",gl_formatnor_info1);
-    DrawHZText12(gl_formatnor_info1,0,60,85,gl_color_text,1);
-    DrawHZText12(gl_formatnor_info2,0,60,100,gl_color_text,1);
+    DrawHZText12(gl_formatnor_info1,0,80,80,gl_color_text,1);
+    DrawHZText12(gl_formatnor_info2,0,52,95,gl_color_text,1);
     while(1) {
         delay(500);
         scanKeys();
         u16 keys = keysDown();
         if (keys & KEY_A) {
             Chip_Erase();
+			VBlankIntrWait();
             memset(pNorFS,00,sizeof(FM_NOR_FS)*MAX_NOR);
             return;
         }
@@ -248,7 +249,7 @@ u8 str_len;
         Clear(0,160-15,240,15,gl_color_cheat_black,1);
         ShowbootProgress(gl_copying_data);
         for(blocknum=0; blocknum<filesize; blocknum+=0x20000) {
-            sprintf(msg,"%luMb",(blocknum)/0x20000);
+            sprintf(msg,"%luMbit",(blocknum)/0x20000);
 			str_len = strlen(msg);
             Clear(0,130,240,15,gl_color_cheat_black,1);
             DrawHZText12(msg,0,(240-str_len*6)/2,160-30,0x7fff,1);
