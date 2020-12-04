@@ -2848,7 +2848,7 @@ re_showfile:
 			FAT_table_buffer[0x1F4 / 4] = 0x2;  //copy mode
 			Send_FATbuffer(FAT_table_buffer, 1); //only save FAT
 			//wait_btn();
-			SetRompageWithHardReset(pNorFS[show_offset + file_select].rompage, 1);
+			SetRompageWithHardReset(pNorFS[show_offset + file_select].rompage, gl_toggle_reset);
 			while (1) {
 				VBlankIntrWait();
 			}
