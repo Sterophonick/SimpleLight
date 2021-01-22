@@ -1,3 +1,5 @@
+FORKED FROM https://github.com/ez-flash/omega-kernel
+
 # SimpleLight 
 Hello all!
 
