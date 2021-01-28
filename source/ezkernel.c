@@ -22,17 +22,52 @@
 #include "showcht.h"
 
 #include "images/splash.h"
-#include "images/SD.h"
-#include "images/NOR.h" 
-#include "images/SET.h"
-#include "images/HELP.h"
-#include "images/RECENTLY.h"
 
-#include "images/MENU.h"
-#include "images/icons.h"
+#ifdef DARK
+#include "images/dark/SD.h"
+#include "images/dark/NOR.h"
+#include "images/dark/SET.h"
+#include "images/dark/HELP.h"
+#include "images/dark/RECENTLY.h"
+#include "images/dark/MENU.h"
+#include "images/dark/icon_chip.h"
+#include "images/dark/icons.h"
+#else
+#include "images/light/SD.h"
+#include "images/light/NOR.h"
+#include "images/light/SET.h"
+#include "images/light/HELP.h"
+#include "images/light/RECENTLY.h"
+#include "images/light/MENU.h"
+#include "images/light/icon_chip.h"
+#include "images/light/icons.h"
+#endif
+
+#include "images/icon_CV.h"
+#include "images/icon_MSX.h"
+#include "images/icon_GG.h"
+#include "images/icon_SMS.h"
+#include "images/icon_SV.h"
+#include "images/icon_a26.h"
 #include "images/nor_icon.h"
+#include "images/icon_GBC.h"
+#include "images/icon_WS.h"
 #include "images/icon_FC.h"
 #include "images/icon_GB.h"
+#include "images/icon_SG.h"
+#include "images/icon_NG.h"
+#include "images/icon_IMG.h"
+#include "images/icon_TXT.h"
+#include "images/icon_PCE.h"
+#include "images/icon_ZX.h"
+#include "images/icon_o2.h"
+#include "images/icon_pokem.h"
+#include "images/icon_vmu.h"
+#include "images/icon_wav.h"
+#include "images/icon_arc.h"
+#include "images/icon_sc3000.h"
+#include "images/icon_EXE.h"
+#include "images/icon_mod.h"
 #include "images/NOTFOUND.h"
 
 #include "images/Chinese_manual.h"
@@ -1221,7 +1256,7 @@ void CheckLanguage(void)
 	{
 		LoadEnglish();
 	}
-	else//ÖÐÎÄ
+	else//ï¿½ï¿½ï¿½ï¿½
 	{
 		LoadChinese();
 	}
