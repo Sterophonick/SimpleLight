@@ -715,7 +715,7 @@ u32 Check_pat(TCHAR* gamefilename)
 	
 	TCHAR patnamebuf[100];	
 	make_pat_name(patnamebuf,gamefilename);
-	res=f_chdir("/PATCH");
+	res=f_chdir("/SYSTEM/PATCH");
 	if(res == FR_OK)
 	{
 		res = f_open(&gfile,patnamebuf, FA_READ);
@@ -762,8 +762,8 @@ void Make_pat_file(TCHAR* gamefilename)
 	u32 written;
 	u32 w_buffer[16];
 	
-	res = f_mkdir("/PATCH");
-	res=f_chdir("/PATCH");
+	res = f_mkdir("/SYSTEM/PATCH");
+	res=f_chdir("/SYSTEM/PATCH");
 	
 	memset(w_buffer, 0x00, sizeof(w_buffer));
 
@@ -897,8 +897,8 @@ u32 Check_RTS(TCHAR* gamefilename)
 	rtsnamebuf[len-2] = 't';
 	rtsnamebuf[len-1] = 's';	
 	
-	res = f_mkdir("/RTS");
-	res=f_chdir("/RTS");
+	res = f_mkdir("/SYSTEM/RTS");
+	res=f_chdir("/SYSTEM/RTS");
 	if(res != FR_OK){
 		return 0;
 	}

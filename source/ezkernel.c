@@ -311,33 +311,160 @@ void Show_ICON_filename(u32 show_offset,u32 file_select,u32 haveThumbnail)
 		pfilename = pFilename_buffer[offset+line-need_show_folder].filename;
 		strlen8 = strlen(pfilename) ;
 		u16* icon; 
-		if(!strcasecmp(&(pfilename[strlen8-3]), "gba"))
-		{
-			icon = (u16*)(gImage_icons+1*16*14*2);
-		}	
-		else if(!strcasecmp(&(pfilename[strlen8-3]), "gbc"))
-		{
+		if (!strcasecmp(&(pfilename[strlen8 - 3]), "gba")) { //GBA
+			icon = (u16*)(gImage_icons + 1 * 16 * 14 * 2);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "bin")) { //.bin file
+			icon = (u16*)(gImage_icon_EXE);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "mb")) { //PogoShell Plugin/Multiboot image
+			icon = (u16*)(gImage_icon_EXE);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "mbz")) { //Compressed PogoShell Plugin
+			icon = (u16*)(gImage_icon_EXE);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 4]), "mbap")) { //Compressed PogoShell Plugin
+			icon = (u16*)(gImage_icon_EXE);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "agb")) { //GBA
+			icon = (u16*)(gImage_icons + 1 * 16 * 14 * 2);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "gbc")) { //GBC
+			icon = (u16*)(gImage_icon_GBC);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "gb")) { //GB
 			icon = (u16*)(gImage_icon_GB);
 		}
-		else if(!strcasecmp(&(pfilename[strlen8-2]), "gb"))
-		{
-			icon = (u16*)(gImage_icon_GB);
-		}
-		else if(!strcasecmp(&(pfilename[strlen8-3]), "nes"))
-		{
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "nes")) { //NES
 			icon = (u16*)(gImage_icon_FC);
 		}
-		else 
-		{
-			icon = (u16*)(gImage_icons+2*16*14*2);
-		}	
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "sms")) { //Master System
+			icon = (u16*)(gImage_icon_SMS);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "gg")) { //Game Gear
+			icon = (u16*)(gImage_icon_GG);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "sg")) { //SG-1000
+			icon = (u16*)(gImage_icon_SG);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "ngp")) { //Neo Geo Pocket
+			icon = (u16*)(gImage_icon_NG);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 4]), "ngpc")) { //Neo Geo Pocket Color
+			icon = (u16*)(gImage_icon_NG);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "jpg")) { //JPEG Image
+			icon = (u16*)(gImage_icon_IMG);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 4]), "jpeg")) { //JPEG Image
+			icon = (u16*)(gImage_icon_IMG);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "bmp")) { //BMP Image
+			icon = (u16*)(gImage_icon_IMG);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "txt")) { //Text Document
+			icon = (u16*)(gImage_icon_TXT);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "esv")) { //Fixes the bug with esv files looking like watara supervision
+			icon = (u16*)(gImage_icons + 2 * 16 * 14 * 2);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "sv")) { //Watara Supervision
+			icon = (u16*)(gImage_icon_SV);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "ws")) { //Wonderswan
+			icon = (u16*)(gImage_icon_WS);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "wsc")) { //Wonderswan Color
+			icon = (u16*)(gImage_icon_WS);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "col")) { //ColecoVision
+			icon = (u16*)(gImage_icon_CV);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "rom")) { //MSX-1
+			icon = (u16*)(gImage_icon_MSX);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "pce")) { //PC-Engine
+			icon = (u16*)(gImage_icon_PCE);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "z80")) { //Sinclair ZX-Spectrum (Z80)
+			icon = (u16*)(gImage_icon_ZX);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "o2")) { //Magnavox Odyssey2 (No emu yet, but I'm eventually going to have a finished one. :D)
+			icon = (u16*)(gImage_icon_o2);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "c8")) { //Chip-8
+			icon = (u16*)(gImage_icon_chip);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "ch8")) { //Chip-8
+			icon = (u16*)(gImage_icon_chip);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "min")) { //Pokemon Mini (No Emu yet)
+			icon = (u16*)(gImage_icon_pokem);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "dci")) { //Visual Memory Unit (No Emu yet, but I will make one at some point)
+			icon = (u16*)(gImage_icon_vmu);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "vmi")) { //Visual Memory Unit (No Emu yet, but I will make one at some point)
+			icon = (u16*)(gImage_icon_vmu);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "mid")) { //MIDI Sequence
+			icon = (u16*)(gImage_icon_mod);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "wav")) { //Wave Sound
+			icon = (u16*)(gImage_icon_wav);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "nsf")) { //NSF sound file
+			icon = (u16*)(gImage_icon_mod);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "k3m")) { //Krawall Advance Module
+			icon = (u16*)(gImage_icon_mod);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "mod")) { //Protracker mod file
+			icon = (u16*)(gImage_icon_mod);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "pcx")) { //ZSoft Paintbrush PCX image
+			icon = (u16*)(gImage_icon_IMG);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "vgm")) { //SMS/GG VGM Rip
+			icon = (u16*)(gImage_icon_mod);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "cwz")) { //Unknown Music file, contained in a package for PogoShell 1.2
+			icon = (u16*)(gImage_icon_mod);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "sb")) { //MaxMod SoundBank
+			icon = (u16*)(gImage_icon_mod);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "ap")) { //aPlib compressed Mode 3 Bitmap
+			icon = (u16*)(gImage_icon_IMG);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "lz")) { //LZ77 Compressed Mode 3 Bitmap
+			icon = (u16*)(gImage_icon_IMG);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "bgf")) { //BoyScout module
+			icon = (u16*)(gImage_icon_mod);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "arc")) { //4kb Arcadia 2001 ROM File
+			icon = (u16*)(gImage_icon_arc);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "a26")) { //Atari 2600 ROM file (emu indev)
+			icon = (u16*)(gImage_icon_a26);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 2]), "sc")) { //Sega SC-3000 ROM File
+			icon = (u16*)(gImage_icon_SC3000);
+		}
+		else if (!strcasecmp(&(pfilename[strlen8 - 3]), "mda")) { //Sharp X68000 music
+			icon = (u16*)(gImage_icon_wav);
+		}
+		else {
+			icon = (u16*)(gImage_icons + 2 * 16 * 14 * 2);
+		}
 		DrawPic(icon,
-			0,
+			1,
 			showy,
 			16,
 			14,
 			1,
-			gl_color_text,
+			0x0000,
 			1);
 
 		DrawHZText12(pFilename_buffer[offset+line-need_show_folder].filename, char_num, 1+16, showy, name_color,1);
@@ -563,7 +690,7 @@ void Show_ICON_filename_NOR(u32 show_offset,u32 file_select)
 			16,
 			14,
 			1,
-			gl_color_text,
+			0x0000,
 			1);
 
 		DrawHZText12(pNorFS[show_offset+line].filename, char_num, 1+16, y_offset + line*14, name_color,1);	
@@ -1654,7 +1781,7 @@ u32 Load_Thumbnail(TCHAR *pfilename_pic)
 		f_close(&gfile);
 					
 		memset(picpath,00,30);
-		sprintf(picpath,"/IMGS/%c/%c/%c%c%c%c.bmp",GAMECODE[0],GAMECODE[1],GAMECODE[0],GAMECODE[1],GAMECODE[2],GAMECODE[3]);						
+		sprintf(picpath,"/SYSTEM/IMGS/%c/%c/%c%c%c%c.bmp",GAMECODE[0],GAMECODE[1],GAMECODE[0],GAMECODE[1],GAMECODE[2],GAMECODE[3]);						
 		res = f_open(&gfile,picpath, FA_READ);
 		if(res == FR_OK)
 		{
@@ -1677,7 +1804,7 @@ void SD_list_L_START(show_offset,file_select,folder_total)
 
 	DrawHZText12(gl_LSTART_help,0,60,60,gl_color_text,1);//use sure?gl_LSTART_help
 	DrawHZText12(pFilename_buffer[show_offset+file_select-folder_total].filename,20,60,75,0x7fff,1);//file name
-	DrawHZText12(gl_formatnor_info,5,60,90,gl_color_text,1);//use sure?
+	DrawHZText12(temp,5,60,90,gl_color_text,1);//use sure?
 	while(1){
 		VBlankIntrWait();
 		scanKeys();

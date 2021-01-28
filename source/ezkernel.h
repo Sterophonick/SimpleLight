@@ -1,6 +1,7 @@
 //#ifndef	EZKERNEL_HEADER
 //#define EZKERNEL_HEADER
 
+#include "images/image_sizes.h"
 #include "ff.h"
 
 #define MAX_pReadCache_size 0x20000
@@ -70,11 +71,7 @@ typedef enum {
 //----------------------------
 extern DWORD Get_NextCluster(	FFOBJID* obj,	DWORD clst);
 extern DWORD ClustToSect(FATFS* fs,DWORD clst);
-extern const unsigned char __attribute__((aligned(4)))gImage_SD[76800];
-extern const unsigned char __attribute__((aligned(4)))gImage_NOR[76800];
-extern const unsigned char __attribute__((aligned(4)))gImage_LOGO[76800];
-extern const unsigned char __attribute__((aligned(4)))gImage_icons[1344];
-extern const unsigned char __attribute__((aligned(4)))gImage_MENU[28160];
+
 
 extern FM_NOR_FS pNorFS[MAX_NOR]EWRAM_BSS;
 extern u8 pReadCache [MAX_pReadCache_size]EWRAM_BSS;
