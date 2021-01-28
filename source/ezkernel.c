@@ -107,6 +107,9 @@ u16 gl_select_lang;
 u16 gl_engine_sel;
 
 u16 gl_show_Thumbnail;
+u16 gl_toggle_reset;
+u16 gl_toggle_backup;
+u16 gl_toggle_bold;
 u16 gl_ingame_RTC_open_status;
 
 
@@ -165,16 +168,16 @@ void Show_help_window()
 	else{
 		DrawPic((u16*)gImage_Chinese_manual, 240-70, 160-70, 70, 70, 0, 0, 1);//
 	}
-	DrawHZText12("START  :",0,3,20, gl_color_selected,1);
+	DrawHZText12("Start  :",0,3,20, gl_color_selected,1);
 		DrawHZText12(gl_START_help,0,52,20, gl_color_text,1);
 		
-	DrawHZText12("SELECT :",0,3,35, gl_color_selected,1);
+	DrawHZText12("Select :",0,3,35, gl_color_selected,1);
 		DrawHZText12(gl_SELECT_help,0,52,35, gl_color_text,1);
 		
 	DrawHZText12("L + A  :",0,3,50, gl_color_selected,1);
 		DrawHZText12(gl_L_A_help,0,52,50, gl_color_text,1);
 		
-	DrawHZText12("L+START:",0,3,65, gl_color_selected,1);
+	DrawHZText12("L+Start:",0,3,65, gl_color_selected,1);
 		DrawHZText12(gl_LSTART_help,0,52,65, gl_color_text,1);	
 		
 	DrawHZText12(gl_online_manual,0,240-70-7,77, gl_color_text,1);
@@ -1208,7 +1211,7 @@ u32 IWRAM_CODE Loadfile2PSRAM(TCHAR *filename)
 	{
 		filesize = f_size(&gfile);		
 		Clear(60,160-15,120,15,gl_color_cheat_black,1);	
-		DrawHZText12(gl_writing,0,78,160-15,gl_color_text,1);	
+		ShowbootProgress(gl_copying_data);	
 
 		f_lseek(&gfile, 0x0000);
 		for(blocknum=0x0000;blocknum<filesize;blocknum+=0x20000)
@@ -1429,6 +1432,7 @@ void IWRAM_CODE make_pogoshell_arguments(TCHAR *cmdname, TCHAR *filename, u32 cm
 //---------------------------------------------------------------
 u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR *filename,u32 is_EMU)
 {
+	u8 str_len;
 	UINT  ret;
 	u32 filesize;
 	u32 res;
@@ -1498,14 +1502,15 @@ u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR *filename,u32 is_EMU)
 		filesize = f_size(&gfile);	
 			
 		Clear(60,160-15,120,15,gl_color_cheat_black,1);	
-		DrawHZText12(gl_generating_emu,0,78,160-15,gl_color_text,1);	
+		ShowbootProgress(gl_generating_emu);
 
 		f_lseek(&gfile, 0x0000);
 		for(blocknum=0x0000;blocknum<filesize;blocknum+=0x20000)
 		{		
 			sprintf(msg,"%luMb",(blocknum+blockoffset)/0x20000);
-			Clear(78+54,160-15,110,15,gl_color_cheat_black,1);
-			DrawHZText12(msg,0,78+54,160-15,gl_color_text,1);
+			Clear(0,130,240,15,gl_color_cheat_black,1);
+			str_len = strlen(msg);
+			DrawHZText12(msg,0,(240-str_len*6)/2,160-30,0x7fff,1);
 			//f_lseek(&gfile, blocknum);
 			if (filesize-blocknum*0x20000 < 0x20000)
 				memset(pReadCache, 0, 0x20000);
@@ -2544,18 +2549,22 @@ re_showfile:
 		
 		if(is_EMU)
 		{			
-			ShowbootProgress(gl_loading_game);	
+			ShowbootProgress(gl_generating_emu);
 			f_chdir(currentpath);//return to game folder
 			
 			FAT_table_buffer[0x1F4/4] = 0x2;  	//copy mode
 			Send_FATbuffer(FAT_table_buffer,1); //only save FAT
 
 	  		res=LoadEMU2PSRAM(pfilename,is_EMU);
-			int bootmode=(is_EMU > 3) ?
-					((is_EMU == 6) ? 2
-				       : ((is_EMU == 7) ? 4 : 3)) : key_L;
+			int bootmode = ((is_EMU > 3) && (is_EMU < 9)) ?
+				((is_EMU == 6) ? 2
+					: (is_EMU == 7) ? 4
+					: ((is_EMU == 8) ? 5 : 3)) : gl_toggle_reset;
   			SetRompageWithHardReset(0x200, bootmode);
-	  		while(1);
+	  		while(1)
+			  {
+				  VBlankIntrWait();
+			  }
 		}
 			
 		if(page_num==NOR_list){//boot nor game
