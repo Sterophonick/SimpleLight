@@ -1662,23 +1662,6 @@ u32 Check_file_type(TCHAR *pfilename)
 
 	ext++;
 
-	sprintf(plugin, "/plugins/%s.bin", ext);
-	res = f_stat(plugin, NULL);
-	if(res == FR_OK)
-		return 4;
-	sprintf(plugin, "/plugins/%s.gba", ext);
-	res = f_stat(plugin, NULL);
-	if(res == FR_OK)
-		return 5;
-	sprintf(plugin, "/plugins/%s.mb", ext);
-	res = f_stat(plugin, NULL);
-	if(res == FR_OK)
-		return 6;
-	sprintf(plugin, "/plugins/%s.mbz", ext);
-	res = f_stat(plugin, NULL);
-	if(res == FR_OK)
-		return 7;
-
 	//u32 is_EMU;
 	if(!strcasecmp(ext, "gba"))
 	{
@@ -1695,6 +1678,25 @@ u32 Check_file_type(TCHAR *pfilename)
 	else if(!strcasecmp(ext, "nes"))
 	{
 		return 3;
+	}
+	else
+	{
+		sprintf(plugin, "/plugins/%s.bin", ext);
+		res = f_stat(plugin, NULL);
+		if(res == FR_OK)
+			return 4;
+		sprintf(plugin, "/plugins/%s.gba", ext);
+		res = f_stat(plugin, NULL);
+		if(res == FR_OK)
+			return 5;
+		sprintf(plugin, "/plugins/%s.mb", ext);
+		res = f_stat(plugin, NULL);
+		if(res == FR_OK)
+			return 6;
+		sprintf(plugin, "/plugins/%s.mbz", ext);
+		res = f_stat(plugin, NULL);
+		if(res == FR_OK)
+			return 7;
 	}
 
 	return 0xff;
@@ -1732,7 +1734,7 @@ int main(void) {
 	Set_RTC_status(1);
 		
 	//check FW
-	u16 Built_in_ver = 6;   //Newest_FW_ver
+	u16 Built_in_ver = 5;   //Newest_FW_ver
 	u16 Current_FW_ver = Read_FPGA_ver();
 
 	if((Current_FW_ver < Built_in_ver) || (Current_FW_ver == 99))//99 is test ver
