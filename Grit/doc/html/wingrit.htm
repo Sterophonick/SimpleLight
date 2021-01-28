@@ -1,0 +1,616 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <meta name="generator" content="Context">
+  <meta name="Author" content="Cearn">
+  <meta name="Created" content="20050319">
+  <meta name="Modified" content="20081129">
+
+  <title>Wingrit: Windows GBA Image Transmogrifier.</title>
+  <link rel="stylesheet" type="text/css" href="tonc.css">
+  <script language="JavaScript" type="text/javascript" src="tonc.js"></script>
+</head>
+<body onload="main();">
+
+<!--567890123456789012345678901234567890123456789012345678901234567-->
+
+<!-- [[header]] -->
+<table class=header>
+<tr>
+  <td class=hdr_l><a href="gritmake.htm">Prev</a>
+  <td class=hdr_c><a href="index.htm">Contents</a>
+  <td class=hdr_r><a href="index.htm">Next</a>
+</table>
+<!-- [[/header]] -->
+
+<hr>
+
+<h1 id="ch-wingrit">3.
+  WinGrit v0.8.3</h1>
+
+<!-- [[toc]] -->
+<ul>
+  <li><a href="#sec-intro">Introduction</a></li>
+  <li><a href="#sec-wingrit">Wingrit</a></li>
+  <li><a href="#sec-info">Additional information</a></li>
+</ul>
+<!-- [[/toc]] -->
+
+
+<!-- ============================================================== -->
+
+<h2 id="sec-intro">3.1.
+  Introduction</h2>
+<p>
+The GBA Image Transmogrifier (&ldquo;grit&rdquo; for short) is a bitmap 
+conversion tool for GBA/NDS development. It accepts a multitude of 
+file types (bmp, pcx, png, gif, etc) at any bitdepth and can convert 
+them to palette, graphics and/or map data that can be used directly 
+in GBA code. The output formats are C/asm arrays, raw binary files 
+GBFS files, and a RIFF-format I call GRF. The data can be compressed to 
+fit the BIOS decompression routines.
+</p>
+<p>
+Grit can do more than simply turn bitmap into arrays. It allows you to 
+crop or enlarge the original work area, convert between bitdepths, 
+break the images up into tiles or metatiles and supports NDS 
+bitmaps with transparency. It also has a number of tile-mapping 
+options: it can take the bitmap and turn it into a tilemap (and metamap) 
+and a set of unique tiles. It can also merge the palettes or tilesets from 
+multiple files.
+</p>
+<p>
+If you need more, feel free to add your own code. This is an open-source
+project and the code should compile on all platforms, though you'll 
+have to write your own makefiles for non-Windows environments.
+</p><br>
+
+<p class=ni>
+Grit comes in two flavors: a command-line version, <tt>grit</tt>, and a 
+Windows GUI, <tt>wingrit</tt>. This is the documentation for the
+GUI version.
+</p>
+
+<div class=cpt style="width:722;">
+<img src="../img/wingrit.png" id="img-wingrit"
+  alt="Wingrit main view"><br>
+  <b>Fig 3.1</b>: Wingrit main view
+</div>
+
+<h2 id="sec-wingrit">3.2.
+  Wingrit</h2>
+<p>
+The window that pops up first is basically an image viewer. Open any
+image and it is shown on the screen. You can zoom in and out with the 
+scroll wheel and move it around with the middle mouse button. There 
+are a few useful options in the menu like convertion to 16bpp,
+quantisation and also a palette viewer. The meat of the program is 
+in the View window: the GBA Exporter. That's the big thing with all
+the buttons in fig&nbsp;3.1.
+</p><br>
+<p>
+There are 6 zones in the exporter:
+</p>
+<ol>
+  <li><a href="#ssec-zone-img">graphics</a>
+  <li><a href="#ssec-zone-map">map</a>
+  <li><a href="#ssec-zone-meta">meta/object</a>
+  <li><a href="#ssec-zone-pal">palette</a>
+  <li><a href="#ssec-zone-area">area</a>
+  <li><a href="#ssec-zone-file">file</a>
+</ol>
+<p>
+And of course the main buttons in the lower left corner. There's also a
+summary window on the righthand side, which tells you a little about 
+what and how the image will be exported.
+</p><br>
+
+<p>
+The following is a list of options found on the dialog. The parts 
+between parentheses are the corresponding command-line options.
+</p>
+
+
+
+<h3 id="ssec-zone-gfx">3.2.1.
+  Graphics</h3>
+
+<div class=cpt_fr style="width:320;">
+  <img src="../img/xpdlg_img.png" id="img-xp-gfx" alt=""><br>
+  <b>Fig 3.2</b>: graphics options.
+</div>
+
+<p>
+Graphics exporting options. Governs the actual graphics part of the data
+(i.e., the pixels). Affixes: &ldquo;<code>Tiles</code>&rdquo; or
+&ldquo;<code>Bitmap</code>&rdquo;.
+<ol>
+  <li>
+    <b>Enable box</b> (<tt>-g[!]</tt>). Include (default) or exclude
+	graphics in the	output.
+  </li>
+  <li>
+    <b>Gfx format</b>.	The GBA has 2
+	basic graphic modes: tiled or bitmaps. The NDS has those too, but 
+	allows for bitmap transparency as well, which is why there are four 
+	modes here.
+    <ul>
+      <li>
+        <b>Tiles</b> (<tt>-gt</tt>). tiles of 8&times;8 pixels. 
+		Required for mapping and metamapping.
+      </li>
+      <li>
+        <b>GBA Bitmap</b> (<tt>-gb</tt>). Bitmap with bit&nbsp;15 clear
+		(if 16bpp).
+      </li>
+      <li>
+        <b>NDS Bitmap</b> (<tt>-gb -gT!</tt>) Bitmap with bit&nbsp;15 set
+		(if 16 bpp).
+      </li>
+      <li>
+        <b>NDS with transparency</b> (<tt>-gb -gT[hex]</tt>). Bitmap with
+		  bit&nbsp;15 set, except for the transparent color.
+      </li>
+	</ul>
+  </li>
+  <li>
+  <b>Bit depth</b> (<tt>-gB&lt;n&gt;</tt>). 
+    Usually, the bitdepths for GBA graphics are 4, 8
+    or 16 (for modes 3 and 5). 1 and 2 bpp are added for bit-packing.
+	For example, a monochrome mode 3 font can be put in 1 bpp format
+	instead of 16 bpp, for an effective compression of 94%. NDS 
+	textures can also be 2, 4, 8 and 16 bpp. If you're clever, you
+	can use this for alpha-textures too.
+  </li>
+  <li>
+    <b>Graphics compression</b>.
+    <ul>
+      <li>
+	    <b>Off</b> (<tt>-gz!</tt>). No compression, default.
+	  </li>
+	  <li>
+	    <b>LZ77</b> (<tt>-gzl</tt>).
+	    Actually LZSS, but somehow LZ77 is the name Nintendo uses. The 
+		data is Vram safe.
+	  </li>
+	  <li>
+	    <b>Huff</b> (<tt>-gzh</tt>).
+	    8bit huffman compression. <br>
+	    <i>NOTE</i>: for some reason it <i>still</i> doesn't always
+		work, and I have yet to find out why. Use with caution.
+	  </li>
+      <li>
+	    <b>RLE</b> (<tt>-gzr</tt>).
+		8bit Runlength encoding the way the GBA BIOS routine
+		<code>RLUnCompVram()</code> likes it.
+	  </li>
+	  <li>
+	    <b>Off+hdr</b> (<tt>-gz0</tt>).
+		No compression, but with a compression-like header for 
+		compatibility. Byte 0: 0x00. Bytes 1-3: size.
+	  </li>
+    </ul>
+  </li>
+  <li>
+    <b>Transparent color</b> (<tT>-gT [hex]</tt>). 
+	For use with <i>bitmap+alpha</i> mode.
+  </li>
+</ol>
+
+
+<h3 id="ssec-zone-map">3.2.2.
+  Map</h3>
+
+<div class=cpt_fr style="width:288;">
+  <img src="../img/xpdlg_map.png" id="img-xp-map" alt=""><br>
+  <b>Fig 3.3</b>: mapping options.
+</div>
+
+<p>
+Covers mapping (and some meta-mapping) options. Unlike palette and
+graphics, map data is <b>ex</b>cluded by default. For meta-mapping to 
+work, you need: a) map data included and b) the tile-groupings should be
+larger than 1. Affix: &ldquo;<code>Map</code>&rdquo; (and maybe
+&ldquo;<code>MetaMap</code>&rdquo;).
+</p>
+
+<ol>
+  <li>
+    <b>Enable box</b> (<tt>-m[!]</tt>). Include or exclude 
+	(default) map (and meta-map) in the output.
+  </li>
+  <li>
+    <b>Map layout</b>.
+	The primary formats for GBA maps are regular
+    (text) and affine (rotational), the former using 16bit screen
+	entries and the latter 8bit. There is a second difference in that 
+	affine maps are &lsquo;flat&rsquo; in memory, while the bigger 
+	regular maps are divided into separate screenblocks. This can make
+	dealing with regular maps a tad annoying, because you may have to 
+	rearrange things to fit into the screenblocks.
+	<ul>
+	  <li>
+	    <b>Flat</b> (<tt>-mLf</tt>). 
+		Regular screen entries, but flat map layout.
+	  </li>
+	  <li>
+	    <b>Sbb</b> (<tt>-mLs</tt>). 
+		Regular screen entries, and the map is already grouped into 
+		sbbs.<br>
+		<i>NOTE</i>: in order for this to work, the area
+	    will be padded to 256x256 pixel boundaries.
+	  </li>
+	  <li>
+	    <b>Affine</b> (<tt>-mLa</tt>).
+		Affine map in both screen entry format and layout.
+	  </li>
+	</ul>
+  </li>
+  <li>
+    <b>Tile reduction</b> (<tt>-mR[tpf]</tt>). 
+	An image intended for tilemaps will often have duplicate tiles, 
+	which can be removed from the full tileset
+	(i.e., the all the 8x8 tiles of the whole image). That's kind of
+	the point of having tile-maps after all. This gives rise to a 
+	<i>reduced</i> tileset, which can be much smaller that the full
+	set.
+  </li>
+  <li>
+	<ul>
+	  <li>
+	    <b>Tile reduction switch</b> Toggles tile reduction feature.
+	    It it recommended to use this feature, as <i>not</i> using it 
+		will just give a trivial map of incremental entries for each 
+		tile in the image.
+      </li>
+	  <li>
+	    <b>Tile palette reduction</b> (<tt>-mRtp</tt>).
+		For regular 4bpp maps, you
+	    can have palette information in the screen entries as well, so 
+	    you wouldn't need extra tiles for that. This removes tiles that 
+		differ only in their palette bank.
+      </li>
+	  <li>
+	    <b>Reduce flipped tiles</b> (<tt>-mRtf</tt>). 
+		Regular maps support tile
+	    flipping. This option removes tiles if they differ from earlier 
+		ones just by flipping.
+      </li>
+	</ul>
+	<i>NOTE</i>: The reduced tileset always starts with an empty tile.
+	As tile-0 is often &lsquo;special&rsquo;, I thought this'd be 
+	appropriate.
+  </li>
+  <li>
+    <b>Meta-tile palette reduction</b> (<tt>-MRp</tt>). 
+	Normally, meta-tiling only looks at the full equality of the screen 
+	entries. This option allows further reduction based on the palette
+	bank, which will be shared for the whole meta-tile.
+  </li>
+  <li>
+    <b>Map compression</b>.
+    <ul>
+      <li>
+	    <b>None</b> (<tt>-mz!</tt>). No compression, default.
+	  </li>
+	  <li><b>LZ77</b> (<tt>-mzl</tt>).
+	    Actually LZSS, but somehow LZ77 is the name Nintendo uses. The 
+		data is Vram safe.
+	  </li>
+	  <li><b>Huff</b>. (<tt>-mzh</tt>)
+	    8bit huffman compression. <br>
+	    <i>NOTE</i>: for some reason it <i>still</i> doesn't always
+		work, and I have yet to find out why. Use with caution.
+	  </li>
+      <li>
+	    <b>RLE</b> (<tt>-mzr</tt>).
+		8bit Runlength encoding the way the GBA BIOS routine 
+		<code>RLUnCompVram()</code> likes it.
+	  </li>
+	  <li>
+	    <b>Off+hdr</b> (<tt>-mz0</tt>).
+		No compression, but with a compression-like header for 
+		compatibility. Byte 0: 0x00. Bytes 1-3: size.
+	  </li>
+    </ul>
+    I should probably point out that 8bit RLE is a <i>very</i> bad idea
+	for regular maps, as the upper and lower bytes of the screen
+	entries will rarely match.
+  </li>
+  <li>
+    <b>Tile offset</b> (<tt>-ma &lt;n&gt;</tt>). 
+	For when you don't intend the tileset to be at the start of a charblock.
+  </li>
+</ol>
+
+<p>
+I would like to add more options here, like column-based maps, which 
+should be easier to deal with for horizontal scrollers. But this 
+will have to wait.
+</p>
+
+
+<h3 id="ssec-zone-meta">3.2.3.
+  Metatile / Object size</h3>
+
+<div class=cpt_fr style="width:232;">
+  <img src="../img/xpdlg_meta.png" id="img-xp-meta" alt=""><br>
+  <b>Fig 3.4</b>: Metatile options.
+</div>
+
+<p>
+Tile grouping (<tt>-Mw&lt;n&gt; -Mh&lt;n&gt;</tt>). 
+Grouping tiles can be done for two purposes. The first
+one is the obvious one to make sprite sheets work for linear sprite
+mode.
+</p>
+<p>The second one is for meta-mapping &ndash; grouping multiple
+screen-entries (the meta-tiles) and using a map of those meta-tiles 
+(the meta-map) instead of the full map. Depending on the size and
+variation of the metatiles, this can reduce the storage needed for the 
+description of the entire map.
+</p>
+<p>
+The Grit meta-tiling formatting works like this. If you export a
+(meta)map with the basename &ldquo;<code>foo</code>&rdquo;, then the
+map of the thing (<code>fooMap</code> is actually the metatile-set, 
+which are composed of screen entries. The metamap is put in 
+&ldquo;<code>fooMetaMap</code>&rdquo;. The entries of the metamap are 
+16bit, the lower 12 being the metatile index; the upper 4 the metatile 
+palette bank, if applicable.
+</p>
+<p>
+In order for metamapping to occur, map exporting must be on and the
+metatiles must be more than one tile in size.
+</p>
+
+<ol>
+  <li>
+    <b>Fixed groupings</b>. Corresponding to the standard GBA sprite
+    sizes and shapes.
+  </li>
+  <li>
+    <b>Custom grouping</b>. If you want groupings other than sprite
+    sizes, toggle this and fill in the boxes.
+  </li>
+  <li>
+    <b>Custom group sizes</b>. Width and height of tile groupings for
+    custom mode. Note that the sizes are in units of tiles. Entering
+    (8,&nbsp;8) here would actually indicate 64x64 pixel tiles, for example.
+  </li>
+</ol>
+
+
+<h3 id="ssec-zone-pal">3.2.4.
+  Palette</h3>
+
+<p>
+Palette exporting options. Affix: &ldquo;<code>Pal</code>&rdquo;.
+</p>
+<ol>
+  <li>
+    <b>Enable box</b> (<tt>-p[!]</tt>). 
+	Include (default) or exclude palette in the output.
+  </li>
+  <li>
+    <b>start</b> (<tt>-ps &lt;n&gt;</tt>).
+	First entry of the full palette to export.
+  </li>
+  <li>
+    <b>num</b> (<tt>-pn &lt;n&gt;</tt>).
+	Number of palette entries to export. <i>start</i> and
+    <i>num</i> form a subset of colors,	
+	[<i>start</i>, <i>start+num</i>). Range will be clamped to
+	available palette at validation.
+  </li>
+  <li>
+    <b>Transparent index</b> (<tt>-pT</tt>). Normally, index-0 is the 
+    transparent index in paletted images. This pick another one.
+  </li>
+</ol>
+
+<div class=cblock>
+<table width=80%>
+<tr><td>
+<div class=cpt style="width:152;">
+  <img src="../img/xpdlg_pal.png" id="img-xp-pal" alt=""><br>
+  <b>Fig 3.5</b>:
+</div>
+
+<td>
+<div class=cpt style="width:240;">
+  <img src="../img/xpdlg_area.png" id="img-xp-area" alt=""><br>
+  <b>Fig 3.6</b>: area options.
+</div>
+</table>
+</div>
+
+
+<h3 id="ssec-zone-area">3.2.5.
+ Area</h3>
+
+<p>
+Lets you select the region of the image that you want to use. Most of 
+the time this will probably be the whole image, in which case you can
+pretty much ignore this zone, but just in case you want only a portion, 
+you can use this.
+</p>
+
+<ol>
+  <li>
+    <b>Area options</b>. Right now, this is just a switch between
+    using the full image or a custom area. I did plan on using some
+	kind of &lsquo;selection&rsquo; tool and option, but I'll have to 
+	see whether anything ever comes of it.
+  </li>
+  <li>
+    <b>Area</b>. Size of the rectangle you want to export. Note that
+    the right-hand boxes are the <i>sizes</i>, and not the right and
+    bottom sizes. You should probably also know that the final 
+	rectangle may change a little but due to the aligning requirement 
+	for (meta)tiling and sbb-map format.
+  </li>
+</ol>
+
+<h3 id="ssec-zone-file">3.2.6.
+  File / symbol options</h3>
+
+<div class=cpt_fr style="width:336;">
+  <img src="../img/xpdlg_file.png" id="img-xp-file" alt=""><br>
+  <b>Fig <em>[[ref:ig-xp-file]]</em></b>: File options.
+</div>
+
+<p>
+Various file and symbol name/type options.
+</p>
+
+<ol>
+  <li>
+    <b>Destination path</b> (<tt>-o &lt;path&gt;</tt>). 
+	Filename of where the data should go. If
+    you don't want to type it in manually, there's a button to launch a
+	file dialog on the right. The full path is (probably) not required,
+	but can't hurt.<br>
+	The extension determines the file-type; if it's not recognized, it
+	will default to a C file.
+  </li>
+  <li>
+    <b>File type</b>. The extension will be based on this field,
+    regardless of what you may have put into the path-field. Options 
+	are:
+	<ul>
+	  <li><b>C file</b> (<tt>-ftc</tt>). 
+	    Extension &ldquo;.c&rdquo;. Data <i>may</i> be word aligned.
+	  </li>
+	  <li><b>GNU Assembly file</b> (<tt>-fts</tt>).
+	    Extension &ldquo;.s&rdquo;. GNU asm. Word aligned.
+	  </li>
+	  <li><b>Binary</b> (<tt>-ftb</tt>).
+	    Final extension: &ldquo;.bin&rdquo;. Binary
+	    data goes into multiple files, each with an infix extension for 
+	    the different data fields (&ldquo;pal&rdquo;, &ldquo;img&rdquo;, 
+	    &ldquo;map&rdquo;, &ldquo;meta&rdquo;) to make 
+		&ldquo;foo.pal.bin&rdquo;, etc.
+	  </li>
+	  <li><b>GBFS</b> (<tt>-ftg</tt>).
+	    Extension &ldquo;.gbfs&rdquo;. Creates files for
+	    use with <a href="http://www.pineight.com">tepples'</a>
+	    GBFS file system.
+	  </li>
+	  <li><b>RIFF / GRF</b> (<tt>-ftr</tt>). 
+	    Extension &ldquo;grf&rdquo;. Creates a RIFF-based binary with 
+		the items in chunks. See 
+		<a href="grit.htm#ssec-info-grf">grit:grf</a> for details.
+	  </li>
+	</ul>
+  </li>
+  <li>
+    <b>Enable header file</b> (<tt>-fh[!]</tt>).
+	Creates a header file with declarations and  a description of 
+	the data. This does <i>NOT</i> contain actual data! Data 
+	definitions in header files is bad, very bad, mkay?
+	Mkay! Mkay. Apart from data declarations, it'll also hold size 
+	defines, the names of which are the data-names + &ldquo;Len&rdquo;.
+  </li>
+  <li>
+    <b>Append mode</b> (<tt>-fa</tt>). Appends the data to the
+	destination file, useful for keeping the number of files down. 
+	If data of that name exists already, it will be replaced.
+    Binary files cannot use	appending.
+  </li>
+  <li>
+    <b>riff</b> (<tt>-fr</tt>).
+	Enable GRF-format for non-grf files as well. Currently only for 
+	C and asm export. Note that this also forces <tt>off</tt> comrpession 
+	to <tt>off+hdr</tt>.
+  </li>
+  <li>
+    <b>Data-type</b> (<tt>-U&lt;n&gt;</tt>).
+	Arrays are in bytes, halfwords or words. Has no  effect on binary 
+	or GBFS files.
+  </li>
+  <li>
+    <b>Base symbol name</b> (<tt>-s &lt;name&gt;</tt>).
+	The base-name part of the data arrays.
+    If it's not a valid C name, the invalid parts will be replaced by
+	underscores. The full names are created by adding the following 
+	affixes: 
+	&ldquo;<tt>Pal</tt>&rdquo;, &ldquo;<tt>Tiles</tt>&rdquo;,
+	&ldquo;<tt>Bitmap</tt>&rdquo;, &ldquo;<tt>Map</tt>&rdquo;,
+	&ldquo;<tt>MetaMap</tt>&rdquo;. For
+	example, bitmap-data for the basename &ldquo;<tt>foo</tt>&rdquo; will be
+	&ldquo;<tt>fooBitmap</tt>&rdquo;.<br>
+	By default, the basename is based on the path's title, but you can 
+	add	a name manually too.<br>
+	<i>NOTE</i>. GBFS files use a 24 character name field. To make
+	sure of distinguisable names, the basename will be truncated to a
+	21 character maximum, to which the affix is then added.
+  </li>
+  <li>
+    <b>External tileset</b>. (<tt>-fx</tt>) With this, you can use 
+	an external tileset to map the bitmap to a tilemap. The combined 
+	tileset will be saved as well. This allows you to build up a shared 
+	tileset.<br>
+	<i>NOTE</i>: mapping must be enabled for this, and metamapping is 
+	not fully supported here yet.
+  </li>
+</ol>
+
+<h2 id="sec-log">3.3.
+  Last changes</h2>
+
+<h4>v0.8 (20080323)</h4>
+<ul>
+  <li>Changed things to allow GRF format: <tt>grf</tt> filetype, 
+    <tt>riff</tt> button and <tt>off+hdr</tt> compression format.
+  </li>
+  <li>See <a href="grit.htm#ssec-info-last">grit.htm</a> for other changes.
+</ul>
+
+
+<h4>v0.7 (20070414)</h4>
+<ul>
+  <li>Rebuilt the Huffman encoder from scratch using the Huffman thing 
+    from Numerical Recipes. Unfortunately, it <i>still</i> screws up in
+	one of my test images, but less than before. (Of course, any
+	slight error in a huffman-compressed file pretty much destroys the 
+	whole thing, but I'll ignore that for now)
+  <li>The tile reducer always starts with an empty tile now, rather 
+    than the first one encountered. This is usually preferable as 0 is 
+	usually special.
+  <li>Added a <code>u8</code> option.
+  <li>Exporting maps in screen blocks is operational. Note that the
+    image <i>will</i> be 256x256 aligned, which is required for the 
+	screen block format.
+  <li>Symbol names are forced to be valid C names.
+  <li>The header also contains a preface; useful for non-source files.
+  <li>GBFS export.
+</ul>
+
+<div class=endtag>
+  Modified <span class=time>Nov 29, 2008</span>,
+  <a href="mailto:cearn@coranac.com">J Vijn</a>.
+Get grit <a href="http://www.coranac.com/projects/#grit">here</a>
+</div>
+
+<hr>
+
+<!-- [[footer]] -->
+<table class=footer>
+<tr>
+  <td class=hdr_l><a href="gritmake.htm">Prev</a>
+  <td class=hdr_c><a href="index.htm">Contents</a>
+  <td class=hdr_r><a href="index.htm">Next</a>
+<tr>
+  <td class=hdr_l>Grit in Projects
+  <td class=hdr_c>
+  <td class=hdr_r>Index
+</table>
+<!-- [[/footer]] -->
+
+
+</body>
+</html>
+
+

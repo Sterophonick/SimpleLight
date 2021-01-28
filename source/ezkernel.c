@@ -1563,6 +1563,7 @@ void IWRAM_CODE make_pogoshell_arguments(TCHAR *cmdname, TCHAR *filename, u32 cm
 //---------------------------------------------------------------
 u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR *filename,u32 is_EMU)
 {
+	u8 str_len;
 	UINT  ret;
 	u32 filesize;
 	u32 res;

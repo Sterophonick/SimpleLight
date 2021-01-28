@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<head>
+<meta name="GENERATOR" content="Me!">
+<!-- Sitemap 1.0 -->
+</head>
+<body>
+<ul>
+  <li> <object type="text/sitemap">
+      <param name="Name" value="i.   Grit 0.8.4 : Table of Contents">
+      <param name="Local" value="html/index.htm#ch-toc">
+    </object>
+  <li> <object type="text/sitemap">
+      <param name="Name" value="1.   Grit v0.8.4">
+      <param name="Local" value="html/grit.htm#ch-grit">
+    </object>
+  <ul>
+    <li> <object type="text/sitemap">
+        <param name="Name" value="1.1.   Introduction">
+        <param name="Local" value="html/grit.htm#sec-intro">
+      </object>
+    <li> <object type="text/sitemap">
+        <param name="Name" value="1.2.   List of options">
+        <param name="Local" value="html/grit.htm#sec-opts">
+      </object>
+    <ul>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="1.2.1.   Graphics options">
+          <param name="Local" value="html/grit.htm#ssec-opts-gfx">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="1.2.2.   Area options">
+          <param name="Local" value="html/grit.htm#ssec-opts-area">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="1.2.3.   Map options">
+          <param name="Local" value="html/grit.htm#ssec-opts-map">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="1.2.4.   Metamap/object options">
+          <param name="Local" value="html/grit.htm#ssec-opts-meta">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="1.2.5.   Palette options">
+          <param name="Local" value="html/grit.htm#ssec-opts-pal">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="1.2.6.   Input/output options">
+          <param name="Local" value="html/grit.htm#ssec-opts-io">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="1.2.7.   Misc options">
+          <param name="Local" value="html/grit.htm#ssec-opts-misc">
+        </object>
+    </ul>
+    <li> <object type="text/sitemap">
+        <param name="Name" value="1.3.   DWIM">
+        <param name="Local" value="html/grit.htm#sec-dwim">
+      </object>
+    <ul>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="1.3.1.   Default settings">
+          <param name="Local" value="html/grit.htm#ssec-dwim-dflt">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="1.3.2.   Overrides">
+          <param name="Local" value="html/grit.htm#ssec-dwim-over">
+        </object>
+    </ul>
+    <li> <object type="text/sitemap">
+        <param name="Name" value="1.4.   Examples">
+        <param name="Local" value="html/grit.htm#sec-eg">
+      </object>
+    <li> <object type="text/sitemap">
+        <param name="Name" value="1.5.   Additional information">
+        <param name="Local" value="html/grit.htm#sec-info">
+      </object>
+    <ul>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="1.5.1.   GRF files">
+          <param name="Local" value="html/grit.htm#ssec-info-grf">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="1.5.2.   Shared data">
+          <param name="Local" value="html/grit.htm#ssec-info-shared">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="1.5.3.   Todo list">
+          <param name="Local" value="html/grit.htm#ssec-info-todo">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="1.5.4.   Last changes">
+          <param name="Local" value="html/grit.htm#ssec-info-last">
+        </object>
+    </ul>
+  </ul>
+  <li> <object type="text/sitemap">
+      <param name="Name" value="2.   Grit in project builds">
+      <param name="Local" value="html/gritmake.htm">
+    </object>
+  <ul>
+    <li> <object type="text/sitemap">
+        <param name="Name" value="2.1.   Introduction">
+        <param name="Local" value="html/gritmake.htm#sec-intro">
+      </object>
+    <li> <object type="text/sitemap">
+        <param name="Name" value="2.2.   Running grit">
+        <param name="Local" value="html/gritmake.htm#sec-run">
+      </object>
+    <ul>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="2.2.1.   Simple Makefile Rules">
+          <param name="Local" value="html/gritmake.htm#ssec-run-base">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="2.2.2.   Configuration files">
+          <param name="Local" value="html/gritmake.htm#ssec-run-cfg">
+        </object>
+    </ul>
+    <li> <object type="text/sitemap">
+        <param name="Name" value="2.3.   Grit in template makefiles">
+        <param name="Local" value="html/gritmake.htm#sec-template">
+      </object>
+    <li> <object type="text/sitemap">
+        <param name="Name" value="2.4.   Grit as a separate process">
+        <param name="Local" value="html/gritmake.htm#sec-gfxmake">
+      </object>
+    <ul>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="2.4.1.   gfxmake and libgfx">
+          <param name="Local" value="html/gritmake.htm#ssec-gfxmake-make">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="2.4.2.   Modifications to the template">
+          <param name="Local" value="html/gritmake.htm#ssec-gfxmake-templ">
+        </object>
+    </ul>
+    <li> <object type="text/sitemap">
+        <param name="Name" value="2.5.   Conclusions">
+        <param name="Local" value="html/gritmake.htm#sec-conc">
+      </object>
+  </ul>
+  <li> <object type="text/sitemap">
+      <param name="Name" value="3.   WinGrit v0.8.3">
+      <param name="Local" value="html/wingrit.htm#ch-wingrit">
+    </object>
+  <ul>
+    <li> <object type="text/sitemap">
+        <param name="Name" value="3.1.   Introduction">
+        <param name="Local" value="html/wingrit.htm#sec-intro">
+      </object>
+    <li> <object type="text/sitemap">
+        <param name="Name" value="3.2.   Wingrit">
+        <param name="Local" value="html/wingrit.htm#sec-wingrit">
+      </object>
+    <ul>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="3.2.1.   Graphics">
+          <param name="Local" value="html/wingrit.htm#ssec-zone-gfx">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="3.2.2.   Map">
+          <param name="Local" value="html/wingrit.htm#ssec-zone-map">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="3.2.3.   Metatile / Object size">
+          <param name="Local" value="html/wingrit.htm#ssec-zone-meta">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="3.2.4.   Palette">
+          <param name="Local" value="html/wingrit.htm#ssec-zone-pal">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="3.2.5.  Area">
+          <param name="Local" value="html/wingrit.htm#ssec-zone-area">
+        </object>
+      <li> <object type="text/sitemap">
+          <param name="Name" value="3.2.6.   File / symbol options">
+          <param name="Local" value="html/wingrit.htm#ssec-zone-file">
+        </object>
+    </ul>
+    <li> <object type="text/sitemap">
+        <param name="Name" value="3.3.   Last changes">
+        <param name="Local" value="html/wingrit.htm#sec-log">
+      </object>
+  </ul>
+</body>
+</html>
+</ul>
