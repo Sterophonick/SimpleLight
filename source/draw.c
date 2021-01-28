@@ -6,7 +6,7 @@
 
 
 #include "hzk12.h"
-#include "lang.h"
+#include "asc126.h"
 
 
 #include "ezkernel.h"
@@ -223,7 +223,7 @@ void DEBUG_printf(const char *format, ...)
 //---------------------------------------------------------------------------------
 void ShowbootProgress(char *str)
 {
-    u8 str_len = strlen(str);
-    Clear(0,160-15,240,15,gl_color_cheat_black,1);
-    DrawHZText12(str,0,(240-str_len*6)/2,160-15,0x7FFF,1);
+	u8 str_len = strlen(str); 	
+	Clear(60,160-15,120,15,gl_color_cheat_black,1);	
+	DrawHZText12(str,0,(240-str_len*6)/2,160-15,gl_color_text,1);	
 }
