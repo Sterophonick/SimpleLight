@@ -1945,13 +1945,21 @@ int main(void) {
 	
 	res = f_getcwd(currentpath, sizeof currentpath / sizeof *currentpath);
 
-	Read_NOR_info();	
+	Read_NOR_info();
 	gl_norOffset = 0x000000;
 	game_total_NOR = GetFileListFromNor();//initialize to prevent direct writes to NOR without page turning
-	if(game_total_NOR==0)
-	{
-		memset(pNorFS,00,sizeof(FM_NOR_FS)*MAX_NOR);
-		Save_NOR_info(pNorFS,sizeof(FM_NOR_FS)*MAX_NOR);
+	if (game_total_NOR == 0) {
+		memset(pNorFS, 00, sizeof(FM_NOR_FS) * MAX_NOR);
+		Save_NOR_info(pNorFS, sizeof(FM_NOR_FS) * MAX_NOR);
+	}
+	else {
+		VBlankIntrWait();
+		scanKeys();
+		if (keysDownRepeat() & KEY_L || keysDown() & KEY_L)
+		{
+			page_num = NOR_list;
+			goto load_file;
+		}
 	}
 
 refind_file:
