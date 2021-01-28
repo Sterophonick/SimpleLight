@@ -1353,6 +1353,25 @@ void Check_Fire_Emblem(void)
 		  modify_val = 0x80B670F;
 		  have = 1;
 		}break;
+		case 0x43454641://Fire_Emblem_(Prototype,_iQue)
+		{
+			address1[0]=0x84FF0;
+			address1[1]=0x85048;
+			address1[2]=0x850F8;
+			address1[3]=0x85194;
+			address1[4]=0x858B0;
+			patchaddress=0xFFCC00;
+			code2[0]=Baseaddress+patchaddress+0x1;
+			code2[1]=Baseaddress+patchaddress+0xF;
+			code2[2]=Baseaddress+patchaddress+0x1F;
+			code2[3]=Baseaddress+patchaddress+0x2D;
+			code2[4]=Baseaddress+patchaddress+0x3D;
+		  p_patch_start = (u8*)Fire_Emblem_iQue_patch_start;
+		  p_patch_end  	= (u8*)Fire_Emblem_iQue_patch_end;
+		  //p_modify_address = (u8*)Modify_address_B;
+		  //modify_val = 0x80B670F;
+		  have = 1;
+		}break;
 	}
 	
 	if(have){

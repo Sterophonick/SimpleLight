@@ -63,7 +63,16 @@ extern char* gl_online_manual;
 extern char* gl_no_game_played;
 
 extern char* gl_ingameRTC;
-extern char* gl_offRTC_powersave;
+extern char* gl_ingameRTC_open;
+extern char* gl_ingameRTC_close;
+
+extern char* gl_error_0;
+extern char* gl_error_1;
+extern char* gl_error_2;
+extern char* gl_error_3;
+extern char* gl_error_4;
+extern char* gl_error_5;
+extern char* gl_error_6;
 
 extern char**  	gl_rom_menu;
 extern char**   gl_nor_op;

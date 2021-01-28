@@ -54,7 +54,7 @@ u8 edit_rtshotkey[3]={0};
 void Show_ver(void)
 {
 	char msg[20];
-	char *ver="K:1.04";
+	char *ver="K:1.06";
 	u16 FPGAver = Read_FPGA_ver();
 	sprintf(msg,"FW:%d %s",FPGAver&0xFF,ver);
 	DrawHZText12(msg,0,160,3, gl_color_text,1);	
@@ -214,8 +214,16 @@ u32 Setting_window(void)
 			sprintf(msg,"%s",gl_ingameRTC);
 			DrawHZText12(msg,0,set_offset,y_offset+line_x*7,gl_color_selected,1);			
 				Draw_select_icon(x_offset,y_offset+line_x*7,(gl_ingame_RTC_open_status == 0x1));
-				sprintf(msg,"%s",gl_offRTC_powersave);
+				//sprintf(msg,"%s",gl_offRTC_powersave);
+				ClearWithBG((u16*)gImage_SET,x_offset+15, y_offset+line_x*7, 6*6, 13, 1);
+				if(gl_ingame_RTC_open_status){
+					sprintf(msg,"%s",gl_ingameRTC_open);
+				}
+				else {
+					sprintf(msg,"%s",gl_ingameRTC_close);
+				}			
 				DrawHZText12(msg,0,x_offset+15,y_offset+line_x*7,(RTC_pos==0)?gl_color_selected:gl_color_text,1);	
+	
 	
 			u32 offsety;
 			for(line=0;line<7;line++)

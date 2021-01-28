@@ -50,6 +50,8 @@ extern void Modify_address_A(void);
 extern void Fire_Emblem_B_patch_start(void);
 extern void Fire_Emblem_B_patch_end(void);
 extern void Modify_address_B(void);
+extern void Fire_Emblem_iQue_patch_start(void);
+extern void Fire_Emblem_iQue_patch_end(void);
 
 extern u32 gl_cheat_count;
 
