@@ -114,11 +114,8 @@ void Chip_Erase()
 //-----------------------------------------------------------
 void FormatNor()
 {
-	char msg[128];
-	sprintf(msg,"%s",gl_formatnor_info);
-
-	DrawHZText12(msg,0,60,90,gl_color_text,1);
-
+    DrawHZText12(gl_formatnor_info1,0,80,80,gl_color_text,1);
+    DrawHZText12(gl_formatnor_info2,0,52,95,gl_color_text,1);
 	while(1)
 	{
 		delay(500);
