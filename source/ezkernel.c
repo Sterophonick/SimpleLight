@@ -890,39 +890,43 @@ void Show_MENU(u32 menu_select,PAGE_NUM page,u32 havecht,u32 Save_num,u32 is_men
 		}
 
 		if(page==NOR_list)
-			DrawHZText12(gl_nor_op[line], 32, 60, y_offset + line*14, name_color,1);
+			DrawHZText12(gl_nor_op[line], 32, 47, y_offset + line*14, name_color,1);
 		else
 		{
 			if(line == 5)//cheat
 			{
 				sprintf(msg,"%s(%d)",gl_rom_menu[line],gl_cheat_count);
-				DrawHZText12(msg, 32, 60, y_offset + line*14, name_color,1);
+				DrawHZText12(msg, 32, 47, y_offset + line*14, name_color,1);
 			}
 			else{
-				DrawHZText12(gl_rom_menu[line], 32, 60, y_offset + line*14, name_color,1);
+				DrawHZText12(gl_rom_menu[line], 32, 47, y_offset + line*14, name_color,1);
 							
 				if(line == 4)//save tpye
 				{				
 					switch(Save_num)
 					{
-						case 1:sprintf(msg,"%s","<  SRAM  >");//0x11
-							break;
-						case 2:sprintf(msg,"%s","<EEPROM8K>");//0x22
-							break;
-						case 3:sprintf(msg,"%s","<EEPROM512>");//0x23
-							break;				
-						case 4:sprintf(msg,"%s","<FLASH64 >");//0x32
-							break;
-						case 5:sprintf(msg,"%s","<FLASH128>");//0x31
-							break;	
-						case 0:	
-						default:	
-							sprintf(msg,"%s",     "<  AUTO  >");	
-							break;			
-						
+					case 1:
+						sprintf(msg, "%s", ": SRAM 32kb");//0x11
+						break;
+					case 2:
+						sprintf(msg, "%s", ": EEPROM 8kb");//0x22
+						break;
+					case 3:
+						sprintf(msg, "%s", ": EEPROM 512b");//0x23
+						break;
+					case 4:
+						sprintf(msg, "%s", ": Flash 64kb");//0x32
+						break;
+					case 5:
+						sprintf(msg, "%s", ": Flash 128kb");//0x31
+						break;
+					case 0:
+					default:
+						sprintf(msg, "%s", ": Auto Detect");
+						break;		
 					}
 					//ClearWithBG((u16*)gImage_MENU -64,60+60, y_offset + line*14, 10*6, 13, 1);
-					DrawHZText12(msg, 32, 60+54, y_offset + line*14, name_color,1);					
+					DrawHZText12(msg, 32, 47 + 55, y_offset + line*14, name_color,1);					
 				}
 			}
 		}
@@ -1801,7 +1805,7 @@ void SD_list_L_START(show_offset,file_select,folder_total)
 {
 	u32 res;
 	
-	DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 0, 0, 1);//show menu pic		
+	DrawPic((u16*)gImage_MENU, 36, 25, 168, 110, 1, 0, 1);//show menu pic		
 	Show_MENU_btn();
 
 	DrawHZText12(gl_LSTART_help,0,60,60,gl_color_text,1);//use sure?gl_LSTART_help
@@ -2394,7 +2398,7 @@ re_showfile:
 		}
 		
 		re_show_menu:
-		DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 0, 0, 1);//show menu pic		
+		DrawPic((u16*)gImage_MENU, 36, 25, 168, 110, 1, 0, 1);//show menu pic		
 		Show_MENU_btn();			
 		while(1)//3
 		{
@@ -2446,7 +2450,7 @@ re_showfile:
 					if(Save_num){
 						Save_num--;
 						re_menu=1;
-						DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 0, 0, 1);//show menu pic
+						DrawPic((u16*)gImage_MENU, 36, 25, 168, 110, 1, 0, 1);//show menu pic
 						Show_MENU_btn();
 					}
 				}
@@ -2457,7 +2461,7 @@ re_showfile:
 					if(Save_num<5){
 						Save_num++;	
 						re_menu=1;
-						DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 0, 0, 1);//show menu pic
+						DrawPic((u16*)gImage_MENU, 36, 25, 168, 110, 1, 0, 1);//show menu pic
 						Show_MENU_btn();
 					}
 				}
