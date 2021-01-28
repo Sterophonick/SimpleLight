@@ -22,17 +22,52 @@
 #include "showcht.h"
 
 #include "images/splash.h"
-#include "images/SD.h"
-#include "images/NOR.h" 
-#include "images/SET.h"
-#include "images/HELP.h"
-#include "images/RECENTLY.h"
 
-#include "images/MENU.h"
-#include "images/icons.h"
+#ifdef DARK
+#include "images/dark/SD.h"
+#include "images/dark/NOR.h"
+#include "images/dark/SET.h"
+#include "images/dark/HELP.h"
+#include "images/dark/RECENTLY.h"
+#include "images/dark/MENU.h"
+#include "images/dark/icon_chip.h"
+#include "images/dark/icons.h"
+#else
+#include "images/light/SD.h"
+#include "images/light/NOR.h"
+#include "images/light/SET.h"
+#include "images/light/HELP.h"
+#include "images/light/RECENTLY.h"
+#include "images/light/MENU.h"
+#include "images/light/icon_chip.h"
+#include "images/light/icons.h"
+#endif
+
+#include "images/icon_CV.h"
+#include "images/icon_MSX.h"
+#include "images/icon_GG.h"
+#include "images/icon_SMS.h"
+#include "images/icon_SV.h"
+#include "images/icon_a26.h"
 #include "images/nor_icon.h"
+#include "images/icon_GBC.h"
+#include "images/icon_WS.h"
 #include "images/icon_FC.h"
 #include "images/icon_GB.h"
+#include "images/icon_SG.h"
+#include "images/icon_NG.h"
+#include "images/icon_IMG.h"
+#include "images/icon_TXT.h"
+#include "images/icon_PCE.h"
+#include "images/icon_ZX.h"
+#include "images/icon_o2.h"
+#include "images/icon_pokem.h"
+#include "images/icon_vmu.h"
+#include "images/icon_wav.h"
+#include "images/icon_arc.h"
+#include "images/icon_sc3000.h"
+#include "images/icon_EXE.h"
+#include "images/icon_mod.h"
 #include "images/NOTFOUND.h"
 
 #include "images/Chinese_manual.h"
@@ -89,15 +124,22 @@ u16 gl_sleep_on;
 u16 gl_cheat_on;
 
 //----------------------------------------
-u16 gl_color_selected 		= RGB(00,20,26);
-u16 gl_color_text 				= RGB(31,31,31);
-u16 gl_color_selectBG_sd 	= RGB(00,00,31);
-u16 gl_color_selectBG_nor = RGB(10,10,10);
-u16 gl_color_MENU_btn			= RGB(20,20,20);
-u16 gl_color_cheat_count  = RGB(00,31,00);
-u16 gl_color_cheat_black  = RGB(00,00,00);
-u16 gl_color_NORFULL      = RGB(31,00,00);
-u16 gl_color_btn_clean    = RGB(00,00,31);
+u16 gl_color_selected = RGB(00, 20, 26);
+#ifdef DARK
+u16 gl_color_text = RGB(31, 31, 31);
+u16 gl_color_selectBG_sd = RGB(15, 15, 31);
+u16 gl_color_selectBG_nor = RGB(18, 3, 3);
+u16 gl_color_MENU_btn = RGB(00, 19, 29);
+#else
+u16 gl_color_text = RGB(00, 00, 00);
+u16 gl_color_selectBG_sd = RGB(19, 19, 31);
+u16 gl_color_selectBG_nor = RGB(15, 28, 7);
+u16 gl_color_MENU_btn = RGB(23, 23, 23);
+#endif
+u16 gl_color_cheat_count = RGB(00, 31, 00);
+u16 gl_color_cheat_black = RGB(00, 00, 00);
+u16 gl_color_NORFULL = RGB(31, 00, 00);
+u16 gl_color_btn_clean = RGB(8, 8, 31);
 //******************************************************************************
 void delay(u32 R0)
 {
@@ -795,7 +837,7 @@ u32  get_count(void)
 	u32 res;
 	u32 count=0;
 	u8 buf[512];	
-	res = f_open(&gfile,"/SAVER/Recently play.txt", FA_READ);	
+	res = f_open(&gfile,"/SYSTEM/RECENT.txt", FA_READ);	
 	if(res == FR_OK)//have a play file
 	{
 		f_lseek(&gfile, 0x0);
@@ -936,7 +978,7 @@ void Make_recently_play_file(TCHAR* path,TCHAR* gamefilename)
 	}
 	dmaCopy(buf,&(p_recently_play[0]), 512);	//write first one
 		
-	res = f_open(&gfile,"Recently play.txt", FA_WRITE | FA_OPEN_ALWAYS);
+	res = f_open(&gfile,"RECENT.txt", FA_WRITE | FA_OPEN_ALWAYS);
 	if(res == FR_OK)
 	{	
 		f_lseek(&gfile, 0x0000);
@@ -1462,6 +1504,7 @@ u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR *filename,u32 is_EMU)
 	{
 		filesize = f_size(&gfile);	
 		
+		/*
 		if(is_EMU==3){//nes pocketnes_2013_07_01
 			*(vu32*)pReadCache = 0x45564153;
 			*((vu32*)pReadCache+1) = 0x0;
@@ -1484,6 +1527,7 @@ u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR *filename,u32 is_EMU)
 			*(vu32*)pReadCache = 0x1C2246c0;//usr rtc
 			dmaCopy((void*)pReadCache,PSRAMBase_S98 + 0x830, 0x4);				
 		}
+		*/
 			
 		Clear(60,160-15,120,15,gl_color_cheat_black,1);	
 		DrawHZText12(gl_writing,0,78,160-15,gl_color_text,1);	
@@ -1662,19 +1706,19 @@ u32 Check_file_type(TCHAR *pfilename)
 
 	ext++;
 
-	sprintf(plugin, "/plugins/%s.bin", ext);
+	sprintf(plugin, "/SYSTEM/PLUG/%s.bin", ext);
 	res = f_stat(plugin, NULL);
 	if(res == FR_OK)
 		return 4;
-	sprintf(plugin, "/plugins/%s.gba", ext);
+	sprintf(plugin, "/SYSTEM/PLUG/%s.gba", ext);
 	res = f_stat(plugin, NULL);
 	if(res == FR_OK)
 		return 5;
-	sprintf(plugin, "/plugins/%s.mb", ext);
+	sprintf(plugin, "/SYSTEM/PLUG/%s.mb", ext);
 	res = f_stat(plugin, NULL);
 	if(res == FR_OK)
 		return 6;
-	sprintf(plugin, "/plugins/%s.mbz", ext);
+	sprintf(plugin, "/SYSTEM/PLUG/%s.mbz", ext);
 	res = f_stat(plugin, NULL);
 	if(res == FR_OK)
 		return 7;
@@ -2410,8 +2454,8 @@ re_showfile:
 			}
 		}	
 				
-		res = f_mkdir("/SAVER");
-		res=f_chdir("/SAVER");
+		res = f_mkdir("/SYSTEM/SAVER");
+		res=f_chdir("/SYSTEM/SAVER");
 		if(res != FR_OK){
 			error_num = 2;
 			goto Error;
@@ -2420,7 +2464,9 @@ re_showfile:
 
 		if(page_num==SD_list){	
 			if(MENU_line<2){//PSRAM DirectPSRAM or soft reset
+				res = f_chdir("/SYSTEM");
 				Make_recently_play_file(currentpath,pfilename);	
+				res = f_chdir("/SYSTEM/SAVER");
 			}
 		}	
 

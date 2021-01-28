@@ -8,6 +8,11 @@ extern char* gl_init_ok;
 extern char* gl_Loading;
 extern char* gl_file_overflow;
 
+extern char* gl_theme_credit;
+extern char* gl_theme_credit2;
+
+extern char* gl_generating_emu;
+
 extern char* gl_menu_btn;
 extern char* gl_lastest_game;
 
@@ -37,7 +42,10 @@ extern char* gl_zh_lang;
 extern char* gl_set_btn;
 extern char* gl_ok_btn;
 
-extern char* gl_formatnor_info;
+extern char* gl_formatnor_info1;
+extern char* gl_formatnor_info2;
+
+extern char* temp;
 
 extern char* gl_check_sav;
 extern char* gl_make_sav;
@@ -49,6 +57,8 @@ extern char* gl_check_pat;
 extern char* gl_make_pat;
 
 extern char* gl_loading_game;
+extern char* gl_copying_data;
+
 extern char* gl_engine;
 extern char* gl_use_engine;
 
@@ -58,6 +68,7 @@ extern char* gl_START_help;
 extern char* gl_SELECT_help;
 extern char* gl_L_A_help;
 extern char* gl_LSTART_help;
+extern char* gl_LSELECT_help;
 extern char* gl_online_manual;
 
 extern char* gl_no_game_played;
@@ -75,7 +86,11 @@ extern char* gl_error_5;
 extern char* gl_error_6;
 
 extern char**  	gl_rom_menu;
+extern char**  gl_more_options;
 extern char**   gl_nor_op;
+
+// ASCII Font
+extern unsigned char* ASC_DATA;
 
 void LoadEnglish(void);
 void LoadChinese(void);
