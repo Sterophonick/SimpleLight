@@ -1657,14 +1657,15 @@ u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR *filename,u32 is_EMU)
 		*/
 			
 		Clear(60,160-15,120,15,gl_color_cheat_black,1);	
-		DrawHZText12(gl_writing,0,78,160-15,gl_color_text,1);	
+		ShowbootProgress(gl_generating_emu);
 
 		f_lseek(&gfile, 0x0000);
 		for(blocknum=0x0000;blocknum<filesize;blocknum+=0x20000)
 		{		
 			sprintf(msg,"%luMb",(blocknum+blockoffset)/0x20000);
+			str_len = strlen(msg);
 			Clear(78+54,160-15,110,15,gl_color_cheat_black,1);
-			DrawHZText12(msg,0,78+54,160-15,gl_color_text,1);
+			DrawHZText12(msg, 0, (240 - str_len * 6) / 2, 160 - 30, 0x7fff, 1);
 			//f_lseek(&gfile, blocknum);
 			if (filesize-blocknum*0x20000 < 0x20000)
 				memset(pReadCache, 0, 0x20000);
