@@ -2396,6 +2396,7 @@ re_showfile:
 			havecht = 0;
 			Save_num = 0xF;
 			MENU_max = 0;
+			goto load_file;
 		}
 		else{
 			res=f_chdir(currentpath);//can open  re list game
