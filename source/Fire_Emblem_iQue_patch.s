@@ -1,6 +1,6 @@
 @;--------------------------------------------------------------------
 	.section   	.text,"ax",%progbits
-
+		
 	.global  Fire_Emblem_iQue_patch_start
 	.global  Fire_Emblem_iQue_patch_end
 
@@ -81,7 +81,7 @@ Set_AUTO_save:
 	LDR     R2, =0x9FC0000
 	STRH    R3, [R2]
 	BX      LR
-
+	
 	.ltorg	
 	.align	
 Fire_Emblem_iQue_patch_end:

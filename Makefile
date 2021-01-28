@@ -20,7 +20,7 @@ include $(DEVKITARM)/gba_rules
 # the makefile is found
 #
 #---------------------------------------------------------------------------------
-TARGET		:= ezkernel
+TARGET		:= $(notdir $(CURDIR))
 BUILD		:= build
 SOURCES		:= source source/ff13c
 INCLUDES	:= include source/ff13c
@@ -32,7 +32,7 @@ MUSIC		:=
 #---------------------------------------------------------------------------------
 ARCH	:=	-mthumb -mthumb-interwork
 
-CFLAGS	:=	-g -Wall -O\
+CFLAGS	:=	-g -Wall -Os\
 		-mcpu=arm7tdmi -mtune=arm7tdmi\
  		-fomit-frame-pointer\
 		-ffast-math \
@@ -67,7 +67,6 @@ ifneq ($(BUILDDIR), $(CURDIR))
 #---------------------------------------------------------------------------------
  
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
-export KERNEL   :=  $(CURDIR)/ezkernel.bin
  
 export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
 					$(foreach dir,$(DATA),$(CURDIR)/$(dir)) \
@@ -119,12 +118,11 @@ export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) BUILDDIR=`cd $(BUILD) && pwd` --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
-	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).gba
 
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).gba $(KERNEL)
+	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).gba 
  
  
 #---------------------------------------------------------------------------------
@@ -134,9 +132,6 @@ else
 # main targets
 #---------------------------------------------------------------------------------
 
-$(KERNEL)    :   $(OUTPUT).gba
-	@cp $(OUTPUT).gba $(KERNEL)
-	@rm $(OUTPUT).gba
 $(OUTPUT).gba	:	$(OUTPUT).elf
 
 $(OUTPUT).elf	:	$(OFILES)

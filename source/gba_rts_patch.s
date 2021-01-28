@@ -1120,7 +1120,7 @@ ASCII:
 	.align
 ingameMENU:
 s_reset:
- 	.byte  'Q','U','I','T',0x0
+ 	.byte  'R','E','S','E','T',0x0
 s_save:
  	.byte  'S','A','V','E',0x0
 s_load:

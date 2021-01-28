@@ -1,13 +1,5 @@
-# Build Files
 build/
-/*.bin
-/*.elf
-/*.gba
-/*.o
-/*.map
-
-# Project Files
+ezkernel.bin
+ezkernel.elf
+ezkernel.gba
 copy.bat
-.vscode/
-/*.pnpproj
-/*.pnps

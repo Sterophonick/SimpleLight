@@ -32,11 +32,14 @@ extern void Cheat_count(void);
 extern void CHEAT(void);
 extern void no_CHEAT_end(void);
 
+
 extern void RTS_only_ReplaceIRQ_start(void);
 extern void RTS_only_ReplaceIRQ_end(void);
 extern void RTS_only_Return_address_L(void);
 extern void RTS_only_SAVE_key(void);
 extern void RTS_only_LOAD_key(void);
+
+
 extern void Fire_Emblem_0378_patch_start(void);
 extern void Fire_Emblem_0378_patch_end(void);
 extern void Fire_Emblem_1692_patch_start(void);

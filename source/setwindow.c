@@ -11,13 +11,13 @@
 #include "draw.h"
 #include "Ezcard_OP.h"
 
+extern const unsigned char __attribute__((aligned(4)))gImage_SET[76800];
 extern u16 gl_select_lang;
 extern u16 gl_engine_sel;
 extern u16 gl_show_Thumbnail;
 extern u16 gl_ingame_RTC_open_status;
 
 u16 SET_info_buffer [0x200]EWRAM_BSS;
-u16 frames;
 
 #define	K_A		 	 (0)
 #define	K_B		 	 (1)
@@ -32,12 +32,12 @@ u16 frames;
 
 u8* str_A      = (u8*)"   A  ";
 u8*	str_B		   = (u8*)"   B  ";
-u8* str_SELECT = (u8*)"Select";
-u8*	str_START	 = (u8*)"Start ";
-u8*	str_RIGHT	 = (u8*)"Right ";
-u8*	str_LEFT	 = (u8*)" Left ";
-u8* str_UP		 = (u8*)"  Up  ";
-u8*	str_DOWN	 = (u8*)" Down ";
+u8* str_SELECT = (u8*)"SELECT";
+u8*	str_START	 = (u8*)"START ";
+u8*	str_RIGHT	 = (u8*)"RIGHT ";
+u8*	str_LEFT	 = (u8*)" LEFT ";
+u8* str_UP		 = (u8*)"  UP  ";
+u8*	str_DOWN	 = (u8*)" DOWN ";
 u8* str_R		   = (u8*)"   R  ";
 u8* str_L		   = (u8*)"   L  ";
 
@@ -56,7 +56,7 @@ void Show_ver(void)
 	char msg[20];
 	char *ver="K:1.06";
 	u16 FPGAver = Read_FPGA_ver();
-	sprintf(msg,"",FPGAver&0xFF,ver);
+	sprintf(msg,"FW:%d %s",FPGAver&0xFF,ver);
 	DrawHZText12(msg,0,160,3, gl_color_text,1);	
 }
 //---------------------------------------------------------------------------------
@@ -191,24 +191,25 @@ u32 Setting_window(void)
 				Draw_select_icon(x_offset,y_offset+line_x*4,(engine_sel == 0x1));
 				sprintf(msg,"%s",gl_use_engine);
 				DrawHZText12(msg,0,x_offset+15,y_offset+line_x*4,(engine_pos==0)?gl_color_selected:gl_color_text,1);	
-			//							
-
+			//	
+			
 			ClearWithBG((u16*)gImage_SET,set_offset, y_offset+line_x*5, 9*6, 13, 1);
 			ClearWithBG((u16*)gImage_SET,set_offset, y_offset+line_x*6, 9*6, 13, 1);
 			if( (v_rts==1) && (v_cheat == 0)  && (v_reset == 0)  && (v_sleep == 0)  ) {
-				sprintf(msg,"%s"," Save Key");					
+				sprintf(msg,"%s"," SAVE KEY");					
 				DrawHZText12(msg,0,set_offset,y_offset+line_x*5,gl_color_selected,1);	
-
-				sprintf(msg,"%s"," Load Key");
+				
+				sprintf(msg,"%s"," LOAD KEY");
 				DrawHZText12(msg,0,set_offset,y_offset+line_x*6,gl_color_selected,1);	
 			}
-			else{
-								sprintf(msg,"%s",gl_hot_key);
+			else{						
+				sprintf(msg,"%s",gl_hot_key);
 				DrawHZText12(msg,0,set_offset,y_offset+line_x*5,gl_color_selected,1);	
 				
 				sprintf(msg,"%s",gl_hot_key2);
 				DrawHZText12(msg,0,set_offset,y_offset+line_x*6,gl_color_selected,1);		
 			}
+
 			//RTC
 			sprintf(msg,"%s",gl_ingameRTC);
 			DrawHZText12(msg,0,set_offset,y_offset+line_x*7,gl_color_selected,1);			
@@ -220,8 +221,9 @@ u32 Setting_window(void)
 				}
 				else {
 					sprintf(msg,"%s",gl_ingameRTC_close);
-				}	
+				}			
 				DrawHZText12(msg,0,x_offset+15,y_offset+line_x*7,(RTC_pos==0)?gl_color_selected:gl_color_text,1);	
+	
 	
 			u32 offsety;
 			for(line=0;line<7;line++)
@@ -293,14 +295,10 @@ u32 Setting_window(void)
 				if(HH >23)HH=0;
 				if(MM >59)MM=0;
 				if(SS >59)SS=0;
-				if(!(frames % 15))
-				{
-					ClearWithBG((u16*)gImage_SET,125, 24, 72, 13, 1);
-					sprintf(msg,"%u/%02u/%02u %02d:%02d:%02d %s",UNBCD(datetime[0])+2000,UNBCD(datetime[1]&0x1F),UNBCD(datetime[2]&0x3F),HH,MM,SS, wkday);	
-					DrawHZText12(msg,0,x_offset,y_offset,gl_color_text,1);	
-				}
+				sprintf(msg,"%u/%02u/%02u %02d:%02d:%02d %s",UNBCD(datetime[0])+2000,UNBCD(datetime[1]&0x1F),UNBCD(datetime[2]&0x3F),HH,MM,SS, wkday);
+				ClearWithBG((u16*)gImage_SET,x_offset, y_offset, 22*6, 13, 1);	
+				DrawHZText12(msg,0,x_offset,y_offset,gl_color_text,1);	
 				VBlankIntrWait();
-				frames++;
 
 				u16 read5 = Read_SET_info(5); 
 				u16 read6 = Read_SET_info(6); 
@@ -1213,8 +1211,6 @@ void save_set_info(void)
 	SET_info_buffer[12] = gl_show_Thumbnail;	
 	
 	SET_info_buffer[13] = gl_ingame_RTC_open_status;
-	SET_info_buffer[14] = gl_toggle_reset;
-	SET_info_buffer[15] = gl_toggle_backup;
 						
 	//save to nor 
 	Save_SET_info(SET_info_buffer,0x200);

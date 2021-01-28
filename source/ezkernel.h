@@ -1,7 +1,6 @@
 //#ifndef	EZKERNEL_HEADER
 //#define EZKERNEL_HEADER
 
-#include "images/image_sizes.h"
 #include "ff.h"
 
 #define MAX_pReadCache_size 0x20000
@@ -40,7 +39,6 @@
 #define _MIN	5
 #define _SEC	6
 
-int aP_depack(u8 *source,u8 *destination);
 
 typedef struct FM_NOR_FILE_SECT{////save to nor
 	unsigned char filename[100];	
@@ -72,6 +70,11 @@ typedef enum {
 //----------------------------
 extern DWORD Get_NextCluster(	FFOBJID* obj,	DWORD clst);
 extern DWORD ClustToSect(FATFS* fs,DWORD clst);
+extern const unsigned char __attribute__((aligned(4)))gImage_SD[76800];
+extern const unsigned char __attribute__((aligned(4)))gImage_NOR[76800];
+extern const unsigned char __attribute__((aligned(4)))gImage_LOGO[76800];
+extern const unsigned char __attribute__((aligned(4)))gImage_icons[1344];
+extern const unsigned char __attribute__((aligned(4)))gImage_MENU[28160];
 
 extern FM_NOR_FS pNorFS[MAX_NOR]EWRAM_BSS;
 extern u8 pReadCache [MAX_pReadCache_size]EWRAM_BSS;
@@ -95,9 +98,7 @@ extern u16 gl_color_NORFULL;
 extern u16 gl_color_btn_clean;
 
 u32 Setting_window(void);
-extern u16 gl_toggle_reset;
-extern u16 gl_toggle_backup;
-extern u16 gl_toggle_bold;
+
 
 u32 LoadRTSfile(TCHAR *filename);
 void ShowTime(u32 page_num ,u32 page_mode);
