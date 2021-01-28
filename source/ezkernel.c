@@ -1342,7 +1342,7 @@ u32 IWRAM_CODE Loadfile2PSRAM(TCHAR *filename)
 	{
 		filesize = f_size(&gfile);		
 		Clear(60,160-15,120,15,gl_color_cheat_black,1);	
-		DrawHZText12(gl_writing,0,78,160-15,gl_color_text,1);	
+		ShowbootProgress(gl_copying_data);	
 
 		f_lseek(&gfile, 0x0000);
 		for(blocknum=0x0000;blocknum<filesize;blocknum+=0x20000)
@@ -2511,9 +2511,10 @@ re_showfile:
 			}
 			ShowTime(page_num,page_mode);
 		}	//3
-
+	load_file:
+	
 		Clear(0, 0, 240, 160, gl_color_cheat_black, 1);
-		DrawHZText12(gl_Loading,0,(240-strlen(gl_Loading)*6)/2,74, gl_color_text,1);
+		//DrawHZText12(gl_Loading,0,(240-strlen(gl_Loading)*6)/2,74, gl_color_text,1);
 
 		u32 gamefilesize=0;
 		u32 savefilesize=0;		
@@ -2736,7 +2737,7 @@ re_showfile:
 		else {			
 	  	switch(MENU_line){
 	  		case 0://DirectPSRAM CLEAN BOOT
-	  			ShowbootProgress(gl_loading_game);
+	  			ShowbootProgress(gl_copying_data);
 					Send_FATbuffer(FAT_table_buffer,0);
 					GBApatch_Cleanrom(PSRAMBase_S98,gamefilesize);
 					//wait_btn();
