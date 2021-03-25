@@ -16,6 +16,9 @@
 extern u32 FAT_table_buffer[FAT_table_size/4]EWRAM_BSS;
 u32 crc32(unsigned char *buf, u32 size);
 
+#include "lang.h"
+extern unsigned char ASC_DATA_OLD[];
+
 extern     u32 key_L;
 
 u8 resettemp;
@@ -456,6 +459,8 @@ void IWRAM_CODE Set_AUTO_save(u16  mode)
 
 void IWRAM_CODE Check_FW_update(u16 Current_FW_ver,u16 Built_in_ver)
 {
+	ASC_DATA = ASC_DATA_OLD;
+	
     vu16 busy;
     vu32 offset;
     u32 offset_Y = 5;
