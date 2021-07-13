@@ -54,7 +54,7 @@ u8 edit_rtshotkey[3]={0};
 void Show_ver(void)
 {
 	char msg[20];
-	char *ver="K:1.06";
+	char *ver="K:1.08";
 	u16 FPGAver = Read_FPGA_ver();
 	sprintf(msg,"",FPGAver&0xFF,ver);
 	DrawHZText12(msg,0,160,3, gl_color_text,1);	

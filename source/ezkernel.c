@@ -194,7 +194,7 @@ void Show_help_window()
 	DrawHZText12(gl_online_manual, 0, 240 - 70 - 10, 74, gl_color_text, 1);
 	DrawHZText12(gl_theme_credit, 0, 4, 105, gl_color_selected, 1);
 	DrawHZText12(gl_theme_credit2, 0, 4, 120, gl_color_selected, 1);
-	DrawHZText12("K:1.06 F:7", 0, 4, 143, gl_color_text, 1);
+	DrawHZText12("K:1.08 F:8", 0, 4, 143, gl_color_text, 1);
 	while (1) {
 		VBlankIntrWait();
 		scanKeys();
@@ -1931,7 +1931,7 @@ int main(void)
 	SD_Disable();
 	Set_RTC_status(1);
 	//check FW
-	u16 Built_in_ver = 7;   //Newest_FW_ver
+	u16 Built_in_ver = 8;   //Newest_FW_ver
 	u16 Current_FW_ver = Read_FPGA_ver();
 	if ((Current_FW_ver < Built_in_ver) || (Current_FW_ver == 99)) { //99 is test ver
 		Check_FW_update(Current_FW_ver, Built_in_ver);

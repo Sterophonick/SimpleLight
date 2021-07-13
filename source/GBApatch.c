@@ -75,12 +75,12 @@ bool IWRAM_CODE PatchDragonBallZ(u32 *Data)
   bool res=false;
 	const u32 game_codes_DragonBallZ[]=
 	{
-	  0x45464c42, //2 Games in 1 - Dragon Ball Z - The Legacy of Goku I & II (USA).gba
-	  0x50474c41, //Dragon Ball Z - The Legacy of Goku (Europe) (En,Fr,De,Es,It).gba
-	  0x45474c41, //Dragon Ball Z - The Legacy of Goku (USA).gba
-	  0x50464c41, //Dragon Ball Z - The Legacy of Goku II (Europe) (En,Fr,De,Es,It).gba
-	  0x45464c41, //Dragon Ball Z - The Legacy of Goku II (USA).gba
-	  0x4a464c41,  //Dragon Ball Z - The Legacy of Goku II International (Japan).gba
+	  0x45464c42, //2288 - 2 Games in 1 - Dragon Ball Z - The Legacy of Goku I & II (USA).gba
+	  0x50474c41, //0639 - Dragon Ball Z - The Legacy of Goku (Europe) (En,Fr,De,Es,It).gba
+	  0x45474c41, //0434 - Dragon Ball Z - The Legacy of Goku (USA).gba
+	  0x50464c41, //1056 - Dragon Ball Z - The Legacy of Goku II (Europe) (En,Fr,De,Es,It).gba
+	  0x45464c41, //1085 - Dragon Ball Z - The Legacy of Goku II (USA).gba
+	  0x4a464c41,  //1591 - Dragon Ball Z - The Legacy of Goku II International (Japan).gba
 
 	  0x45593241   //1928 - Top Gun - Combat Zones(US).gba
 	  
