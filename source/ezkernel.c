@@ -194,7 +194,7 @@ void Show_help_window()
 	DrawHZText12(gl_online_manual, 0, 240 - 70 - 10, 74, gl_color_text, 1);
 	DrawHZText12(gl_theme_credit, 0, 4, 105, gl_color_selected, 1);
 	DrawHZText12(gl_theme_credit2, 0, 4, 120, gl_color_selected, 1);
-	DrawHZText12("K:1.08 F:8", 0, 4, 143, gl_color_text, 1);
+	DrawHZText12("K:1.09 F:9", 0, 4, 143, gl_color_text, 1);
 	while (1) {
 		VBlankIntrWait();
 		scanKeys();
@@ -1239,7 +1239,7 @@ u32 SavefileWrite(TCHAR* filename, u32 savesize)
 u8 Check_saveMODE(u8 gamecode[])
 {
 	u32 i;
-	BYTE savemode = 0xFF;
+	BYTE savemode = 0x10;
 	dmaCopy((void*)saveMODE_table, (void*)pReadCache, sizeof(saveMODE_table));
 	for (i = 0; i < 3000; i++) {
 		if (memcmp(((SAVE_MODE_*)pReadCache)[i].gamecode, "FFFF", 4) == 0) {
@@ -1931,7 +1931,7 @@ int main(void)
 	SD_Disable();
 	Set_RTC_status(1);
 	//check FW
-	u16 Built_in_ver = 8;   //Newest_FW_ver
+	u16 Built_in_ver = 9;   //Newest_FW_ver
 	u16 Current_FW_ver = Read_FPGA_ver();
 	if ((Current_FW_ver < Built_in_ver) || (Current_FW_ver == 99)) { //99 is test ver
 		Check_FW_update(Current_FW_ver, Built_in_ver);
@@ -2732,7 +2732,7 @@ re_showfile:
 				saveMODE = 0x31;
 				break;//FLASH128
 			case 0xf:
-				saveMODE = 0xee;
+				saveMODE = 0x10;
 				break;
 			default:
 				saveMODE = 0x00;
@@ -2764,7 +2764,7 @@ re_showfile:
 		case 0x31:
 			savefilesize = 0x20000;
 			break;//FLASH1M_TYPE 128k
-		case 0xee:
+		case 0x10:
 			savefilesize = 0x10000;
 			break;//EMU 64k
 		default:
