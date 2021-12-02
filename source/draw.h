@@ -1,6 +1,6 @@
 #include <gba_base.h>
 
-#define DARK
+#define LIGHT
 
 
 
