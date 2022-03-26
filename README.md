@@ -2,6 +2,7 @@ FORKED FROM https://github.com/ez-flash/omega-kernel
 
 # SimpleLight for EZ Flash Omega
 ( If you're looking for SimpleLight for EZ Flash Omega Definitive Edition, check here: https://github.com/Sterophonick/omega-de-kernel )
+
 Hello all!
 
 I have been working on a new theme for the EZ-Flash Omega, and I call it Simple.
