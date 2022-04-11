@@ -1,4 +1,8 @@
-# SimpleLight 
+###### FORKED FROM https://github.com/ez-flash/omega-kernel
+
+# SimpleLight for EZ Flash Omega
+###### *If you're looking for SimpleLight for the EZ Flash Omega **Definitive Edition**, check here: https://github.com/Sterophonick/omega-de-kernel*
+
 Hello all!
 
 I have been working on a new theme for the EZ-Flash Omega, and I call it Simple.
@@ -71,7 +75,7 @@ _**Follow the installation instructions in the !!!!!!!!!IMPORTANT!!!!!!!!!!!.TXT
     .mda - Sharp X68000 Music
     .cwz - CWZ Music (IDK what exactly it is, but it was included with PogoShell 1.2)
 
-*\* For cologne, you have to make the ROM yourself.*
+*\* For cologne, you have to make the ROM yourself.*\
 *\*\* MSXAdvance uses the C-BIOS, so I can redistribute the emulator.*
 
 ##### Cologne Emulator Guide:
@@ -80,7 +84,17 @@ _**Follow the installation instructions in the !!!!!!!!!IMPORTANT!!!!!!!!!!!.TXT
 3. Take a blank file, and also add the Official Colecovision BIOS.
 4. Create col.gba in the PLUG folder.
 
-# EZ-FLASH OMEGA Kernel
+### This ZIP file contains some tech demos/games:
+* XBill (SG-1000)
+* Sega Tween (SMS)
+* WinGG (Game Gear)
+* HuZERO (PC-Engine)
+* 1968 (ZX-Spectrum)
+* Adventures Of Gus and Rob (Neo Geo Pocket)
+* Kaboom! (Homebrew) (ColecoVision)
+* Motkonque (MSX)
+* SwanDriving (WonderSwan)
+* F8Z (Chip-8)
 
 ### How to build 
 
@@ -92,3 +106,17 @@ The original developers of the EZ-Flash Omega kernel recommend using devkitARM_r
     ```PATH,DEVKITARM,DEVKITPRO,LIBGBA```
 3. Double click on build.bat under Windows. If everything is set up, you will get ezkernel.bin
 	
+### Special Greetz & Contributors:
+Sasq\
+Moonlight\
+Kuwanger\
+veikkos\
+DarkFader\
+CoolHJ\
+Let's Emu!\
+Izder456\
+NuVanDibe\
+SLKun\
+Mintmoon\
+hitsgamer\
+Rocky5
