@@ -16,6 +16,9 @@
 extern u32 FAT_table_buffer[FAT_table_size/4]EWRAM_BSS;
 u32 crc32(unsigned char *buf, u32 size);
 
+#include "lang.h"
+extern unsigned char ASC_DATA_OLD[];
+
 extern     u32 key_L;
 
 u8 resettemp;
@@ -326,40 +329,65 @@ void IWRAM_CODE Bank_Switching(u8 bank)
 void IWRAM_CODE Save_info(u32 info_offset, u8 * info_buffer,u32 buffersize)
 {
     u32 offset;
-    vu16* buf = (vu16*)info_buffer ;
-    register u32 loopwrite ;
-    vu16 v1,v2;
-    *((vu16 *)(FlashBase_S71)) = 0xF0 ;
-    offset= info_offset;//0x7A0000/0x7B0000 ;
-    *((vu16 *)(FlashBase_S71+0x555*2)) = 0xAA ;
-    *((vu16 *)(FlashBase_S71+0x2AA*2)) = 0x55 ;
-    *((vu16 *)(FlashBase_S71+0x555*2)) = 0x80 ;
-    *((vu16 *)(FlashBase_S71+0x555*2)) = 0xAA ;
-    *((vu16 *)(FlashBase_S71+0x2AA*2)) = 0x55 ;
-    *((vu16 *)(FlashBase_S71+offset)) = 0x30 ;//erase
-    do {
-        v1 = *((vu16 *)(FlashBase_S71+offset)) ;
-        v2 = *((vu16 *)(FlashBase_S71+offset)) ;
-    }
-    while(v1!=v2);
-    //erase finish
-    u32 i;
-    for(loopwrite=0; loopwrite<(buffersize/32); loopwrite++) {
-        *((vu16 *)(FlashBase_S71+0x555*2)) = 0xAA;
-        *((vu16 *)(FlashBase_S71+0x2AA*2)) = 0x55;
-        *((vu16 *)(FlashBase_S71+offset+loopwrite*32)) = 0x25;
-        *((vu16 *)(FlashBase_S71+offset+loopwrite*32)) = 15;
-        for(i=0; i<=15; i++) {
-            *((vu16 *)(FlashBase_S71+offset+loopwrite*32 +2*i )) = buf[loopwrite*16+i];
-        }
-        *((vu16 *)(FlashBase_S71+offset+loopwrite*32)) = 0x29;
-        do {
-            v1 = *((vu16 *)(FlashBase_S71+offset+loopwrite*32));
-            v2 = *((vu16 *)(FlashBase_S71+offset+loopwrite*32));
-        }
-        while(v1!=v2);
-    }
-    *((vu16 *)(FlashBase_S71)) = 0xF0;
+	vu16* buf = (vu16*)info_buffer ;
+	register u32 loopwrite ;
+	vu16 v1,v2;
+	u16 S71id =  Read_S71NOR_ID();
+	
+	*((vu16 *)(FlashBase_S71)) = 0xF0 ;	
+	
+	offset= info_offset;//0x7A0000/0x7B0000 ;
+	
+	*((vu16 *)(FlashBase_S71+0x555*2)) = 0xAA ;
+	*((vu16 *)(FlashBase_S71+0x2AA*2)) = 0x55 ;
+	*((vu16 *)(FlashBase_S71+0x555*2)) = 0x80 ;
+	*((vu16 *)(FlashBase_S71+0x555*2)) = 0xAA ;
+	*((vu16 *)(FlashBase_S71+0x2AA*2)) = 0x55 ;	
+	*((vu16 *)(FlashBase_S71+offset)) = 0x30 ;//erase
+	do
+	{
+		v1 = *((vu16 *)(FlashBase_S71+offset)) ;
+		v2 = *((vu16 *)(FlashBase_S71+offset)) ;
+	}while(v1!=v2);		
+	//erase finish
+	if(S71id == 0x2202) //PL064
+	{
+		for(loopwrite=0;loopwrite<buffersize/2;loopwrite++)
+		{
+			*((vu16 *)(FlashBase_S71+0x555*2)) = 0xAA ;
+			*((vu16 *)(FlashBase_S71+0x2AA*2)) = 0x55 ;
+			*((vu16 *)(FlashBase_S71+0x555*2)) = 0xA0 ;
+			*((vu16 *)(FlashBase_S71+offset+loopwrite*2)) = buf[loopwrite];
+			do
+			{
+				v1 = *((vu16 *)(FlashBase_S71+offset+loopwrite*2)) ;
+				v2 = *((vu16 *)(FlashBase_S71+offset+loopwrite*2)) ;
+			}while(v1!=v2);
+		}			
+	}
+	else {
+		u32 i;
+		for(loopwrite=0;loopwrite<(buffersize/32);loopwrite++)
+		{
+			*((vu16 *)(FlashBase_S71+0x555*2)) = 0xAA;
+			*((vu16 *)(FlashBase_S71+0x2AA*2)) = 0x55;
+			*((vu16 *)(FlashBase_S71+offset+loopwrite*32)) = 0x25;
+			*((vu16 *)(FlashBase_S71+offset+loopwrite*32)) = 15;
+			for(i=0;i<=15;i++)
+			{
+				*((vu16 *)(FlashBase_S71+offset+loopwrite*32 +2*i )) = buf[loopwrite*16+i];
+			}	
+			*((vu16 *)(FlashBase_S71+offset+loopwrite*32)) = 0x29;
+			
+			do
+			{
+				v1 = *((vu16 *)(FlashBase_S71+offset+loopwrite*32));
+				v2 = *((vu16 *)(FlashBase_S71+offset+loopwrite*32));
+			}while(v1!=v2);
+		}
+	}
+
+	*((vu16 *)(FlashBase_S71)) = 0xF0;	
 }
 // --------------------------------------------------------------------
 void IWRAM_CODE Save_NOR_info(u8 * NOR_info_buffer,u32 buffersize)
@@ -456,6 +484,8 @@ void IWRAM_CODE Set_AUTO_save(u16  mode)
 
 void IWRAM_CODE Check_FW_update(u16 Current_FW_ver,u16 Built_in_ver)
 {
+	ASC_DATA = ASC_DATA_OLD;
+	
     vu16 busy;
     vu32 offset;
     u32 offset_Y = 5;
@@ -467,8 +497,8 @@ void IWRAM_CODE Check_FW_update(u16 Current_FW_ver,u16 Built_in_ver)
     //DEBUG_printf("get_crc32 %x ",get_crc32);
     //if(	get_crc32 != 0x22475DDC) //fw3
     //if(	get_crc32 != 0xEE2DACE7) //fw4
-	//if(	get_crc32 != 0x7E6212AB) //fw6
-	if( get_crc32 != 0xEFD03788) //fw7
+	//if( get_crc32 != 0x02D2ED6B) //fw8
+	if( get_crc32 != 0xB23F6EAE) //fw9
 	{
         sprintf(msg,"CRC32 checksum failure!");
         DrawHZText12(msg,0,2,offset_Y+0*line_x, RGB(31,00,00),1);

@@ -75,12 +75,12 @@ bool IWRAM_CODE PatchDragonBallZ(u32 *Data)
   bool res=false;
 	const u32 game_codes_DragonBallZ[]=
 	{
-	  0x45464c42, //2 Games in 1 - Dragon Ball Z - The Legacy of Goku I & II (USA).gba
-	  0x50474c41, //Dragon Ball Z - The Legacy of Goku (Europe) (En,Fr,De,Es,It).gba
-	  0x45474c41, //Dragon Ball Z - The Legacy of Goku (USA).gba
-	  0x50464c41, //Dragon Ball Z - The Legacy of Goku II (Europe) (En,Fr,De,Es,It).gba
-	  0x45464c41, //Dragon Ball Z - The Legacy of Goku II (USA).gba
-	  0x4a464c41,  //Dragon Ball Z - The Legacy of Goku II International (Japan).gba
+	  0x45464c42, //2288 - 2 Games in 1 - Dragon Ball Z - The Legacy of Goku I & II (USA).gba
+	  0x50474c41, //0639 - Dragon Ball Z - The Legacy of Goku (Europe) (En,Fr,De,Es,It).gba
+	  0x45474c41, //0434 - Dragon Ball Z - The Legacy of Goku (USA).gba
+	  0x50464c41, //1056 - Dragon Ball Z - The Legacy of Goku II (Europe) (En,Fr,De,Es,It).gba
+	  0x45464c41, //1085 - Dragon Ball Z - The Legacy of Goku II (USA).gba
+	  0x4a464c41,  //1591 - Dragon Ball Z - The Legacy of Goku II International (Japan).gba
 
 	  0x45593241   //1928 - Top Gun - Combat Zones(US).gba
 	  
@@ -640,16 +640,17 @@ void GBApatch_NOR(u32* address,int filesize,u32 offset)
 	PatchNes(address);
 	PatchDragonBallZ(address);
 	Check_Fire_Emblem();
-	if((gl_rts_on==1) ||  ((gl_cheat_on==1)&& (gl_cheat_count>0) ) )		
+
+	if ((gl_rts_on == 1) && (gl_cheat_on == 0) && (gl_reset_on == 0) && (gl_sleep_on == 0))
 	{
 		Patch_RTS_only(address);
-	}  
-	else if((gl_rts_on==1) ||  ((gl_cheat_on==1)&& (gl_cheat_count>0) ) )		
+	}
+	else if ((gl_rts_on == 1) || ((gl_cheat_on == 1) && (gl_cheat_count > 0)))
 	{
 		Patch_RTS_Cheat(address);
 	}
 	else
-	{  
+	{
 		Patch_Reset_Sleep(address);
 	}
 }
@@ -857,8 +858,8 @@ void Make_mde_file(TCHAR* gamefilename,u8 Save_num)
 	memset(currentpath,00,256);
 	res = f_getcwd(currentpath, sizeof currentpath / sizeof *currentpath);
 	
-	res = f_mkdir("/SYSETM/SAVER");
-	res=f_chdir("/SYSETM/SAVER");
+	res = f_mkdir("/SYSTEM/SAVER");
+	res=f_chdir("/SYSTEM/SAVER");
 	
 	memset(w_buffer, 0x00, sizeof(w_buffer));
 

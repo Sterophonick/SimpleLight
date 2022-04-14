@@ -3,6 +3,8 @@ build/
 /*.bin
 /*.elf
 /*.gba
+/*.o
+/*.map
 
 # Project Files
 copy.bat
