@@ -24,32 +24,29 @@
 #include "images/splash.h"
 
 #ifdef DARK
-#include "images/SDd.h"
-#include "images/NORd.h"
-#include "images/SETd.h"
-#include "images/HELPd.h"
-#include "images/RECENTLYd.h"
-#include "images/MENUd.h"
+#include "images/dark/SD.h"
+#include "images/dark/NOR.h"
+#include "images/dark/SET.h"
+#include "images/dark/HELP.h"
+#include "images/dark/RECENTLY.h"
+#include "images/dark/MENU.h"
+#include "images/dark/icon_chip.h"
+#include "images/dark/icons.h"
 #else
-#include "images/SD.h"
-#include "images/NOR.h"
-#include "images/SET.h"
-#include "images/HELP.h"
-#include "images/RECENTLY.h"
-#include "images/MENU.h"
-#endif
-
-#ifdef DARK
-#include "images/icon_chipd.h"
-#else
-#include "images/icon_chip.h"
+#include "images/light/SD.h"
+#include "images/light/NOR.h"
+#include "images/light/SET.h"
+#include "images/light/HELP.h"
+#include "images/light/RECENTLY.h"
+#include "images/light/MENU.h"
+#include "images/light/icon_chip.h"
+#include "images/light/icons.h"
 #endif
 
 #include "images/icon_CV.h"
 #include "images/icon_MSX.h"
 #include "images/icon_GG.h"
 #include "images/icon_SMS.h"
-#include "images/icons.h"
 #include "images/icon_SV.h"
 #include "images/icon_a26.h"
 #include "images/nor_icon.h"
@@ -146,20 +143,15 @@ u16 gl_cheat_on;
 u16 gl_color_selected = RGB(00, 20, 26);
 #ifdef DARK
 u16 gl_color_text = RGB(31, 31, 31);
+u16 gl_color_selectBG_sd = RGB(15, 15, 31);
+u16 gl_color_selectBG_nor = RGB(18, 3, 3);
+u16 gl_color_MENU_btn = RGB(00, 19, 29);
 #else
 u16 gl_color_text = RGB(00, 00, 00);
-#endif
-#ifdef DARK
-u16 gl_color_selectBG_sd = RGB(15, 15, 31);
-#else
 u16 gl_color_selectBG_sd = RGB(19, 19, 31);
-#endif
-#ifdef DARK
-u16 gl_color_selectBG_nor = RGB(18, 3, 3);
-#else
 u16 gl_color_selectBG_nor = RGB(15, 28, 7);
-#endif
 u16 gl_color_MENU_btn = RGB(23, 23, 23);
+#endif
 u16 gl_color_cheat_count = RGB(00, 31, 00);
 u16 gl_color_cheat_black = RGB(00, 00, 00);
 u16 gl_color_NORFULL = RGB(31, 00, 00);
@@ -204,7 +196,7 @@ void Show_help_window()
 	DrawHZText12(gl_online_manual, 0, 240 - 70 - 10, 74, gl_color_text, 1);
 	DrawHZText12(credit_line_1, 0, 4, 105, gl_color_selected, 1);
 	DrawHZText12(gl_theme_credit2, 0, 4, 120, gl_color_selected, 1);
-	DrawHZText12("K:1.06 F:7", 0, 4, 143, gl_color_text, 1);
+	DrawHZText12("K:1.09 F:9", 0, 4, 143, gl_color_text, 1);
 	while (1) {
 		VBlankIntrWait();
 		scanKeys();
@@ -812,8 +804,8 @@ void Filename_loop(u32 shift, u32 show_offset, u32 file_select, u32 haveThumbnai
 void Show_MENU_btn()
 {
 	char msg[30];
-	Clear(60, 118 - 1, 55, 14, gl_color_MENU_btn, 1);
-	Clear(125, 118 - 1, 55, 14, gl_color_MENU_btn, 1);
+	// Clear(60, 118 - 1, 55, 14, gl_color_MENU_btn, 1);
+	// Clear(125, 118 - 1, 55, 14, gl_color_MENU_btn, 1);
 	sprintf(msg, "%s", gl_menu_btn);
 	DrawHZText12(msg, 0, 60, 118, gl_color_text, 1);
 }
@@ -847,39 +839,39 @@ void Show_MENU(u32 menu_select, PAGE_NUM page, u32 havecht, u32 Save_num, u32 is
 			name_color = gl_color_text;
 		}
 		if (page == NOR_list) {
-			DrawHZText12(gl_nor_op[line], 32, 60, y_offset + line * 14, name_color, 1);
+			DrawHZText12(gl_nor_op[line], 32, 47, y_offset + line * 14, name_color, 1);
 		}
 		else {
 			if (line == 5) { //cheat
 				sprintf(msg, "%s(%d)", gl_rom_menu[line], gl_cheat_count);
-				DrawHZText12(msg, 32, 60, y_offset + line * 14, name_color, 1);
+				DrawHZText12(msg, 32, 47, y_offset + line * 14, name_color, 1);
 			}
 			else {
-				DrawHZText12(gl_rom_menu[line], 32, 60, y_offset + line * 14, name_color, 1);
+				DrawHZText12(gl_rom_menu[line], 32, 47, y_offset + line * 14, name_color, 1);
 				if (line == 4) { //save tpye
 					switch (Save_num) {
 					case 1:
-						sprintf(msg, "%s", "<  SRAM   >");//0x11
+						sprintf(msg, "%s", ": SRAM 32kb");//0x11
 						break;
 					case 2:
-						sprintf(msg, "%s", "<EEPROM8K >");//0x22
+						sprintf(msg, "%s", ": EEPROM 8kb");//0x22
 						break;
 					case 3:
-						sprintf(msg, "%s", "<EEPROM512>");//0x23
+						sprintf(msg, "%s", ": EEPROM 512b");//0x23
 						break;
 					case 4:
-						sprintf(msg, "%s", "< Flash64 >");//0x32
+						sprintf(msg, "%s", ": Flash 64kb");//0x32
 						break;
 					case 5:
-						sprintf(msg, "%s", "<Flash128 >");//0x31
+						sprintf(msg, "%s", ": Flash 128kb");//0x31
 						break;
 					case 0:
 					default:
-						sprintf(msg, "%s", "<  AUTO   >");
+						sprintf(msg, "%s", ": Auto Detect");
 						break;
 					}
 					//ClearWithBG((u16*)gImage_MENU -64,60+60, y_offset + line*14, 10*6, 13, 1);
-					DrawHZText12(msg, 32, 60 + 54, y_offset + line * 14, name_color, 1);
+					DrawHZText12(msg, 32, 47 + 55, y_offset + line * 14, name_color, 1);
 				}
 			}
 		}
@@ -901,7 +893,7 @@ void Show_Extra_Menu(u32 menu_select)
 		else {
 			name_color = gl_color_text;
 		}
-		DrawHZText12(gl_more_options[line], 32, 60, y_offset + line * 14, name_color, 1);
+		DrawHZText12(gl_more_options[line], 32, 47, y_offset + line * 14, name_color, 1);
 	}
 }
 
@@ -1249,7 +1241,7 @@ u32 SavefileWrite(TCHAR* filename, u32 savesize)
 u8 Check_saveMODE(u8 gamecode[])
 {
 	u32 i;
-	BYTE savemode = 0xFF;
+	BYTE savemode = 0x10;
 	dmaCopy((void*)saveMODE_table, (void*)pReadCache, sizeof(saveMODE_table));
 	for (i = 0; i < 3000; i++) {
 		if (memcmp(((SAVE_MODE_*)pReadCache)[i].gamecode, "FFFF", 4) == 0) {
@@ -1281,7 +1273,7 @@ u32 IWRAM_CODE Loadfile2PSRAM(TCHAR* filename)
 		ShowbootProgress(gl_copying_data);
 		f_lseek(&gfile, 0x0000);
 		for (blocknum = 0x0000; blocknum < filesize; blocknum += 0x20000) {
-			sprintf(msg, "%luMb", (blocknum) / 0x20000);
+			sprintf(msg, "%luMbit", (blocknum) / 0x20000);
 			str_len = strlen(msg);
 			Clear(0, 130, 240, 15, gl_color_cheat_black, 1);
 			DrawHZText12(msg, 0, (240 - str_len * 6) / 2, 160 - 30, 0x7fff, 1);
@@ -1708,7 +1700,7 @@ u32 Load_Thumbnail(TCHAR* pfilename_pic)
 void SD_list_L_START(show_offset, file_select, folder_total)
 {
 	u32 res;
-	DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 1, 0, 1);//show menu pic
+	DrawPic((u16*)gImage_MENU, 36, 25, 168, 110, 1, 0, 1);//show menu pic
 	Show_MENU_btn();
 	DrawHZText12(gl_LSTART_help, 0, 60, 60, gl_color_text, 1);//use sure?gl_LSTART_help
 	DrawHZText12(pFilename_buffer[show_offset + file_select - folder_total].filename, 20, 60, 75, 0x001F, 1);//file name
@@ -1736,7 +1728,7 @@ void SD_list_L_SELECT(show_offset, file_select, folder_total)
 	u32 strlen8;
 	TCHAR* pfilename;
 	u32 res;
-	DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 1, 0, 1);//show menu pic
+	DrawPic((u16*)gImage_MENU, 36, 25, 168, 110, 1, 0, 1);//show menu pic
 	Show_MENU_btn();
 	DrawHZText12(gl_LSELECT_help, 0, 60, 60, gl_color_text, 1);//use sure?gl_LSTART_help
 	DrawHZText12(pFilename_buffer[show_offset + file_select - folder_total].filename, 20, 60, 75, 0x001F, 1);//file name
@@ -1953,7 +1945,7 @@ int main(void)
 	SD_Disable();
 	Set_RTC_status(1);
 	//check FW
-	u16 Built_in_ver = 7;   //Newest_FW_ver
+	u16 Built_in_ver = 9;   //Newest_FW_ver
 	u16 Current_FW_ver = Read_FPGA_ver();
 	if ((Current_FW_ver < Built_in_ver) || (Current_FW_ver == 99)) { //99 is test ver
 		Check_FW_update(Current_FW_ver, Built_in_ver);
@@ -2323,7 +2315,7 @@ re_showfile:
 					}
 				else {
 					*/
-				DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 1, 0, 1);//show menu pic
+				DrawPic((u16*)gImage_MENU, 36, 25, 168, 110, 1, 0, 1); // show menu pic - (posx, posy, width, height)
 				Show_MENU_btn();
 				u8 MENU_line = 0;
 				u8 re_menu = 1;
@@ -2334,44 +2326,55 @@ re_showfile:
 					if (re_menu == 1)
 					{
 						Show_Extra_Menu(MENU_line);
+						if (gl_show_Thumbnail)
+							DrawHZText12("(ON)", 32, 47 + (6 * 20), 30, gl_color_text, 1);
+						else
+							DrawHZText12("(OFF)", 32, 47 + (6 * 20), 30, gl_color_text, 1);
 						if (gl_toggle_reset)
-							DrawHZText12("(ON)", 32, 60 + (6 * 13), 44, gl_color_text, 1);
+							DrawHZText12("(ON)", 32, 47 + (6 * 20), 44, gl_color_text, 1);
 						else
-							DrawHZText12("(OFF)", 32, 60 + (6 * 13), 44, gl_color_text, 1);
+							DrawHZText12("(OFF)", 32, 47 + (6 * 20), 44, gl_color_text, 1);
 						if (gl_toggle_backup)
-							DrawHZText12("(ON)", 32, 60 + (6 * 14), 58, gl_color_text, 1);
+							DrawHZText12("(ON)", 32, 47 + (6 * 20), 58, gl_color_text, 1);
 						else
-							DrawHZText12("(OFF)", 32, 60 + (6 * 14), 58, gl_color_text, 1);
+							DrawHZText12("(OFF)", 32, 47 + (6 * 20), 58, gl_color_text, 1);
 						if (gl_toggle_bold)
-							DrawHZText12("(ON)", 32, 60 + (6 * 12), 72, gl_color_text, 1);
+							DrawHZText12("(ON)", 32, 47 + (6 * 20), 72, gl_color_text, 1);
 						else
-							DrawHZText12("(OFF)", 32, 60 + (6 * 12), 72, gl_color_text, 1);
+							DrawHZText12("(OFF)", 32, 47 + (6 * 20), 72, gl_color_text, 1);
 						if (MENU_line == 1 || MENU_line == 2 || MENU_line == 3) {
 							name_color = gl_color_selected;
 						}
 						else {
 							name_color = gl_color_text;
 						}
+						if (MENU_line == 0)
+						{
+							if (gl_show_Thumbnail)
+								DrawHZText12("(ON)", 32, 47 + (6 * 20), 30, name_color, 1);
+							else
+								DrawHZText12("(OFF)", 32, 47 + (6 * 20), 30, name_color, 1);
+						}
 						if (MENU_line == 1)
 						{
 							if (gl_toggle_reset)
-								DrawHZText12("(ON)", 32, 60 + (6 * 13), 44, name_color, 1);
+								DrawHZText12("(ON)", 32, 47 + (6 * 20), 44, name_color, 1);
 							else
-								DrawHZText12("(OFF)", 32, 60 + (6 * 13), 44, name_color, 1);
+								DrawHZText12("(OFF)", 32, 47 + (6 * 20), 44, name_color, 1);
 						}
 						if (MENU_line == 2)
 						{
 							if (gl_toggle_backup)
-								DrawHZText12("(ON)", 32, 60 + (6 * 14), 58, name_color, 1);
+								DrawHZText12("(ON)", 32, 47 + (6 * 20), 58, name_color, 1);
 							else
-								DrawHZText12("(OFF)", 32, 60 + (6 * 14), 58, name_color, 1);
+								DrawHZText12("(OFF)", 32, 47 + (6 * 20), 58, name_color, 1);
 						}
 						if (MENU_line == 3)
 						{
 							if (gl_toggle_bold)
-								DrawHZText12("(ON)", 32, 60 + (6 * 12), 72, name_color, 1);
+								DrawHZText12("(ON)", 32, 47 + (6 * 20), 72, name_color, 1);
 							else
-								DrawHZText12("(OFF)", 32, 60 + (6 * 12), 72, name_color, 1);
+								DrawHZText12("(OFF)", 32, 47 + (6 * 20), 72, name_color, 1);
 						}
 						re_menu = 0;
 					}
@@ -2535,7 +2538,7 @@ re_showfile:
 			MENU_max = (page_num == NOR_list) ? 2 : (4 + ((gl_cheat_on == 1) ? ((havecht > 0) ? 1 : 0) : 0));
 		}
 	re_show_menu:
-		DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 1, 0, 1);//show menu pic
+		DrawPic((u16*)gImage_MENU, 36, 25, 168, 110, 1, 0, 1);//show menu pic
 		Show_MENU_btn();
 		while (1) { //3
 			if (re_menu) {
@@ -2580,7 +2583,7 @@ re_showfile:
 					if (Save_num) {
 						Save_num--;
 						re_menu = 1;
-						DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 1, 0, 1);//show menu pic
+						DrawPic((u16*)gImage_MENU, 36, 25, 168, 110, 1, 0, 1);//show menu pic
 						Show_MENU_btn();
 					}
 				}
@@ -2590,7 +2593,7 @@ re_showfile:
 					if (Save_num < 5) {
 						Save_num++;
 						re_menu = 1;
-						DrawPic((u16*)gImage_MENU, 56, 25, 128, 110, 1, 0, 1);//show menu pic
+						DrawPic((u16*)gImage_MENU, 36, 25, 168, 110, 1, 0, 1);//show menu pic
 						Show_MENU_btn();
 					}
 				}
@@ -2744,7 +2747,7 @@ re_showfile:
 				saveMODE = 0x31;
 				break;//FLASH128
 			case 0xf:
-				saveMODE = 0xee;
+				saveMODE = 0x10;
 				break;
 			default:
 				saveMODE = 0x00;
@@ -2776,7 +2779,7 @@ re_showfile:
 		case 0x31:
 			savefilesize = 0x20000;
 			break;//FLASH1M_TYPE 128k
-		case 0xee:
+		case 0x10:
 			savefilesize = 0x10000;
 			break;//EMU 64k
 		default:
@@ -2860,7 +2863,7 @@ re_showfile:
 			FAT_table_buffer[0x1F4 / 4] = 0x2;  //copy mode
 			Send_FATbuffer(FAT_table_buffer, 1); //only save FAT
 			//wait_btn();
-			SetRompageWithHardReset(pNorFS[show_offset + file_select].rompage, 1);
+			SetRompageWithHardReset(pNorFS[show_offset + file_select].rompage, gl_toggle_reset);
 			while (1) {
 				VBlankIntrWait();
 			}

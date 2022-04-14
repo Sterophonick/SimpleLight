@@ -1,0 +1,19 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=wingrit.chm
+Contents file=wingrit.hhc
+Default topic=html\index.htm
+Display compile progress=No
+Language=0x809 English (United Kingdom)
+Title=Wingit
+
+
+[FILES]
+html\index.htm
+html\grit.htm
+html\gritmake.htm
+html\wingrit.htm
+html\tonc.js
+
+[INFOTYPES]
+
