@@ -120,9 +120,9 @@ hitsgamer\
 Rocky5
 
 ### Credits
-[EZ-FLASH](https://www.ezflash.cn/) - The original firmware & hardware creators
-Kuwanger - PogoShell plugin integration
-Sterophonick - SIMPLE theme for EZO & EZODE
-fluBBa - SMSAdvance, MSXAdvance, Cologne for GBA, Goomba for GBA (Original), PCEAdvance, PocketNES, SNESAdvance, Wasabi, NGPAdvance, SwanAdvance
-[Jaga](https://github.com/EvilJagaGenius) - [Jaga's Goomba Color fork](https://github.com/EvilJagaGenius/jagoombacolor)
+[EZ-FLASH](https://www.ezflash.cn/) - The original firmware & hardware creators\
+Kuwanger - PogoShell plugin integration\
+Sterophonick - SIMPLE theme for EZO & EZODE\
+fluBBa - SMSAdvance, MSXAdvance, Cologne for GBA, Goomba for GBA (Original), PCEAdvance, PocketNES, SNESAdvance, Wasabi, NGPAdvance, SwanAdvance\
+[Jaga](https://github.com/EvilJagaGenius) - [Jaga's Goomba Color fork](https://github.com/EvilJagaGenius/jagoombacolor)\
 ...and others!
