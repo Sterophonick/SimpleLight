@@ -34,11 +34,11 @@ _**Follow the installation instructions in the !!!!!!!!!IMPORTANT!!!!!!!!!!!.TXT
     .bin - GBA ROM
     .mb - GBA Multiboot ROM
     .agb - GBA ROM
-    .col - ColecoVision ROM (Requires Cologne) \*
-    .gb - Game Boy ROM (Goomba Color)
-    .gbc - Game Boy Color ROM (Goomba Color)
+    .col - ColecoVision ROM (Requires Cologne) *
+    .gb - Game Boy ROM (Jaga's Goomba Color)
+    .gbc - Game Boy Color ROM (Jaga's Goomba Color)
     .gg - Game Gear ROM (SMSAdvance)
-    .rom - MSX Cartridge ROM (MSXAdvance) \*\*
+    .rom - MSX Cartridge ROM (MSXAdvance) **
     .ngp - Neo Geo Pocket ROM (NGPAdvance)
     .ngc - Neo Geo Pocket ROM (NGPAdvance)
     .ngpc - Neo Geo Pocket Color ROM (NGPAdvance)
@@ -75,7 +75,7 @@ _**Follow the installation instructions in the !!!!!!!!!IMPORTANT!!!!!!!!!!!.TXT
     .mda - Sharp X68000 Music
     .cwz - CWZ Music (IDK what exactly it is, but it was included with PogoShell 1.2)
 
-*\* For cologne, you have to make the ROM yourself.*\
+*\* For Cologne, you have to make the ROM yourself.*\
 *\*\* MSXAdvance uses the C-BIOS, so I can redistribute the emulator.*
 
 ##### Cologne Emulator Guide:
@@ -97,15 +97,13 @@ _**Follow the installation instructions in the !!!!!!!!!IMPORTANT!!!!!!!!!!!.TXT
 * F8Z (Chip-8)
 
 ### How to build 
+1. Install [devkitPro](https://devkitpro.org/)
+2. Set the following environment variables to their correct directories: `DEVKITPRO, DEVKITARM, LIBGBA`
+3. Comment or uncomment the `#define DARK` line in `draw.h`. If uncommented, a dark theme is generated.
+4. Run the command `make`. If done successfully, this should give you an `ezkernel.bin` file.
+5. Follow the installation instructions above.
+4. Update your flashcart and enjoy! :)
 
-The original developers of the EZ-Flash Omega kernel recommend using devkitARM_r47. Sometime after devkitARM_r50, any level of optimization began preventing PogoShell plugins from properly generating. The code has been adjusted since then to remove optimizations and so will compile and run properly on the most recent build of devkitARM (as of September 29, 2020).
-	
-##### Compiling light and dark themes:
-1. Comment or uncomment the "#define DARK" line in "draw.h". If uncommented, a dark theme is generated.
-2. Set the following environment variables in system, or modify the value in build.bat, based on your installation path
-    ```PATH,DEVKITARM,DEVKITPRO,LIBGBA```
-3. Double click on build.bat under Windows. If everything is set up, you will get ezkernel.bin
-	
 ### Special Greetz & Contributors:
 Sasq\
 Moonlight\
@@ -120,3 +118,11 @@ SLKun\
 Mintmoon\
 hitsgamer\
 Rocky5
+
+### Credits
+[EZ-FLASH](https://www.ezflash.cn/) - The original firmware & hardware creators
+Kuwanger - PogoShell plugin integration
+Sterophonick - SIMPLE theme for EZO & EZODE
+fluBBa - SMSAdvance, MSXAdvance, Cologne for GBA, Goomba for GBA (Original), PCEAdvance, PocketNES, SNESAdvance, Wasabi, NGPAdvance, SwanAdvance
+[Jaga](https://github.com/EvilJagaGenius) - [Jaga's Goomba Color fork](https://github.com/EvilJagaGenius/jagoombacolor)
+...and others!
