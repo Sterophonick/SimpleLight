@@ -14,6 +14,7 @@ FM_CHT_LINE tmpCHTFS ;
 
 u8 *pCHTbuffer = (u8*)(pReadCache + 0x2000); //patchbuffer
 
+extern void Draw_select_icon(u32 X,u32 Y,u32 mode);
 
 ST_entry pCHEAT[3000]EWRAM_BSS;
 u32 gl_cheat_count;
@@ -153,7 +154,7 @@ void Get_KEY_val(FIL* file,char*KEY_section,char*KEY_secval,char getbuff[])
 			{
 				strcpy(getbuff,_paramv); 
 
-				return 0;	
+				return;
 			}				
 		}
 		if (strcmp(_paramk, "")==0 || strcmp(_paramv, "")==0)
@@ -866,7 +867,7 @@ void Open_cht_file(TCHAR *gamefilename,u32 havecht)
 	{
 		Change2cht_folder(havecht);
 		u8* chtmode;
-		chtmode = &havecht;
+		chtmode = (u8*)&havecht;
 		sprintf(chtnamebuf,"%d%d%d%d.cht",HexToChar(chtmode[0]),HexToChar(chtmode[1]),HexToChar(chtmode[2]),HexToChar(chtmode[3]));
 	}	
 	res = f_open(&gfile,chtnamebuf, FA_READ);	

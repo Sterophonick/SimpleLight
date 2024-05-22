@@ -1,3 +1,7 @@
+#ifndef _GNU_SOURCE
+#define _GNU_SOURCE 1 // we need this for vasprintf on gcc 14
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -11,6 +15,7 @@
 
 #include "ezkernel.h"
 
+extern void wait_btn();
 
 int current_y = 1;
 extern u8 pReadCache [MAX_pReadCache_size]EWRAM_BSS;

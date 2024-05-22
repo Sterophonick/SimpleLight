@@ -12,8 +12,14 @@
 #include "lang.h"
 #include "showcht.h"
 
+#include "Ezcard_OP.h"
+
 #define	_UnusedVram 		0x06012c00
 
+void Patch_SpecialROM_TrimSize(void);
+void Check_Fire_Emblem(void);
+extern u32 Check_game_save_FAT(TCHAR* filename, u32 game_save_rts);
+extern void IWRAM_CODE Set_AUTO_save(u16  mode);
 
 u32 windows_offset;
 u32 is_NORpatch;
@@ -773,7 +779,7 @@ void Make_pat_file(TCHAR* gamefilename)
 		if(res == FR_OK)
 		{	
 			f_lseek(&gfile, 0x0000);
-			res=f_write(&gfile, (void*)iPatchInfo2, sizeof(iPatchInfo2), &written);
+			res=f_write(&gfile, (void*)iPatchInfo2, sizeof(iPatchInfo2), (UINT*)&written);
 			w_buffer[0] = is_NORpatch;
 			w_buffer[1] = windows_offset;
 			w_buffer[2] = is_Nes;
@@ -788,7 +794,7 @@ void Make_pat_file(TCHAR* gamefilename)
 			w_buffer[10] = gl_sleep_on;
 			w_buffer[11] = gl_cheat_on;
 					
-			res=f_write(&gfile, (void*)w_buffer, sizeof(w_buffer), &written);
+			res=f_write(&gfile, (void*)w_buffer, sizeof(w_buffer), (UINT*)&written);
 			f_close(&gfile);
 		}
 	}
@@ -873,7 +879,7 @@ void Make_mde_file(TCHAR* gamefilename,u8 Save_num)
 			f_lseek(&gfile, 0x0000);
 			
 			w_buffer[0] = Save_num;
-			res=f_write(&gfile, (void*)w_buffer, sizeof(w_buffer), &written);
+			res=f_write(&gfile, (void*)w_buffer, sizeof(w_buffer), (UINT*)&written);
 
 			f_close(&gfile);
 		}

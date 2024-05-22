@@ -22,7 +22,7 @@
 #define Vcache         (u16*)pReadCache
 #define RGB(r,g,b) ((r)+(g<<5)+(b<<10))
 
-#define PSRAMBase_S98			(u32)0x08800000
+#define PSRAMBase_S98			(u32*)0x08800000
 #define FlashBase_S98 		(u32)0x09000000
 #define FlashBase_S98_end (u32)0x09800000
 

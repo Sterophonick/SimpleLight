@@ -76,12 +76,12 @@
 #include "goomba.h"
 #include "pocketnes.h"
 
-//Planned features:
-//Start random game option
-//Fairchild Channel-F, VMU, Atari 2600, Sharp MZ-700, Pokemon Mini, Bally Astrocade, Microvision, Game Pocket Computer Emulation
-//Second Page for settings
-//.mbap plugins
-//pinned directories
+extern void IWRAM_CODE PatchInternal(u32* Data,int iSize,u32 offset);
+extern void Patch_SpecialROM_sleepmode(void);
+extern void IWRAM_CODE SD_Disable(void);
+extern void IWRAM_CODE Set_RTC_status(u16  status);
+extern void IWRAM_CODE Check_FW_update(u16 Current_FW_ver,u16 Built_in_ver);
+extern void IWRAM_CODE Bank_Switching(u8 bank);
 
 char* mod_ee;
 
@@ -1275,7 +1275,7 @@ u32 IWRAM_CODE Loadfile2PSRAM(TCHAR* filename)
 			str_len = strlen(msg);
 			Clear(0, 130, 240, 15, gl_color_cheat_black, 1);
 			DrawHZText12(msg, 0, (240 - str_len * 6) / 2, 160 - 30, 0x7fff, 1);
-			f_read(&gfile, pReadCache, 0x20000, &ret);//pReadCache max 0x20000 Byte
+			f_read(&gfile, pReadCache, 0x20000, (UINT*)&ret);//pReadCache max 0x20000 Byte
 			if ((gl_reset_on == 1) || (gl_rts_on == 1) || (gl_sleep_on == 1) || (gl_cheat_on == 1)) {
 				PatchInternal((u32*)pReadCache, 0x20000, blocknum);
 			}
@@ -1285,7 +1285,7 @@ u32 IWRAM_CODE Loadfile2PSRAM(TCHAR* filename)
 				page += 0x1000;
 			}
 			SetPSRampage(page);
-			dmaCopy((void*)pReadCache, PSRAMBase_S98 + Address, 0x20000);
+			dmaCopy((void*)pReadCache, (void*)PSRAMBase_S98 + Address, 0x20000);
 			page = 0;
 		}
 		f_close(&gfile);
@@ -1469,7 +1469,7 @@ void IWRAM_CODE make_pogoshell_arguments(TCHAR* cmdname, TCHAR* filename, u32 cm
 	// Passed in 32KB aligned
 	offset = offset + 0x08000000 + 8;
 
-	p = pReadCache;
+	p = (u32*)pReadCache;
 
 	// Magic value in ROM address space
 	*p++ = 0xFAB0BABE;
@@ -1535,7 +1535,7 @@ u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR* filename, u32 is_EMU)
 			//f_lseek(&gfile, blocknum);
 			if (filesize - blocknum * 0x20000 < 0x20000)
 				memset(pReadCache, 0, 0x20000);
-			f_read(&gfile, pReadCache, 0x20000, &ret);//pReadCache max 0x20000 Byte
+			f_read(&gfile, pReadCache, 0x20000, (UINT*)&ret);//pReadCache max 0x20000 Byte
 			page = 0;
 
 			Address = blocknum;
@@ -1572,7 +1572,7 @@ u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR* filename, u32 is_EMU)
 			//f_lseek(&gfile, blocknum);
 			if (filesize - blocknum * 0x20000 < 0x20000)
 				memset(pReadCache, 0, 0x20000);
-			f_read(&gfile, pReadCache, 0x20000, &ret);//pReadCache max 0x20000 Byte
+			f_read(&gfile, pReadCache, 0x20000, (UINT*)&ret);//pReadCache max 0x20000 Byte
 			page = 0;
 			Address = blocknum;
 			while (Address >= 0x400000) {
@@ -1621,7 +1621,7 @@ void save_set_info_SELECT(void)
 }
 //---------------------------------------------------------------------------------
 //Sort folder
-void Sort_folder(folder_total)
+void Sort_folder(u32 folder_total) // originally had no type. don't do this
 {
 	u32 ret;
 	u32 i;
@@ -1641,7 +1641,7 @@ void Sort_folder(folder_total)
 }
 //---------------------------------------------------------------------------------
 //Sort file
-void Sort_file(game_total_SD)
+void Sort_file(u32 game_total_SD)
 {
 	u32 ret;
 	u32 i;
@@ -1674,7 +1674,7 @@ u32 Load_Thumbnail(TCHAR* pfilename_pic)
 		sprintf(picpath, "/SYSTEM/IMGS/%c/%c/%c%c%c%c.bmp", GAMECODE[0], GAMECODE[1], GAMECODE[0], GAMECODE[1], GAMECODE[2], GAMECODE[3]);
 		res = f_open(&gfile, picpath, FA_READ);
 		if (res == FR_OK) {
-			f_read(&gfile, pReadCache + 0x10000, 0x4B38, &rett);
+			f_read(&gfile, pReadCache + 0x10000, 0x4B38, (UINT*)&rett);
 			f_close(&gfile);
 			return 1;
 		}
@@ -1683,7 +1683,7 @@ u32 Load_Thumbnail(TCHAR* pfilename_pic)
 }
 //---------------------------------------------------------------------------------
 //Delete file
-void SD_list_L_START(show_offset, file_select, folder_total)
+void SD_list_L_START(u32 show_offset, u32 file_select, u32 folder_total)
 {
 	u32 res;
 	DrawPic((u16*)gImage_MENU, 36, 25, 168, 110, 1, 0, 1);//show menu pic
@@ -1709,7 +1709,7 @@ void SD_list_L_START(show_offset, file_select, folder_total)
 
 //---------------------------------------------------------------------------------
 //Delete save file
-void SD_list_L_SELECT(show_offset, file_select, folder_total)
+void SD_list_L_SELECT(u32 show_offset, u32 file_select, u32 folder_total)
 {
 	u32 strlen8;
 	TCHAR* pfilename;
@@ -1992,7 +1992,7 @@ int main(void)
 	game_total_NOR = GetFileListFromNor();//initialize to prevent direct writes to NOR without page turning
 	if (game_total_NOR == 0) {
 		memset(pNorFS, 00, sizeof(FM_NOR_FS) * MAX_NOR);
-		Save_NOR_info(pNorFS, sizeof(FM_NOR_FS) * MAX_NOR);
+		Save_NOR_info((u16*)pNorFS, sizeof(FM_NOR_FS) * MAX_NOR);
 	}
 	else {
 		VBlankIntrWait();
@@ -2142,7 +2142,7 @@ re_showfile:
 			else if (updata > 1) {
 				if (page_num == NOR_list) {
 					Refresh_filename_NOR(show_offset, file_select, updata);
-					ClearWithBG(gImage_NOR, 185, 0, 30, 18, 1);
+					ClearWithBG((u16*)gImage_NOR, 185, 0, 30, 18, 1);
 				}
 				else {
 					Refresh_filename(show_offset, file_select, updata, gl_show_Thumbnail && is_GBA);
@@ -2888,7 +2888,7 @@ re_showfile:
 					//get the location of the patch
 					res = f_open(&gfile, pfilename, FA_READ);
 					f_lseek(&gfile, (gamefilesize - 1) & 0xFFFE0000);
-					f_read(&gfile, pReadCache, 0x20000, &ret);
+					f_read(&gfile, pReadCache, 0x20000, (UINT*)&ret);
 					f_close(&gfile);
 					SetTrimSize(pReadCache, gamefilesize, 0x20000, 0x0, saveMODE);
 					if ((gl_engine_sel == 0) || (gl_select_lang == 0xE2E2)) {
@@ -2940,7 +2940,7 @@ re_showfile:
 					res = f_open(&gfile, pfilename, FA_READ);
 					if (res == FR_OK) {
 						f_lseek(&gfile, (gamefilesize - 1) & 0xFFFE0000);
-						f_read(&gfile, pReadCache, 0x20000, &ret);
+						f_read(&gfile, pReadCache, 0x20000, (unsigned int*)&ret);
 						f_close(&gfile);
 						SetTrimSize(pReadCache, gamefilesize, 0x20000, 0x1, saveMODE);
 					}

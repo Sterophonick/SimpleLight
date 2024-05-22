@@ -8,10 +8,15 @@
 #include <gba_systemcalls.h>
 
 #include "NORflash_OP.h"
+#include "Ezcard_OP.h"
 #include "ezkernel.h"
 #include "draw.h"
 #include "lang.h"
+#include "GBApatch.h"
 #define DEBUG
+
+extern void delay(u32 R0);
+extern void IWRAM_CODE PatchInternal(u32* Data,int iSize,u32 offset);
 
 extern FM_NOR_FS pNorFS[MAX_NOR]EWRAM_BSS;
 extern u8 pReadCache [MAX_pReadCache_size]EWRAM_BSS;
@@ -20,6 +25,7 @@ extern u32 gl_norOffset;
 extern FIL gfile;
 extern u32 game_total_NOR;
 extern u32 iTrimSize;
+
 //---------------------------------------------------------------
 void Chip_Reset()
 {
@@ -209,7 +215,7 @@ u8 str_len;
         }
         filesize = f_size(&gfile);
         f_lseek(&gfile, 0xa0);
-        f_read(&gfile, temp, 0x10, (u32 *)&ret);//read game name
+        f_read(&gfile, temp, 0x10, (UINT*)&ret);//read game name
         memcpy(tmpNorFS.gamename,temp,0x10);
         tmpNorFS.rompage = NORaddress >> 17;
         fileneedsize = ((((filesize+0x1FFFF)/0x20000)*0x20000));
@@ -255,7 +261,7 @@ u8 str_len;
             DrawHZText12(msg,0,(240-str_len*6)/2,160-30,0x7fff,1);
             Block_Erase(blocknum+NORaddress);
             f_lseek(&gfile, blocknum);
-            f_read(&gfile, pReadCache, 0x20000, (u32 *)&ret);//pReadCache max 0x20000 Byte
+            f_read(&gfile, pReadCache, 0x20000, (UINT*)&ret);//pReadCache max 0x20000 Byte
             if(have_patch) {
                 if((gl_reset_on==1) || (gl_rts_on==1) || (gl_sleep_on==1) || (gl_cheat_on==1)) {
                     PatchInternal((u32*)pReadCache,0x20000,blocknum);
@@ -276,7 +282,7 @@ u8 str_len;
                 WriteFlash_with32word(blocknum+NORaddress,pReadCache,0x20000);
             }
         }
-        Save_NOR_info(pNorFS,sizeof(FM_NOR_FS)*0x40);
+        Save_NOR_info((u16*)pNorFS,sizeof(FM_NOR_FS)*0x40);
         return 0;
     }
     else {

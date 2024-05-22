@@ -385,12 +385,12 @@ void LoadChinese(void)
 	gl_more_options = (char**)zh_more_options;
 	gl_nor_op = (char**)zh_nor_op;
 	
-	gl_copying_data = (char**)zh_copying_data;
+	gl_copying_data = (char*)zh_copying_data;
 
-	gl_generating_emu = (char**)zh_generating_emu;
+	gl_generating_emu = (char*)zh_generating_emu;
 
 	// For Chinese, Use old font
-	ASC_DATA = ASC_DATA_OLD;
+	ASC_DATA = (unsigned char*)ASC_DATA_OLD;
 }
 //---------------------------------------------------------------------------------
 void LoadEnglish(void)
@@ -476,10 +476,10 @@ void LoadEnglish(void)
 	gl_nor_op = (char**)en_nor_op;
 	gl_more_options = (char**)en_more_options;
 	
-	gl_copying_data = (char**)en_copying_data;
+	gl_copying_data = (char*)en_copying_data;
 	
-	gl_generating_emu = (char**)en_generating_emu;
+	gl_generating_emu = (char*)en_generating_emu;
 
 	// For English, Use new font
-	ASC_DATA = ASC_DATA_NEW;
+	ASC_DATA = (unsigned char*)ASC_DATA_NEW;
 }
