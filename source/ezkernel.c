@@ -1285,7 +1285,7 @@ u32 IWRAM_CODE Loadfile2PSRAM(TCHAR* filename)
 				page += 0x1000;
 			}
 			SetPSRampage(page);
-			dmaCopy((void*)pReadCache, (void*)PSRAMBase_S98 + Address, 0x20000);
+			dmaCopy((void*)pReadCache, PSRAMBase_S98 + Address, 0x20000);
 			page = 0;
 		}
 		f_close(&gfile);

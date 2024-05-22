@@ -1,6 +1,0 @@
-/home/atapi/Documents/GitHub/SimpleLight/source/ezkernel.c: In function 'main':
-/home/atapi/Documents/GitHub/SimpleLight/source/ezkernel.c:2807:33: error: implicit declaration of function 'Bank_Switching' [-Wimplicit-function-declaration]
- 2807 |                                 Bank_Switching(0);
-      |                                 ^~~~~~~~~~~~~~
-make[1]: *** [/opt/devkitpro/devkitARM/base_rules:39: ezkernel.o] Error 1
-make: *** [Makefile:121: build] Error 2
