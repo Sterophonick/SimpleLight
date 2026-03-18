@@ -193,7 +193,6 @@ const char *zh_more_options[4]={
 	"«–ªªÀı¬‘Õº",
 	" π”√BIOSºÚΩÈ",
 	"«–ªª±∏∑›",
-	"«–ªª¥÷ÃÂ",
 };
 
 //English
@@ -296,7 +295,6 @@ const char *en_more_options[4]={
 	"Toggle thumbnail",
 	"Use BIOS intro",
 	"Backup saves",
-	"Toggle bold",
 	//Start Random Game
 };
 

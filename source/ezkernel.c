@@ -120,7 +120,6 @@ u16 gl_engine_sel;
 u16 gl_show_Thumbnail;
 u16 gl_toggle_reset;
 u16 gl_toggle_backup;
-u16 gl_toggle_bold;
 u16 gl_ingame_RTC_open_status;
 
 
@@ -883,7 +882,7 @@ void Show_Extra_Menu(u32 menu_select)
 	u16 name_color;
 	char msg[30];
 	u32 linemax;
-	linemax = 4;
+	linemax = 3;
 	for (line = 0; line < linemax; line++) {
 		if (line == menu_select) {
 			name_color = gl_color_selected;
@@ -1347,10 +1346,6 @@ void CheckSwitch(void)
 	if ((gl_toggle_backup != 0x0) && (gl_toggle_backup != 0x1)) {
 		gl_toggle_backup = 0x0;
 	}
-	gl_toggle_bold = Read_SET_info(16);
-	if ((gl_toggle_bold != 0x0) && (gl_toggle_bold != 0x1)) {
-		gl_toggle_bold = 0x0;
-	}
 	gl_ingame_RTC_open_status = Read_SET_info(13);
 	if ((gl_ingame_RTC_open_status != 0x0) && (gl_ingame_RTC_open_status != 0x1)) {
 		gl_ingame_RTC_open_status = 0x1;
@@ -1615,7 +1610,6 @@ void save_set_info_SELECT(void)
 	SET_info_buffer[12] = gl_show_Thumbnail;
 	SET_info_buffer[14] = gl_toggle_reset;
 	SET_info_buffer[15] = gl_toggle_backup;
-	SET_info_buffer[16] = gl_toggle_bold;
 	//save to nor
 	Save_SET_info(SET_info_buffer, 0x200);
 }
@@ -1925,7 +1919,6 @@ int main(void)
 	gl_show_Thumbnail = Read_SET_info(12);
 	gl_toggle_reset = Read_SET_info(14);
 	gl_toggle_backup = Read_SET_info(15);
-	gl_toggle_bold = Read_SET_info(16);
 	gl_currentpage = 0x8002;//kernel mode
 	SetMode(MODE_3 | BG2_ENABLE);
 	SD_Disable();
@@ -2305,7 +2298,7 @@ re_showfile:
 				Show_MENU_btn();
 				u8 MENU_line = 0;
 				u8 re_menu = 1;
-				u8 MENU_max = 3;
+				u8 MENU_max = 2;
 				u16 name_color = 0;
 				while (1)
 				{
@@ -2324,11 +2317,7 @@ re_showfile:
 							DrawHZText12("(ON)", 32, 47 + (6 * 20), 58, gl_color_text, 1);
 						else
 							DrawHZText12("(OFF)", 32, 47 + (6 * 20), 58, gl_color_text, 1);
-						if (gl_toggle_bold)
-							DrawHZText12("(ON)", 32, 47 + (6 * 20), 72, gl_color_text, 1);
-						else
-							DrawHZText12("(OFF)", 32, 47 + (6 * 20), 72, gl_color_text, 1);
-						if (MENU_line == 1 || MENU_line == 2 || MENU_line == 3) {
+						if (MENU_line == 1 || MENU_line == 2 || MENU_line == 0) {
 							name_color = gl_color_selected;
 						}
 						else {
@@ -2354,13 +2343,6 @@ re_showfile:
 								DrawHZText12("(ON)", 32, 47 + (6 * 20), 58, name_color, 1);
 							else
 								DrawHZText12("(OFF)", 32, 47 + (6 * 20), 58, name_color, 1);
-						}
-						if (MENU_line == 3)
-						{
-							if (gl_toggle_bold)
-								DrawHZText12("(ON)", 32, 47 + (6 * 20), 72, name_color, 1);
-							else
-								DrawHZText12("(OFF)", 32, 47 + (6 * 20), 72, name_color, 1);
 						}
 						re_menu = 0;
 					}
@@ -2409,13 +2391,6 @@ re_showfile:
 						}
 						else if (MENU_line == 2) {
 							gl_toggle_backup = !gl_toggle_backup;
-							save_set_info_SELECT();
-							updata = 1;
-							Refresh_filename(show_offset, file_select, updata, gl_show_Thumbnail && is_GBA);
-							goto refind_file;
-						}
-						else if (MENU_line == 3) {
-							gl_toggle_bold = !gl_toggle_bold;
 							save_set_info_SELECT();
 							updata = 1;
 							Refresh_filename(show_offset, file_select, updata, gl_show_Thumbnail && is_GBA);
