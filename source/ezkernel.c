@@ -1506,11 +1506,6 @@ u32 IWRAM_CODE LoadEMU2PSRAM(TCHAR* filename, u32 is_EMU)
 		dmaCopy((void*)pReadCache, PSRAMBase_S98, jagoombacolor_gba_size);
 		rom_start_address = jagoombacolor_gba_size;
 		break;
-	case 3://nes
-		dmaCopy((void*)pocketnes_gba, pReadCache, pocketnes_gba_size);
-		dmaCopy((void*)pReadCache, PSRAMBase_S98, pocketnes_gba_size);
-		rom_start_address = pocketnes_gba_size;
-		break;
 	default:
 		res = f_open(&gfile, plugin, FA_READ);
 		if (res != FR_OK)
@@ -1783,9 +1778,6 @@ u32 Check_file_type(TCHAR* pfilename)
 	}
 	else if (!strcasecmp(ext, "gb")) {
 		return 2;
-	}
-	else if (!strcasecmp(ext, "nes")) {
-		return 3;
 	}
 	return 0xff;
 }
